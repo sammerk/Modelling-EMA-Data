@@ -36,3 +36,15 @@ Im folgenden werden die Daten aus Siepe et al. (2025) [@siepe2025] deskriptiv an
 
 ### Datenimport
 Die Originaldaten sind auf dem Open Science Framework verfügbar. Eine aufbereitete Version kann schon direkt aus dem Netz importiert werden.
+
+```{r}
+connection <- url(
+  paste0(
+    "https://raw.githubusercontent.com/",
+    "sammerk/Modelling-EMA-Data/master/data/data_long_siepe.RData"
+  )
+)
+
+data_long <- load(connection)
+
+```
