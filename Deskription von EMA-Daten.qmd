@@ -1,0 +1,38 @@
+---
+title: "Deskription von EMA-Daten.qmd"
+format:
+  live-html:
+    css:
+      - exams/webex.css
+    include-after-body: exams/webex.js
+webr:
+  packages:
+    - dplyr
+    - haven
+#    - ggplot2
+toc: true
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+## Wozu Deskription?
+Oft wird unter dem Begriff der *»deskriptiven Statistik«* eine Art *»einfache Statistik«* oder das Gegenteil zur Inferenzstatistik gesehen und entsprechend die Bestimmung von Lage- und Streuungsmaßen als assoziiert.
+Methodologisch gesehen sind Komplemente zur Deskription jedoch eher die Prädiktion, Explanation und Exploration, also das die Erkenntisziele Daten vorherzusagen oder zu imputieren (Prädiktion), kausale Aussagen zu falsifizieren/verifizieren (Explanation) oder (deskriptive/explanative) Hypothesen aufzustellen (Exploration). *»Deskriptionen«* wollen hingegen die Ausprägung von Variablen(-parametern) in Populationen bestimmen [@doering2016].
+Bei der Unterscheidung von deskriptiver und Inferenz**statistik** meint »deskriptiv« meist, dass nicht über den Datensatz hinaus geschlussfolgert wird. Das ist m.E. jedoch sehr irreführend, denn die »Berechnung« eines arithmetischen Mittelwerts oder Medians kann eben auch die Punktschätzung eines Erwartungswertes einer normalverteilten Variable sein und damit in seiner Bedeutung sehr wohl über den Datensatz hinaus in die Population (besser: den datengenerierenden Mechanismus) hinein reichen.
+Statt deskriptive von Inferenzstatistik zu unterscheiden, ist es hilfreicher **Punktschätzungen** (z.B. Mittelwert als Schätzer für Erwartungswert) von **Intervallschätzungen** zur Bestimmung der Schätzunsicherheit (Standardfehler, Konfidenzintervall) zu unterscheiden.
+Weiterhin ist es hilfreich den Bereich der Inferenzstatistik einerseits in Testing- und Estimation-Ansätze zu unterscheiden, andererseits in frequentistische und bayesianische Ansätze.
+
+|                    |  Frequentistische<br>Statistik | Bayesianische<br>Statistik |
+|--------------------|:------------------------------:|:--------------------------:|
+| Parameterschätzung | Konfidenzintervalle            | Posterior Distributions    |
+| Hypothesentest     | p-Werte                        | Bayes Faktoren/ROPE +HDI.  |
+
+> Inferenzstatistische *Schätzung* (estimation with quantified uncertainty) trifft anhand von Stichproben Aussagen über Parameter der Grundgesamtheit (Population) aus der die Stichprobe gezogen wurde.  <br><br>
+(Inferenzstatistische) *Hypothesentests* bewerten anhand von Stichprobendaten die Gültigkeit von Hypothesen in der Grundgesamtheit (Population) aus der die Stichprobe gezogen wurde [@kruschke2018].
+
+## Deskription der EMA-Daten aus Siepe et al. [-@siepe2025]
+Im folgenden werden die Daten aus Siepe et al. (2025) [@siepe2025] deskriptiv analysiert. Dabei wird recht direkt der Darstellung in diesem Tutorial gefolgt. In diesem Dokument wird jeweils der Code gezeigt, der dann in einer eigenen R-Installation ausgeführt werden kann. Wir interpretieren dann die Ergebnisse gemeinsam und übertragen sie auf Fragestellungen, die sich aus EMA-Daten der Teilnehmer:innen ergeben können.
+
+### Datenimport
+Die Originaldaten sind auf dem Open Science Framework verfügbar. Eine aufbereitete Version kann schon direkt aus dem Netz importiert werden.

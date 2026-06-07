@@ -1,0 +1,102 @@
+```{r inclusion of images Reg, echo = FALSE, results = "hide", message = FALSE, warning = FALSE}
+library(exams)
+include_supplement(
+  c(
+    "slope-highlighted.svg",
+    "residuum-highlighted.svg",
+    "intercept-highlighted.svg",
+    "x-highlighted.svg",
+    "y-highlighted.svg",
+    "yhat-highlighted.svg"
+  ), recursive = TRUE
+)
+
+list_tasks <-
+  list(
+    list(
+      image = "slope-highlighted.svg",
+      answers = c(
+        "Steigung",
+        "b₁",
+        "Slope",
+        "Anstieg",
+        "Gibt an, um wie viel sich y im Durchschnitt unterscheidet, wenn x sich um eine Einheit unterscheidet."
+      )
+    ),
+    list(
+      image = "residuum-highlighted.svg",
+      answers = c(
+        "Residuum",
+        "ε",
+        "Error",
+        "Differenz zwischen beobachtetem und vorhergesagtem Wert."
+      )
+    ),
+    list(
+      image = "intercept-highlighted.svg",
+      answers = c(
+        "Achsenabschnitt",
+        "b₀",
+        "Intercept",
+        "Wert von ŷ, wenn x gleich 0 ist."
+      )
+    ),
+    list(
+      image = "x-highlighted.svg",
+      answers = c("xᵢ", "x-Wert", "Ausprägung der unabhängigen Variable")
+    ),
+    list(
+      image = "y-highlighted.svg",
+      answers = c("yᵢ", "y-Wert", "Ausprägung der abhängigen Variable")
+    ),
+    list(
+      image = "yhat-highlighted.svg",
+      answers = c(
+        "ŷᵢ",
+        "Vorhergesagtes yᵢ",
+        "Predicted yᵢ",
+        "Ausprägung der abhängigen Variable, die durch das Modell für xᵢ vorhergesagt wird."
+      )
+    )
+  )
+# select randomly one task
+selected_task <- sample(list_tasks, 1)[[1]]
+
+# cocenate all answers in list_task 
+answerlist <- c(
+  list_tasks[[1]]$answers,
+  list_tasks[[2]]$answers,
+  list_tasks[[3]]$answers,
+  list_tasks[[4]]$answers,
+  list_tasks[[5]]$answers,
+  list_tasks[[6]]$answers
+)
+
+# create logical vector indication true answers by asking if answers in answerlist are in selected_task$answers
+solution <- answerlist %in% selected_task$answers
+```
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+Welche der Begriffe passen zum [grün]{style='color:#267326; font-weight: bold;'} hervorgehobenen Teil der folgenden Abbildung?
+
+![](`r selected_task$image`){width="300px"}
+
+
+```{r questionlist regelements, echo = FALSE, results='asis'}
+answerlist(
+  answerlist,
+  markup = "markdown"
+)
+```
+
+
+
+Meta-information
+================
+exname: Grundbegriffe Regression erkennen
+extype: mchoice
+exsolution: `r exams::mchoice2string(solution)`
+exshuffle: 5

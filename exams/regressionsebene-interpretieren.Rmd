@@ -1,0 +1,37 @@
+```{r data generation regressionsebene, echo = FALSE, results = "hide"}
+library(exams)
+  questions <- c(
+    "Die Regressionsebene zeigt die vorhergesagten Werte der abhängigen Variable für alle Kombinationen der beiden Prädiktoren.",
+    "Die Punkte zeigen die tatsächlich beobachteten Werte der abhängigen Variable",
+    "Die Residuen entsprechen den (kleinsten) Abständen der Punkte zur Regressionsebene",
+    "Projiziert man alle Punkte parallel zur Achse der abhängigen Variable in eine Ebene, erkennt man, dass die beiden Prädiktoren negativ assoziert sind.",
+    "Bewegt man sich auf der Regressionsebene derart, dass `Anteil Free Lunch` gleich bleibt aber `Matheleistung Kl. 2` steigt, sinkt `Matheleistung Kl. 3`",
+    "Bewegt man sich auf der Regressionsebene derart, dass `Matheleistung Kl. 2` gleich bleibt aber `Anteil Free Lunch` steigt, sinkt `Matheleistung Kl. 3`"
+  )
+```
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+
+Betrachten Sie die interaktive 3D-Visualisierung der multiplen Regression aus dem Abschnitt "Geometrische Repräsentation der multiplen Regression". 
+
+Welche der folgenden Aussagen ist korrekt?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(questions, markup = "markdown")
+```
+
+
+Solution
+========
+
+
+Meta-information
+================
+exname: 3d regressionsebene interpretieren
+extype: mchoice
+exsolution: 110101
+exshuffle: TRUE
+```

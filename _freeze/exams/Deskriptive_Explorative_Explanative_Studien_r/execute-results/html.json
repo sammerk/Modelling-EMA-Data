@@ -1,0 +1,15 @@
+{
+  "hash": "53e4377925f42778f1d46668970d7aff",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n\n::: {.cell}\n\n:::\n\n\n\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}}{.unnumbered .h3short}\n\nEin Forscherteam sucht nach personellen Faktoren, die mit Studienerfolg einhergehen.\nWird dabei eine deskriptive, explanative oder explorative Studie durchgeführt?\n  \n\\begin{answerlist}\n  \\item Deskriptive Studie\n  \\item Explanative Studie\n  \\item Explorative Studie\n\\end{answerlist}\n\n\n\n\nMeta-information\n================\nexname: Erkentnisinteresse in Forschungsfrage erkennen\nextype: schoice\nexsolution: 001",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

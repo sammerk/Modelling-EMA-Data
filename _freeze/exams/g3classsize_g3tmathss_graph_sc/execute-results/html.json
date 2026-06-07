@@ -1,0 +1,15 @@
+{
+  "hash": "332ab41dce9172572d6f62cb38a9ce6c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}} {.h3short .unnumbered}\n\nWelche Aussagen treffen auf obige Abbildung zu?\n\n\\begin{answerlist}\n  \\item Der Slope der Regressionsgerade ist negativ.\n  \\item Für den Intercept der Regressionsgerade gilt $b_0 \\approx 640$.\n  \\item Die unabhängige Variable ist die Mathematikleistung.\n  \\item Der Prädiktor ist die Klassengröße.\n  \\item `CLASS SIZE GRADE 3` ist bimodal verteilt.\n  \\item Das Outcome ist ungefähr normalverteilt.\n\\end{answerlist}\n\nSolution\n========\n\n\n::: {.cell}\n\n:::\n\n\n\n\nMeta-information\n================\nexname: g3classsize_g3tmathss_graph_sc\nextype: mchoice\nexsolution: 110111",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

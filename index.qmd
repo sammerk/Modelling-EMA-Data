@@ -1,0 +1,27 @@
+---
+title: "Überblick 👋🏼"
+---
+
+Dieses e-Book enthält Beispiele und Übungen zur Wiederholung der einfachen linearen und multiplen Regression sowie eine Einführung in die deskriptive und infertielle Analyse von EMA-Daten.
+
+
+:::{.callout-caution collapse=false appearance='default'}
+## Disclaimer:
+Die Beispiele und Übungen sind **ergänzende** Materialien zum Workshop. Sie sind nicht als vollständige Anleitung oder Handbuch gedacht, sondern sollen die im Workshop behandelten Konzepte und Methoden vertiefen und zur praktischen Anwendung anregen.
+
+Als Literatur für die weiterführende Beschäftigung mit der Analyse von EMA-Daten empfehle ich insbesondere:
+
+* als generellen Überblick
+    * Ruwaard, J., Kooistra, L., & Thong, M. (2018). *Ecological momentary assessment in mental health research: A practical introduction, with examples in R (1. Aufl.)*. APH Mental Health. [https://jruwaard.github.io/aph_ema_handbook/](https://jruwaard.github.io/aph_ema_handbook/)
+* für die »deskriptive Analyse« von EMA-Daten
+    * Siepe, B. S., Rieble, C. L., Tutunji, R., Rimpler, A., März, J., Proppert, R. K. K., & Fried, E. I. (2025). Understanding Ecological-Momentary-Assessment Data: A Tutorial on Exploring Item Performance in Ecological-Momentary-Assessment Data. *Advances in Methods and Practices in Psychological Science, 8*(1), 25152459241286877. [https://doi.org/10.1177/25152459241286877](https://doi.org/10.1177/25152459241286877)
+    * Haslbeck, J., Ryan, O., & Dablander, F. (2023). Multimodality and skewness in emotion time series. *Emotion, 23*(8), 2117–2141. [https://doi.org/10.1037/emo0001218](https://doi.org/10.1037/emo0001218)
+* für das Preprocessing von EMA-Daten
+    * Revol, J., Carlier, C., Lafit, G., Verhees, M., Sels, L., & Ceulemans, E. (2024). Preprocessing Experience-Sampling-Method Data: A Step-by-Step Framework, Tutorial Website, R Package, and Reporting Templates. *Advances in Methods and Practices in Psychological Science, 7*(4), 25152459241256609. [https://doi.org/10.1177/25152459241256609](https://doi.org/10.1177/25152459241256609)
+* für psychmetrische Fragen zu EMA-Daten
+    * McNeish, D. (2026). A primer on intensive longitudinal psychometrics. *Behavior Research Methods, 58*(5), 121. [https://doi.org/10.3758/s13428-026-02946-w](https://doi.org/10.3758/s13428-026-02946-w)
+* für bayesianische Modellierung von EMA-Daten
+    * Dora, J., McCabe, C. J., Van Lissa, C. J., Witkiewitz, K., & King, K. M. (2024). A Tutorial on Analyzing Ecological Momentary Assessment Data in Psychological Research With Bayesian (Generalized) Mixed-Effects Models. Advances in Methods and Practices in Psychological Science, 7(1), 25152459241235875. [https://doi.org/10.1177/25152459241235875](https://doi.org/10.1177/25152459241235875)
+
+
+:::

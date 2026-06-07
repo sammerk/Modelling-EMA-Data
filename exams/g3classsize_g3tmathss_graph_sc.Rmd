@@ -1,0 +1,32 @@
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.h3short .unnumbered}
+
+Welche Aussagen treffen auf obige Abbildung zu?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+library(exams)
+answerlist(c("Der Slope der Regressionsgerade ist negativ.",
+             "Für den Intercept der Regressionsgerade gilt $b_0 \\approx 640$.",
+             "Die unabhängige Variable ist die Mathematikleistung.",
+             "Der Prädiktor ist die Klassengröße.",
+             "`CLASS SIZE GRADE 3` ist bimodal verteilt.",
+             "Das Outcome ist ungefähr normalverteilt."), 
+           markup = "markdown")
+```
+
+Solution
+========
+
+```{r exsolutiongeneration, echo = F, results='hide'}
+ex_solution <-c(T, T, F, T, T, T)
+```
+
+
+
+Meta-information
+================
+exname: g3classsize_g3tmathss_graph_sc
+extype: mchoice
+exsolution: `r mchoice2string(ex_solution)`

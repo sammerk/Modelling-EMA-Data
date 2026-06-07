@@ -1,0 +1,35 @@
+```{r data generation rechteck, echo = FALSE, results = "hide"}
+library(tidyverse)
+library(exams)
+x1 <- sample(-5:3, 1)
+x2 <- sample((x1 + 1):5, 1)
+y1 <- sample(-5:3, 1)
+y2 <- sample((y1 + 1):5, 1)
+
+b0 <- mean(c(y1, y2))
+initialize_exercise()
+```
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+Erzeugen Sie in der interaktiven Visualisierung genau vier Punkte und zwar (`r x1`;`r y1`), (`r x1`;`r y2`), (`r x2`;`r y1`), (`r x2`;`r y2`). 
+
+* Das Intercept $b_0$ der dadurch entstehenden Regressionsgerade beträgt dann `r add_cloze(b0)`.
+* Warum zeigt diesen Beispiel, dass das ebenfalls naheliegende Optimierungkriterium der Summe der kleinsten Residualbeträge $\sum_{i=1}^{N} \left| \varepsilon_i \right|$ problematisch wäre?
+
+
+Solution
+========
+Es lässt sich beweisen, dass die Regressionsgerade - bestimmt durch die Summe der kleinsten Quadrate - immer den »Schwerpunkt« der Punktewolke $\left(\bar{x}; \bar{y}\right)$ enthält. Da die Punkte ein Rechteck mit Kanten parallel zu den Koordinatenachsen darstellen, ist $b_1 = 0$ und daher $b_0 = \bar{y}$.
+
+Wäre das Optimierungskriterium für $b_0$ und $b_1$ die Summe der Residuenbeträge $\sum_{i=1}^{N} \left| \varepsilon_i \right|$ wäre jede Regressionsgerade mit $b_1 = 0$ und $min(x_i) < b_0 < max(x_i)$ »gleich optimal« - die Regressionsgerade wäre also nicht eindeutig bestimmt.
+
+Meta-information
+================
+exname: einfache reg rechteck
+extype: cloze
+exclozetype: `r format_metainfo("type")`
+exsolution: `r format_metainfo("solution")`
+extol: `r format_metainfo("tolerance")`

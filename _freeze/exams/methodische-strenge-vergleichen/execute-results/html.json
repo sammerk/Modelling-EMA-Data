@@ -1,0 +1,15 @@
+{
+  "hash": "62152d51891de45b6aa60551727d7b2a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n::: {.cell}\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.1.6\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.1     ✔ tibble    3.3.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.2\n✔ purrr     1.2.1     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n:::\n\n\n\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}\n\nZwei Forscherinnen planen eine Studie durchzuführen und die dadurch entstehenden Daten anschließend zu publizieren, um die Allgemeinheit an den Forschungsanstrengungen (und damit auch an Steuergeldern) möglichst umfangreich partizipieren zu lassen. Beide erzielen durch Recodierungen und Ausschluss von Variablen eine vollständige Anonymisierung des Datensatzes. Auf einem Workshop zur Datenpublikation erfahren beide, dass man datenschutzrechtlich gesehen die Proband*innen nicht darüber informieren muss, dass die anonymisierten Daten publiziert werden, die Wissenschaftsgesellschaften dies aber aus Fairnessgründen empfehlen. Eine Forscherin nimmt daraufhin einen Hinweis (“die Forschungsdaten dieses Projektes werden nach vollständiger Anonymisierung veröffentlicht”) in den Fragebogen auf, die andere nicht. Ansonsten sind ihre Studien identisch.\n\n> Worin unterscheiden sich die beiden Studien?\n\n\n\\begin{answerlist}\n  \\item Externe Validität\n  \\item Interne Validität\n  \\item Ethische Strenge\n  \\item Präsentationsqualität\n\\end{answerlist}\n\nSolution\n========\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stderr}\n\n````\nWarning: Calling `case_when()` with size 1 LHS inputs and size >1 RHS inputs was\ndeprecated in dplyr 1.2.0.\nℹ This `case_when()` statement can result in subtle silent bugs and is very inefficient.\n\n  Please use a series of if statements instead:\n\n  ```\n  # Previously\n  case_when(scalar_lhs1 ~ rhs1, scalar_lhs2 ~ rhs2, .default = default)\n\n  # Now\n  if (scalar_lhs1) {\n    rhs1\n  } else if (scalar_lhs2) {\n    rhs2\n  } else {\n    default\n  }\n  ```\n````\n\n\n:::\n:::\n\n\n\n\nMeta-information\n================\nexname: Unterschied_wiss_Guetekrit_erkennen_3\nextype: mchoice\nexsolution: 0010\nexshuffle: true",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

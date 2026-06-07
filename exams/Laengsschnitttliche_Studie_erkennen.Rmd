@@ -1,0 +1,28 @@
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+Kreuzen Sie im Folgenden die Szenarien an, bei denen es sich um eine »echte« Längsschnittstudie handelt.
+
+Answerlist
+----------
+* Eine Forschergruppe erhebt bei denselben 120 Lehrkräften an 15 Gemeinschaftsschulen im Jahr 2022 und erneut im Jahr 2025 deren lehr- lerntheoretische Überzeugungen, Selbstwirksamkeit und Nutzung digitaler Medien mittels identischem Fragebogen.
+* In einer Schule werden dieselben drei Klassen von Klasse 5 bis Klasse 8 jährlich mit dem ELFE II getestet, um die Entwicklung der Lesekompetenz der Schülerinnen und Schüler zu untersuchen.
+* Im Rahmen eines Schulentwicklungsprogramms werden dieselben Schulleitungen vor der Einführung, ein Jahr nach der Einführung und drei Jahre nach der Einführung zu ihrem Führungsverständnis und zu Kooperationsstrukturen im Kollegium befragt.
+* Eine Studie begleitet dieselben Referendarinnen und Referendare vom Vorbereitungsdienst bis drei Jahre nach dem Berufseinstieg und erhebt wiederholt ihre Unterrichtsqualität mittels standardisierter Beobachtungsinstrumente.
+* In den Jahren 2018, 2020 und 2022 werden jeweils unterschiedliche Stichproben von Lehrkräften aus derselben Region zu ihrer Arbeitszufriedenheit befragt.
+* Eine Studie vergleicht die Lesekompetenz von Viertklässlern im Jahr 2015 mit der Lesekompetenz von Viertklässlern im Jahr 2023, um Veränderungen im Bildungssystem zu analysieren.
+* An einer Schule werden im Jahr 2024 alle Klassen einer Jahrgangsstufe befragt, wobei die Lehrkräfte gebeten werden, rückblickend einzuschätzen, wie sich ihr Unterricht in den letzten fünf Jahren verändert hat.
+* Eine Evaluation untersucht die Wirkung einer neuen Unterrichtsmethode, indem eine Jahrgangsstufe vor der Einführung und eine andere Jahrgangsstufe nach der Einführung getestet wird.
+
+
+Solution
+========
+Achtung: Ein echter Längschnitt liegt nur dann vor, wenn bei den gleichen Merkmalsträgern dieselben Variablen wiederholt erfasst werden.
+
+
+Meta-information
+================
+exname: Laengsschnittliche Studie erkennen
+extype: mchoice
+exsolution: 11110000
+exshuffle: 2

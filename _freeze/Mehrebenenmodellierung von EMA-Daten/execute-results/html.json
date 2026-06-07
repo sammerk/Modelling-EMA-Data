@@ -1,0 +1,15 @@
+{
+  "hash": "b8f2994ed76d5a2c58a975c38c309d4c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Mehrebenenmodellierung von EMA-Daten.qmd\"\nformat:\n  live-html:\n    css:\n      - exams/webex.css\n    include-after-body: exams/webex.js\nwebr:\n  packages:\n    - dplyr\n    - haven\n#    - ggplot2\ntoc: true\nlang: de\n---\n\n\n::: {.cell}\n\n:::\n\n\n\n##\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

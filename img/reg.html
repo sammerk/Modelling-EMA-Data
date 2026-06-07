@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einfache Lineare Regression</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 10px;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            color: #267326;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            font-size: clamp(20px, 5vw, 28px);
+            text-align: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        canvas {
+            border: 2px solid #ddd;
+            cursor: crosshair;
+            display: block;
+            margin: 15px auto;
+            background: white;
+            max-width: 100%;
+            height: auto;
+            touch-action: none;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            font-size: 13px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 400;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #267326;
+            color: white;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+            flex: 1 1 auto;
+            min-width: 120px;
+        }
+        
+        button:hover {
+            background-color: #1f5c1f;
+        }
+        
+        button.secondary {
+            background-color: #d77d00;
+        }
+        
+        button.secondary:hover {
+            background-color: #b86a00;
+        }
+        
+        button.danger {
+            background-color: #f44336;
+        }
+        
+        button.danger:hover {
+            background-color: #da190b;
+        }
+        
+        .info-panel {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #267326;
+        }
+        
+        .equation {
+            font-size: clamp(14px, 3.5vw, 18px);
+            font-weight: bold;
+            color: #267326;
+            margin: 10px 0;
+            font-family: 'Roboto Mono', monospace;
+            word-break: break-word;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .stat-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            color: #333;
+            margin-top: 5px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Mobile Optimierungen */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 10px;
+                border-radius: 5px;
+            }
+            
+            canvas {
+                margin: 10px auto;
+            }
+            
+            .controls {
+                gap: 8px;
+            }
+            
+            button {
+                font-size: 12px;
+                padding: 8px 12px;
+                min-width: 100px;
+            }
+            
+            .checkbox-container {
+                gap: 10px;
+            }
+            
+            .checkbox-label {
+                font-size: 13px;
+            }
+            
+            .checkbox-label span {
+                display: none;
+            }
+            
+            .checkbox-label::after {
+                content: attr(data-short);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .checkbox-container {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="checkbox-container">
+            <label class="checkbox-label" data-short="Linie">
+                <input type="checkbox" id="showLine" checked>
+                <span>Regressionsgerade</span>
+            </label>
+            <label class="checkbox-label" data-short="b₀">
+                <input type="checkbox" id="showIntercept" checked>
+                <span>Intercept</span>
+            </label>
+            <label class="checkbox-label" data-short="b₁">
+                <input type="checkbox" id="showSlope" checked>
+                <span>Slope</span>
+            </label>
+            <label class="checkbox-label" data-short="Resid.">
+                <input type="checkbox" id="showResiduals">
+                <span>Residuen</span>
+            </label>
+            <label class="checkbox-label" data-short="Resid.²">
+                <input type="checkbox" id="showSquares">
+                <span>Quadrierte Residuen</span>
+            </label>
+        </div>
+        
+        <canvas id="canvas" width="800" height="600"></canvas>
+        
+        <div class="controls">
+            <button onclick="addRandomPoint()">Zufälligen Punkt hinzufügen</button>
+            <button class="secondary" onclick="addMultiplePoints()">10 Punkte hinzufügen</button>
+            <button class="danger" onclick="clearPoints()">Alle Punkte löschen</button>
+        </div>
+        
+        <div class="info-panel">
+            <div class="equation" id="equation">Fügen Sie Punkte hinzu</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let points = [];
+        let draggedPoint = null;
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        // Responsive canvas setup
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const maxWidth = Math.min(400, container.clientWidth - 30);
+            
+            // Set canvas to square to maintain 1:1 aspect ratio for plot area
+            canvas.width = maxWidth;
+            canvas.height = maxWidth; // Square canvas for 1:1 aspect ratio
+            
+            updateCanvasDimensions();
+            
+            // Only redraw if we already have initialized
+            if (points.length > 0 || canvas.hasAttribute('data-initialized')) {
+                draw();
+            }
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Canvas settings (will be updated dynamically)
+        let padding = 60;
+        let plotWidth = 0;
+        let plotHeight = 0;
+        
+        // Update canvas dimensions
+        function updateCanvasDimensions() {
+            padding = Math.max(40, canvas.width * 0.075);
+            
+            // Use the smaller dimension to ensure both axes fit
+            const availableSize = Math.min(canvas.width, canvas.height) - 2 * padding;
+            plotWidth = availableSize;
+            plotHeight = availableSize;
+        }
+        
+        // Initialize dimensions
+        updateCanvasDimensions();
+        
+        // Coordinate system range
+        let xMin = -5, xMax = 5;
+        let yMin = -5, yMax = 5;
+        
+        // Convert canvas coordinates to plot coordinates
+        function canvasToPlot(canvasX, canvasY) {
+            updateCanvasDimensions();
+            const x = xMin + (canvasX - padding) / plotWidth * (xMax - xMin);
+            const y = yMax - (canvasY - padding) / plotHeight * (yMax - yMin);
+            return { x, y };
+        }
+        
+        // Convert plot coordinates to canvas coordinates
+        function plotToCanvas(x, y) {
+            const canvasX = padding + (x - xMin) / (xMax - xMin) * plotWidth;
+            const canvasY = padding + (yMax - y) / (yMax - yMin) * plotHeight;
+            return { canvasX, canvasY };
+        }
+        
+        // Calculate linear regression
+        function calculateRegression() {
+            if (points.length < 2) return null;
+            
+            const n = points.length;
+            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+            
+            points.forEach(p => {
+                sumX += p.x;
+                sumY += p.y;
+                sumXY += p.x * p.y;
+                sumX2 += p.x * p.x;
+                sumY2 += p.y * p.y;
+            });
+            
+            const meanX = sumX / n;
+            const meanY = sumY / n;
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = meanY - slope * meanX;
+            
+            // Calculate correlation coefficient
+            const numerator = n * sumXY - sumX * sumY;
+            const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+            const r = denominator === 0 ? 0 : numerator / denominator;
+            const r2 = r * r;
+            
+            // Calculate sum of squared residuals
+            let sumSquaredResiduals = 0;
+            points.forEach(p => {
+                const predicted = slope * p.x + intercept;
+                const residual = p.y - predicted;
+                sumSquaredResiduals += residual * residual;
+            });
+            
+            return { slope, intercept, r, r2, sumSquaredResiduals };
+        }
+        
+        // Draw the coordinate system
+        function drawAxes() {
+            updateCanvasDimensions();
+            
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = Math.max(1, canvas.width / 400);
+            const fontSize = Math.max(10, canvas.width / 60);
+            ctx.font = fontSize + 'px Arial';
+            ctx.fillStyle = '#333';
+            
+            // Draw axes
+            ctx.beginPath();
+            const origin = plotToCanvas(0, 0);
+            
+            // X-axis
+            ctx.moveTo(padding, origin.canvasY);
+            ctx.lineTo(canvas.width - padding, origin.canvasY);
+            
+            // Y-axis
+            ctx.moveTo(origin.canvasX, padding);
+            ctx.lineTo(origin.canvasX, canvas.height - padding);
+            ctx.stroke();
+            
+            // Draw tick marks and labels
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#999';
+            ctx.fillStyle = '#666';
+            
+            // X-axis ticks
+            for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+                if (x === 0) continue;
+                const pos = plotToCanvas(x, 0);
+                ctx.beginPath();
+                ctx.moveTo(pos.canvasX, origin.canvasY - 5);
+                ctx.lineTo(pos.canvasX, origin.canvasY + 5);
+                ctx.stroke();
+                ctx.fillText(x.toString(), pos.canvasX - 5, origin.canvasY + 20);
+            }
+            
+            // Y-axis ticks
+            for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+                if (y === 0) continue;
+                const pos = plotToCanvas(0, y);
+                ctx.beginPath();
+                ctx.moveTo(origin.canvasX - 5, pos.canvasY);
+                ctx.lineTo(origin.canvasX + 5, pos.canvasY);
+                ctx.stroke();
+                ctx.fillText(y.toString(), origin.canvasX - 25, pos.canvasY + 5);
+            }
+            
+            // Axis labels
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('x', canvas.width - padding + 20, origin.canvasY);
+            ctx.fillText('y', origin.canvasX, padding - 20);
+        }
+        
+        // Draw points
+        function drawPoints() {
+            const pointRadius = Math.max(4, canvas.width / 130);
+            points.forEach((point, index) => {
+                const pos = plotToCanvas(point.x, point.y);
+                
+                ctx.beginPath();
+                ctx.arc(pos.canvasX, pos.canvasY, pointRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#267326';
+                ctx.fill();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = Math.max(1, canvas.width / 400);
+                ctx.stroke();
+            });
+        }
+        
+        // Draw intercept point
+        function drawIntercept() {
+            if (!document.getElementById('showIntercept').checked) return;
+            
+            const regression = calculateRegression();
+            if (!regression) return;
+            
+            const { intercept } = regression;
+            const pos = plotToCanvas(0, intercept);
+            
+            // Draw intercept point
+            ctx.beginPath();
+            ctx.arc(pos.canvasX, pos.canvasY, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+            
+            // Draw label
+            ctx.fillStyle = '#d77d00';
+            ctx.font = 'bold 14px Source Sans Pro';
+            ctx.fillText('b₀ = ' + intercept.toFixed(2), pos.canvasX + 12, pos.canvasY - 8);
+        }
+        
+        // Draw slope triangle
+        function drawSlopeTriangle() {
+            if (!document.getElementById('showSlope').checked) return;
+            
+            const regression = calculateRegression();
+            if (!regression) return;
+            
+            const { slope, intercept } = regression;
+            
+            // Position triangle starting from x=1
+            const x1 = 1;
+            const x2 = 2;
+            const y1 = slope * x1 + intercept;
+            const y2 = slope * x2 + intercept;
+            
+            const p1 = plotToCanvas(x1, y1);
+            const p2 = plotToCanvas(x2, y1);
+            const p3 = plotToCanvas(x2, y2);
+            
+            // Draw triangle
+            ctx.strokeStyle = '#2196F3';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]);
+            
+            // Horizontal line
+            ctx.beginPath();
+            ctx.moveTo(p1.canvasX, p1.canvasY);
+            ctx.lineTo(p2.canvasX, p2.canvasY);
+            ctx.stroke();
+            
+            // Vertical line
+            ctx.beginPath();
+            ctx.moveTo(p2.canvasX, p2.canvasY);
+            ctx.lineTo(p3.canvasX, p3.canvasY);
+            ctx.stroke();
+            
+            // Hypotenuse (part of regression line - already drawn)
+            
+            // Labels
+            ctx.fillStyle = '#2196F3';
+            ctx.font = 'bold 13px Source Sans Pro';
+            
+            // Vertical label (b₁ = slope)
+            const midY = (p2.canvasY + p3.canvasY) / 2;
+            ctx.fillText('b₁ = ' + slope.toFixed(2), p2.canvasX + 8, midY);
+        }
+        
+        // Draw regression line
+        function drawRegressionLine() {
+            if (!document.getElementById('showLine').checked) return;
+            
+            const regression = calculateRegression();
+            if (!regression) return;
+            
+            const { slope, intercept } = regression;
+            
+            // Calculate line endpoints
+            const y1 = slope * xMin + intercept;
+            const y2 = slope * xMax + intercept;
+            
+            const start = plotToCanvas(xMin, y1);
+            const end = plotToCanvas(xMax, y2);
+            
+            ctx.strokeStyle = '#267326';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(start.canvasX, start.canvasY);
+            ctx.lineTo(end.canvasX, end.canvasY);
+            ctx.stroke();
+        }
+        
+        // Draw residuals
+        function drawResiduals() {
+            const showResiduals = document.getElementById('showResiduals').checked;
+            const showSquares = document.getElementById('showSquares').checked;
+            
+            if (!showResiduals && !showSquares) return;
+            
+            const regression = calculateRegression();
+            if (!regression) return;
+            
+            const { slope, intercept } = regression;
+            
+            points.forEach(point => {
+                const predictedY = slope * point.x + intercept;
+                const residual = point.y - predictedY;
+                
+                const pointPos = plotToCanvas(point.x, point.y);
+                const predPos = plotToCanvas(point.x, predictedY);
+                
+                if (showSquares && Math.abs(residual) > 0.01) {
+                    // Draw square
+                    const sideLength = Math.abs(pointPos.canvasY - predPos.canvasY);
+                    ctx.fillStyle = 'rgba(244, 67, 54, 0.2)';
+                    ctx.strokeStyle = '#f44336';
+                    ctx.lineWidth = 1;
+                    
+                    if (residual > 0) {
+                        // Point is above the line - draw square to the right from point position
+                        ctx.fillRect(pointPos.canvasX, pointPos.canvasY, sideLength, sideLength);
+                        ctx.strokeRect(pointPos.canvasX, pointPos.canvasY, sideLength, sideLength);
+                    } else {
+                        // Point is below the line - draw square to the right from predicted position
+                        ctx.fillRect(predPos.canvasX, predPos.canvasY, sideLength, sideLength);
+                        ctx.strokeRect(predPos.canvasX, predPos.canvasY, sideLength, sideLength);
+                    }
+                } else if (showResiduals) {
+                    // Draw line
+                    ctx.strokeStyle = '#f44336';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(pointPos.canvasX, pointPos.canvasY);
+                    ctx.lineTo(predPos.canvasX, predPos.canvasY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            });
+        }
+        
+        // Update display
+        function updateDisplay() {
+            const regression = calculateRegression();
+            
+            if (regression) {
+                const { slope, intercept } = regression;
+                document.getElementById('equation').textContent = 
+                    `y = ${slope.toFixed(3)}x + ${intercept.toFixed(3)}`;
+            } else {
+                document.getElementById('equation').textContent = 
+                    points.length === 0 ? 'Fügen Sie Punkte hinzu' : 'Mindestens 2 Punkte erforderlich';
+            }
+        }
+        
+        // Main draw function
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawAxes();
+            drawRegressionLine();
+            drawSlopeTriangle();
+            drawResiduals();
+            drawPoints();
+            drawIntercept();
+            updateDisplay();
+        }
+        
+        // Event handlers
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = e.clientX - rect.left;
+            const canvasY = e.clientY - rect.top;
+            
+            // Check if clicking on existing point
+            for (let i = 0; i < points.length; i++) {
+                const pos = plotToCanvas(points[i].x, points[i].y);
+                const dist = Math.sqrt(Math.pow(canvasX - pos.canvasX, 2) + Math.pow(canvasY - pos.canvasY, 2));
+                
+                if (dist < 10) {
+                    draggedPoint = i;
+                    offsetX = canvasX - pos.canvasX;
+                    offsetY = canvasY - pos.canvasY;
+                    return;
+                }
+            }
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (draggedPoint !== null) {
+                const rect = canvas.getBoundingClientRect();
+                const canvasX = e.clientX - rect.left - offsetX;
+                const canvasY = e.clientY - rect.top - offsetY;
+                
+                const plotCoords = canvasToPlot(canvasX, canvasY);
+                
+                // Snap to 0.2 grid
+                plotCoords.x = Math.round(plotCoords.x / 0.2) * 0.2;
+                plotCoords.y = Math.round(plotCoords.y / 0.2) * 0.2;
+                
+                points[draggedPoint] = plotCoords;
+                draw();
+            }
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            draggedPoint = null;
+        });
+        
+        canvas.addEventListener('mouseleave', () => {
+            draggedPoint = null;
+        });
+        
+        // Touch event handlers für mobile Geräte
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = touch.clientX - rect.left;
+            const canvasY = touch.clientY - rect.top;
+            
+            // Check if touching existing point
+            const touchRadius = Math.max(15, canvas.width / 50);
+            for (let i = 0; i < points.length; i++) {
+                const pos = plotToCanvas(points[i].x, points[i].y);
+                const dist = Math.sqrt(Math.pow(canvasX - pos.canvasX, 2) + Math.pow(canvasY - pos.canvasY, 2));
+                
+                if (dist < touchRadius) {
+                    draggedPoint = i;
+                    offsetX = canvasX - pos.canvasX;
+                    offsetY = canvasY - pos.canvasY;
+                    return;
+                }
+            }
+        });
+        
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (draggedPoint !== null) {
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const canvasX = touch.clientX - rect.left - offsetX;
+                const canvasY = touch.clientY - rect.top - offsetY;
+                
+                const plotCoords = canvasToPlot(canvasX, canvasY);
+                
+                // Snap to 0.2 grid
+                plotCoords.x = Math.round(plotCoords.x / 0.2) * 0.2;
+                plotCoords.y = Math.round(plotCoords.y / 0.2) * 0.2;
+                
+                points[draggedPoint] = plotCoords;
+                draw();
+            }
+        });
+        
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            draggedPoint = null;
+        });
+        
+        canvas.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            draggedPoint = null;
+        });
+        
+        // Generate random number from standard normal distribution (Box-Muller transform)
+        function randomNormal() {
+            const u1 = Math.random();
+            const u2 = Math.random();
+            return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        }
+        
+        // Button functions
+        function addRandomPoint() {
+            // Sample from bivariate normal with zero covariance
+            const meanX = 0;
+            const meanY = 0;
+            const sdX = 3;
+            const sdY = 3;
+            
+            const x = meanX + sdX * randomNormal();
+            const y = meanY + sdY * randomNormal();
+            points.push({ x, y });
+            draw();
+        }
+        
+        function addMultiplePoints() {
+            // Add 10 points from bivariate normal with zero covariance
+            const meanX = 0;
+            const meanY = 0;
+            const sdX = 3;
+            const sdY = 3;
+            
+            for (let i = 0; i < 10; i++) {
+                const x = meanX + sdX * randomNormal();
+                const y = meanY + sdY * randomNormal();
+                points.push({ x, y });
+            }
+            draw();
+        }
+        
+        function clearPoints() {
+            points = [];
+            draw();
+        }
+        
+        // Checkbox event listeners
+        document.getElementById('showLine').addEventListener('change', draw);
+        document.getElementById('showIntercept').addEventListener('change', draw);
+        document.getElementById('showSlope').addEventListener('change', draw);
+        document.getElementById('showResiduals').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('showLine').checked = true;
+            }
+            draw();
+        });
+        document.getElementById('showSquares').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('showLine').checked = true;
+            }
+            draw();
+        });
+        
+        // Add initial points
+        points = [
+            { x: -3, y: -1.5 },
+            { x: -1, y: 1.2 },
+            { x: 2, y: -0.8 },
+            { x: 4, y: 1.8 }
+        ];
+        
+        // Mark as initialized and do initial setup
+        canvas.setAttribute('data-initialized', 'true');
+        resizeCanvas();
+        draw();
+    </script>
+</body>
+</html>

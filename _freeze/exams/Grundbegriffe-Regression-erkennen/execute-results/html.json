@@ -1,0 +1,15 @@
+{
+  "hash": "70995b447d76358746a62131157df26c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n::: {.cell}\n\n:::\n\n\n\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}\nWelche der Begriffe passen zum [grün]{style='color:#267326; font-weight: bold;'} hervorgehobenen Teil der folgenden Abbildung?\n\n![](intercept-highlighted.svg){width=\"300px\"}\n\n\n\\begin{answerlist}\n  \\item Steigung\n  \\item b₁\n  \\item Slope\n  \\item Anstieg\n  \\item Gibt an, um wie viel sich y im Durchschnitt unterscheidet, wenn x sich um eine Einheit unterscheidet.\n  \\item Residuum\n  \\item ε\n  \\item Error\n  \\item Differenz zwischen beobachtetem und vorhergesagtem Wert.\n  \\item Achsenabschnitt\n  \\item b₀\n  \\item Intercept\n  \\item Wert von ŷ, wenn x gleich 0 ist.\n  \\item xᵢ\n  \\item x-Wert\n  \\item Ausprägung der unabhängigen Variable\n  \\item yᵢ\n  \\item y-Wert\n  \\item Ausprägung der abhängigen Variable\n  \\item ŷᵢ\n  \\item Vorhergesagtes yᵢ\n  \\item Predicted yᵢ\n  \\item Ausprägung der abhängigen Variable, die durch das Modell für xᵢ vorhergesagt wird.\n\\end{answerlist}\n\n\n\nMeta-information\n================\nexname: Grundbegriffe Regression erkennen\nextype: mchoice\nexsolution: 00000000011110000000000\nexshuffle: 5",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

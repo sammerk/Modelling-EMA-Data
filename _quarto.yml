@@ -1,0 +1,54 @@
+project:
+  type: website
+  output-dir: docs
+
+execute:
+  freeze: auto
+  cache: true
+
+lang: de
+
+website:
+  title: "Modelling EMA Data"
+  navbar:
+    pinned: true
+  sidebar:
+    logo: img/logo.svg
+    contents:
+      - index.qmd
+      - Einfache lineare Regression.qmd
+      - Multiple lineare Regression.qmd
+      - Deskription von EMA-Daten.qmd
+      - Mehrebenenmodellierung von EMA-Daten.qmd
+
+format:
+  live-html:
+    tbl-cap-location: bottom
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 3
+    knitr:
+      opts_chunk:
+        dev: "ragg_png"
+        dpi: 300
+    css:
+      - brand.css
+      - exams/webex.css
+    include-after-body: exams/webex.js
+
+author:
+  - name: Samuel Merk
+    corresponding: true
+    orcid: 0000-0003-2594-5337
+    email: merk@ph-karlsruhe.de
+    affiliations:
+      - id: id1
+        name: "Pädagogische Hochschule Karlsruhe"
+        address: Bismarckstraße 10
+        city: Karlsruhe
+        country: Germany
+        postal-code: 76133
+
+csl: apa.csl
+bibliography: references.bib

@@ -1,0 +1,19 @@
+---
+title: "Mehrebenenmodellierung von EMA-Daten.qmd"
+format:
+  live-html:
+    css:
+      - exams/webex.css
+    include-after-body: exams/webex.js
+webr:
+  packages:
+    - dplyr
+    - haven
+#    - ggplot2
+toc: true
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+##

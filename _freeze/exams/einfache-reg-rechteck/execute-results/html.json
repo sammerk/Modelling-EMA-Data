@@ -1,0 +1,15 @@
+{
+  "hash": "0778cbf3891ce91b90b4246fb7f8177a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n::: {.cell}\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.1.6\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.1     ✔ tibble    3.3.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.2\n✔ purrr     1.2.1     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n:::\n\n\n\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}\nErzeugen Sie in der interaktiven Visualisierung genau vier Punkte und zwar (-1;-5), (-1;0), (0;-5), (0;0). \n\n* Das Intercept $b_0$ der dadurch entstehenden Regressionsgerade beträgt dann ##ANSWER1##.\n* Warum zeigt diesen Beispiel, dass das ebenfalls naheliegende Optimierungkriterium der Summe der kleinsten Residualbeträge $\\sum_{i=1}^{N} \\left| \\varepsilon_i \\right|$ problematisch wäre?\n\n\nSolution\n========\nEs lässt sich beweisen, dass die Regressionsgerade - bestimmt durch die Summe der kleinsten Quadrate - immer den »Schwerpunkt« der Punktewolke $\\left(\\bar{x}; \\bar{y}\\right)$ enthält. Da die Punkte ein Rechteck mit Kanten parallel zu den Koordinatenachsen darstellen, ist $b_1 = 0$ und daher $b_0 = \\bar{y}$.\n\nWäre das Optimierungskriterium für $b_0$ und $b_1$ die Summe der Residuenbeträge $\\sum_{i=1}^{N} \\left| \\varepsilon_i \\right|$ wäre jede Regressionsgerade mit $b_1 = 0$ und $min(x_i) < b_0 < max(x_i)$ »gleich optimal« - die Regressionsgerade wäre also nicht eindeutig bestimmt.\n\nMeta-information\n================\nexname: einfache reg rechteck\nextype: cloze\nexclozetype: num\nexsolution: -2.5\nextol: 0.01",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

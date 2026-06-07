@@ -1,0 +1,49 @@
+```{r data generation, echo = FALSE, results = "hide"}
+library(tidyverse)
+library(exams)
+Studienvergleiche <- 
+  c("Forschergruppe A untersucht in einem experimentellen Setting den Einfluss von Hunger auf die Leistung in einem Gedächtnistest. Dazu werden die 60 Studierenden in zwei Gruppen aufgeteilt. Die Kontrollgruppe kann ganz normal essen. Die Experimentalgruppe darf 12 h vor dem Experiment nicht mehr essen und auch nur ungesüßte Getränke zu sich nehmen. Im Gedächtnistest zeigte sich ein signifikanter Unterschied derart, dass die hungrigen Studierenden sich weniger Wörter merken konnten als die Kontrollgruppe.\n
+Forschergruppe B untersucht in einem experimentellen Setting den Einfluss von Hunger auf die Leistung in einem Gedächtnistest. Dazu werden die 20 Studierenden in zwei Gruppen aufgeteilt. Die Kontrollgruppe kann ganz normal essen. Die Experimentalgruppe darf 12 h vor dem Experiment nicht mehr essen und auch nur ungesüßte Getränke zu sich nehmen. Im Gedächtnistest zeigte sich ein signifikanter Unterschied derart, dass die hungrigen Studierenden sich weniger Wörter merken konnten als die Kontrollgruppe.", #1
+"Forschergruppe A hat an einer Stichprobe von 20 Grundschulen in Baden-Württemberg über drei Monate hinweg eine wöchentliche “bewegte Pause” für Lehrkräfte angeboten. Die Maßnahme wurde am Ende des Zeitraumes evaluiert und es zeigte sich, dass teilnehmende Lehrkräfte signifikant höhere Werte beim subjektiven Wohlbefinden in einem Fragebogen angaben, als zu Beginn der Maßnahme und auch im Vergleich zu einer Kontrollgruppe von Grundschullehrkräften, die ein solches Angebot nicht erhalten hatten. Die Forschenden leiten daraus eine Empfehlung zur Fortführung der Maßnahme ab.\n
+Forschergruppe B hat an einer Stichprobe von 20 Grundschulen in ganz Deutschland über drei Monate hinweg eine wöchentliche “bewegte Pause” für Lehrkräfte angeboten. Die Maßnahme wurde am Ende des Zeitraumes evaluiert und es zeigte sich, dass teilnehmende Lehrkräfte signifikant höhere Werte beim subjektiven Wohlbefinden in einem Fragebogen angaben, als zu Beginn der Maßnahme und auch im Vergleich zu einer Kontrollgruppe von Grundschullehrkräften, die ein solches Angebot nicht erhalten hatten. Die Forschenden leiten daraus eine Empfehlung zur Fortführung der Maßnahme ab.", #2
+"Zwei Forscherinnen planen eine Studie durchzuführen und die dadurch entstehenden Daten anschließend zu publizieren, um die Allgemeinheit an den Forschungsanstrengungen (und damit auch an Steuergeldern) möglichst umfangreich partizipieren zu lassen. Beide erzielen durch Recodierungen und Ausschluss von Variablen eine vollständige Anonymisierung des Datensatzes. Auf einem Workshop zur Datenpublikation erfahren beide, dass man datenschutzrechtlich gesehen die Proband*innen nicht darüber informieren muss, dass die anonymisierten Daten publiziert werden, die Wissenschaftsgesellschaften dies aber aus Fairnessgründen empfehlen. Eine Forscherin nimmt daraufhin einen Hinweis (“die Forschungsdaten dieses Projektes werden nach vollständiger Anonymisierung veröffentlicht”) in den Fragebogen auf, die andere nicht. Ansonsten sind ihre Studien identisch." #3
+) 
+
+wievielter_Vergleich <- sample(1:3, 1)
+```
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+
+`r paste(Studienvergleiche[wievielter_Vergleich])`
+
+> Worin unterscheiden sich die beiden Studien?
+
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(c("Externe Validität",
+             "Interne Validität",
+             "Ethische Strenge",
+             "Präsentationsqualität"), 
+           markup = "markdown")
+```
+
+Solution
+========
+
+```{r exsolutiongeneration, echo = F, results='hide'}
+ex_solution <- case_when(wievielter_Vergleich == 1 ~ c(T,T,F,F),
+                         wievielter_Vergleich == 2 ~ c(T,F,F,F),
+                         wievielter_Vergleich == 3 ~ c(F,F,T,F))
+```
+
+
+
+Meta-information
+================
+exname: `r paste("Unterschied_wiss_Guetekrit_erkennen", wievielter_Vergleich, sep = "_")`
+extype: mchoice
+exsolution: `r mchoice2string(ex_solution)`
+exshuffle: true

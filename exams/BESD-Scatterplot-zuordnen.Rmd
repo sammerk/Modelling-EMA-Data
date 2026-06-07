@@ -1,0 +1,57 @@
+```{r data generation scatterplotbesd, echo = FALSE, results = "hide"}
+library(tidyverse)
+library(brand.yml)
+library(exams)
+N <- sample(50:500, 1)
+rho <- 0.6
+data <-
+  tibble(
+    x = rnorm(N),
+    y = rho * x + sqrt(1 - rho^2) * rnorm(N)
+  )
+
+besd <- function(r) {
+  tibble::tibble(
+    Gruppe = c("Treatment", "Kontrolle"),
+    Erfolg = c(0.5 + r/2, 0.5 - r/2),
+    Misserfolg = c(0.5 - r/2, 0.5 + r/2)
+  )
+}
+````
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+Welche der folgenden Abbildungen passt am besten zu dem Bimonial Effect Size Display?
+
+
+```{r kable table}
+#| echo: false
+knitr::kable(besd(rho))
+```
+
+
+```{r plot besd 1}
+#| echo: false
+data %>% 
+    ggplot(aes(x,y)) +
+    geom_jitter() #+
+    # theme_brand_ggplot2()
+```
+
+```{r questionlist besd, echo = FALSE, results='asis'}
+answerlist(
+  c("ABB1", "ABB2"),
+  markup = "markdown")
+```
+
+Solution
+========
+
+
+Meta-information
+================
+exname: BESD-Scatterplot-zuordnen
+extype: schoice
+exsolution: 01

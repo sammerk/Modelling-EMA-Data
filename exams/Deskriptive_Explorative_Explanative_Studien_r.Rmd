@@ -1,0 +1,43 @@
+
+```{r, echo=FALSE, results='hide', message=FALSE}
+library(tidyverse)
+library(exams)
+nth_task <- sample(1:9, 1)
+
+data <- tibble(
+      Answers_and_Distractors = c("Deskriptive Studie", "Explanative Studie", "Explorative Studie"),
+      `Ein Forscherteam geht der Frage nach, wie viele Studierende an Pädagogischen Hochschulen Eltern sind.` =  c(T,F,F), # adjust line 132 if coded 0/1
+      `Ein Forscherteam sucht nach möglichen Einflussfaktoren elterlicher Unterstützung auf die schulbezogene Motivation ihrer Kinder.` =  c(F,F,T),
+      `Ein Forscherteam untersucht, ob sich die positiven Effekte einer Lehrmethode bei der Anwendung in der Sekundarstufe auch für die Primarstufe replizieren lassen.` =  c(F,T,F),
+      `Ein Forscherteam erfasst die Altersstruktur der angestellten Lehrkräfte zum Stichtag 01.01.2022.` =  c(T,F,F),
+      `Ein Forscherteam geht der Frage nach, ob die simultane Präsentation von Bild und Ton entsprechend der Dual Code Theory auch den Erwerb von Wörtern einer Fremdsprache fördert.` =  c(F,T,F),
+      `Ein Forscherteam sucht nach personellen Faktoren, die mit Studienerfolg einhergehen.` =  c(F,F,T),
+      `Ein Forscherteam untersucht die Anzahl von Schüler*innen mit Deutsch als Zweitsprache in den verschiedenen Stadtteilen von Karlsruhe. ` =  c(T,F,F),
+      `Ein Forscherteam untersucht die Hypothese, ob das Lernen mit Pausen (spaced learning) schon bei Kindern im Grundschulalter zu besseren Lernleistungen im Vergleich zu massiertem Lernen führt.` =  c(F,T,F),
+      `Ein Forscherteam sucht nach Faktoren, die den Abbruch des Lehramtsstudiums in höheren Fachsemestern beeinflussen.` =  c(F,F,T))
+
+
+```
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}}{.unnumbered .h3short}
+
+`r names(data[,nth_task + 1])`
+Wird dabei eine deskriptive, explanative oder explorative Studie durchgeführt?
+  
+```{r questionlist, echo = FALSE, results='asis'}
+answerlist(
+  data |> pull(1),
+  markup = "markdown")
+```
+
+
+
+
+Meta-information
+================
+exname: Erkentnisinteresse in Forschungsfrage erkennen
+extype: schoice
+exsolution: `r mchoice2string(data |> pull(nth_task + 1))`

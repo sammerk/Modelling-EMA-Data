@@ -1,0 +1,89 @@
+```{r data generation scatterplotbesd, echo = FALSE, results = "hide"}
+library(tidyverse)
+library(brand.yml) 
+library(exams)
+library(kableExtra)
+
+N <- sample(50:500, 1)
+rho <- runif(1, -1, 1)
+
+# create the ground truth data
+data_gt <-
+  tibble(
+    `Sozioökonomischer Status (SES)` = rnorm(N),
+    `Matheleistung (ML)` = rho *
+      `Sozioökonomischer Status (SES)` +
+      sqrt(1 - rho^2) * rnorm(N)
+  )
+
+# correlation in ground truth
+r_gt <- cor(
+  data_gt$`Sozioökonomischer Status (SES)`,
+  data_gt$`Matheleistung (ML)`
+)
+
+# BESD ground truth
+besd_gt <- tibble(
+  Gruppe = c("unterUV", "überUV"),
+  unterAV = c(0.5 + r_gt / 2, 0.5 - r_gt / 2),
+  überAV = c(0.5 - r_gt / 2, 0.5 + r_gt / 2)
+)
+
+# create data frame for cloze
+data_cloze <-
+  tibble(
+    `unterdurchschn. SES` = rev(round(besd_gt$unterAV, 2))/2,
+    `überdurchschn. SES` = rev(round(besd_gt$überAV, 2))/2,
+    row_names = rev(c("unterdurchschn. ML", "überdurchschn. ML"))
+  ) %>%
+  column_to_rownames(var = "row_names")
+
+````
+
+
+Question
+========
+### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}
+
+Im folgenden ist die einfache lineare Regression von *N* = `r N` Datenpunkten der Variable `r names(data_gt)[1]` auf die Variable `r names(data_gt)[2]` dargestellt. 
+
+```{r plot ground truth BESD}
+#| echo: false
+#| message: false
+ggplot(data_gt, aes(`Sozioökonomischer Status (SES)`, `Matheleistung (ML)`)) +
+  geom_point() +
+  stat_smooth(method = "lm", se = F) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  theme_brand_ggplot2()
+```
+
+
+Geben Sie in folgender Tabelle die vier Felder des Binomial Effect Size Display als Werte jeweils zwischen 0 und 1 an.
+`r add_cloze(data_cloze, tolerance = .2)`
+
+
+Solution
+========
+### Lösung:
+Die auf zwei Nachkommastellen gerundeten wahren Zahlen sind:
+```{r}
+#| label: Scatterplot-BESD-zuordnen
+#| echo: false
+data_cloze |>
+  kable(digits = 2) |>
+  kable_styling(full_width = FALSE, position = "left")
+```
+
+> ALs »korrekt« wird alles gekennezichent, was ±20% genau ist.
+
+Meta-information
+================
+exname: Scatterplot-BESD-zuordnen
+extype: cloze
+exclozetype: `r format_metainfo("type")`
+exsolution: `r format_metainfo("solution")`
+extol: `r format_metainfo("tolerance")`

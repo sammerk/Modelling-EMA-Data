@@ -1,0 +1,21 @@
+{
+  "hash": "cb7206e473788256509bf9a0a94347b2",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n::: {.cell}\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.1.6\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.1     ✔ tibble    3.3.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.2\n✔ purrr     1.2.1     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n\nAttaching package: 'kableExtra'\n\n\nThe following object is masked from 'package:dplyr':\n\n    group_rows\n```\n\n\n:::\n:::\n\n\n\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}} {.unnumbered .h3short}\n\nIm folgenden ist die einfache lineare Regression von *N* = 238 Datenpunkten der Variable Sozioökonomischer Status (SES) auf die Variable Matheleistung (ML) dargestellt. \n\n\n::: {.cell}\n::: {.cell-output-display}\n![](Scatterplot-BESD-zuordnen_files/figure-html/plot ground truth BESD-1.png){width=2100}\n:::\n:::\n\n\n\nGeben Sie in folgender Tabelle die vier Felder des Binomial Effect Size Display als Werte jeweils zwischen 0 und 1 an.\n\n\n|                   |unterdurchschn. SES |überdurchschn. SES |\n|:------------------|:-------------------|:------------------|\n|überdurchschn. ML  |##ANSWER1##         |##ANSWER2##        |\n|unterdurchschn. ML |##ANSWER3##         |##ANSWER4##        |\n\n\n\n\nSolution\n========\n### Lösung:\nDie auf zwei Nachkommastellen gerundeten wahren Zahlen sind:\n\n::: {.cell}\n::: {.cell-output-display}\n`````{=html}\n<table class=\"table\" style=\"width: auto !important; \">\n <thead>\n  <tr>\n   <th style=\"text-align:left;\">  </th>\n   <th style=\"text-align:right;\"> unterdurchschn. SES </th>\n   <th style=\"text-align:right;\"> überdurchschn. SES </th>\n  </tr>\n </thead>\n<tbody>\n  <tr>\n   <td style=\"text-align:left;\"> überdurchschn. ML </td>\n   <td style=\"text-align:right;\"> 0.13 </td>\n   <td style=\"text-align:right;\"> 0.37 </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:left;\"> unterdurchschn. ML </td>\n   <td style=\"text-align:right;\"> 0.37 </td>\n   <td style=\"text-align:right;\"> 0.13 </td>\n  </tr>\n</tbody>\n</table>\n\n`````\n:::\n:::\n\n\n> ALs »korrekt« wird alles gekennezichent, was ±20% genau ist.\n\nMeta-information\n================\nexname: Scatterplot-BESD-zuordnen\nextype: cloze\nexclozetype: num|num|num|num\nexsolution: 0.13|0.37|0.37|0.13\nextol: 0.2|0.2|0.2|0.2",
+    "supporting": [
+      "Scatterplot-BESD-zuordnen_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"../site_libs/kePrint-0.0.1/kePrint.js\"></script>\n<link href=\"../site_libs/lightable-0.0.1/lightable.css\" rel=\"stylesheet\" />\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

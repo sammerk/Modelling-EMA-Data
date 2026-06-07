@@ -1,0 +1,52 @@
+div.callout-note.callout {
+border-left-color: #267326;
+}
+
+div.callout-note.callout-style-default>.callout-header {
+background-color: #26732630;
+}
+
+div.callout.callout {
+border-left-color: #267326;
+}
+
+div.callout.callout-style-default>.callout-header {
+background-color: #26732630;
+}
+
+blockquote {
+    border-left: .25rem solid #d77d00;
+}
+
+.text-tertiary { color: #0078A5; }
+
+/* Section numbering */
+.header-section-number {
+  color: #267326;
+}
+
+/* Equation numbering */
+.eq-number {
+  color: #267326;
+}
+
+/* Figure and table numbering */
+.figure-number,
+.table-number {
+  color: #267326;
+}
+
+/* special h3 für heading in webex */
+
+.h3short{
+    margin-top: 0.5rem !important;
+}
+
+.center-xy {
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translateY(-50%), translateX(-50%);
+          transform: translateY(-50%), translateX(-50%);
+        }

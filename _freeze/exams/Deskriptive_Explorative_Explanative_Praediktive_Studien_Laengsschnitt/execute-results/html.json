@@ -1,0 +1,15 @@
+{
+  "hash": "863b63e5f3bc50121a7296ae83d67151",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n\n::: {.cell}\n\n:::\n\n\n\nQuestion\n========\n### Übung {{< iconify fa7-solid:person-digging >}}{.unnumbered .h3short}\nWird in der folgenden Kurzbeschreibung eine **deskriptive**, **explanative**, **explorative** oder **prädiktive** Studie durchgeführt?\n\n> Frühere Leistungsdaten, Motivation und Fehlzeiten werden genutzt, um vorherzusagen, welche Schülerinnen und Schüler im weiteren Verlauf ein erhöhtes Risiko für Leistungsabbrüche zeigen.\n\n  \n\\begin{answerlist}\n  \\item Deskriptive Studie\n  \\item Explanative Studie\n  \\item Explorative Studie\n  \\item Prädiktive Studie\n\\end{answerlist}\n\n\n\n\nMeta-information\n================\nexname: Erkentnisinteresse in Forschungsfrage erkennen\nextype: schoice\nexsolution: 0001",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

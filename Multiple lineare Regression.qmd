@@ -1,0 +1,462 @@
+---
+title: "Multiple lineare Regression"
+format:
+  live-html:
+    css: 
+      - exams/webex.css
+    include-after-body: exams/webex.js
+webr:
+  packages:
+    - dplyr
+    - haven
+#    - ggplot2
+toc: true    
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+## Geometrische Repräsentation der multiplen Regression
+
+Die multiple Regression unterscheidet sich von der einfachen Regression dadurch, dass sie mehr als eine unabhängige Variable enthält. In der geometrischen Repräsentation einer multiplen Regression mit zwei Prädiktoren bedeutet dies, dass die Regressionsgerade zu einer Regressionsfläche wird (siehe @fig-plot-mult-reg).
+
+```{r}
+#| label: libraries
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+library(haven)
+library(tidyverse)
+library(reshape2)
+library(plotly)
+library(sjPlot)
+```
+
+```{r}
+#| label: multiple regression-3d-data-prep
+#| cache: true
+#| echo: false
+#| results: hide
+data_star <- read_sav(
+  "https://raw.githubusercontent.com/sammerk/WinterSchoolZH/master/data_star_workshop.sav"
+)
+
+data_star_subset <- data_star %>%
+  group_by(g3tchid) %>%
+  summarize(
+    `Mathe Klassenmittelwert Kl. 2` = mean(g2tmathss, na.rm = T),
+    `Mathe Klassenmittelwert Kl. 3` = mean(g3tmathss, na.rm = T),
+    `Anteil Free Lunch` = mean(ifelse(g2freelunch == 1, 1, 0), na.rm = T),
+    g3classsize = mean(g3classsize, na.rm = T)
+  ) %>%
+  ungroup()
+
+
+lm_mod <- lm(
+  `Mathe Klassenmittelwert Kl. 3` ~ `Mathe Klassenmittelwert Kl. 2` +
+    `Anteil Free Lunch`,
+  data = data_star_subset
+)
+lm_mkl2 <- lm(
+  `Mathe Klassenmittelwert Kl. 3` ~ `Mathe Klassenmittelwert Kl. 2`,
+  data = data_star_subset
+)
+lm_freelunch <- lm(
+  `Mathe Klassenmittelwert Kl. 3` ~ `Anteil Free Lunch`,
+  data = data_star_subset
+)
+
+#Graph Resolution (more important for more complex shapes)
+graph_reso <- 0.05
+
+#Setup Axis Effort = freelunchmean
+axis_x <- seq(
+  min(data_star_subset$`Anteil Free Lunch`, na.rm = T),
+  max(data_star_subset$`Anteil Free Lunch`, na.rm = T),
+  by = graph_reso
+)
+axis_y <- seq(
+  min(data_star_subset$`Mathe Klassenmittelwert Kl. 2`, na.rm = T),
+  max(data_star_subset$`Mathe Klassenmittelwert Kl. 2`, na.rm = T),
+  by = graph_reso
+)
+
+#Sample points
+Regressionsebene <- expand.grid(
+  `Anteil Free Lunch` = axis_x,
+  `Mathe Klassenmittelwert Kl. 2` = axis_y,
+  KEEP.OUT.ATTRS = F
+)
+
+Regressionsebene$`Mathe Klassenmittelwert Kl. 3` <- predict.lm(
+  lm_mod,
+  newdata = Regressionsebene
+)
+
+Regressionsebene <- acast(
+  Regressionsebene,
+  `Mathe Klassenmittelwert Kl. 2` ~ `Anteil Free Lunch`,
+  value.var = "Mathe Klassenmittelwert Kl. 3"
+) #y ~ x
+
+# for better labels in Plotly
+`Mathe Klassenmittelwert Kl. 2` <- data_star_subset$`Mathe Klassenmittelwert Kl. 2`
+`Anteil Free Lunch` <- data_star_subset$`Anteil Free Lunch`
+`Mathe Klassenmittelwert Kl. 3` <- data_star_subset$`Mathe Klassenmittelwert Kl. 3`
+```
+
+```{r}
+#| label: fig-plot-mult-reg
+#| cache: true
+#| echo: false
+#| warning: false
+#| fig-cap: "3D Scatterplot mit Regressionsfläche "
+#| fig-width: 17
+#| fig-height: 15
+
+plot_ly(data_star_subset) %>%
+  add_trace(
+    x = ~`Anteil Free Lunch`,
+    y = ~`Mathe Klassenmittelwert Kl. 2`,
+    z = ~`Mathe Klassenmittelwert Kl. 3`,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(size = 2, color = "#111111", symbol = 104),
+    showlegend = FALSE,
+    hoverinfo = "none"
+  ) %>%
+  add_surface(
+    x = ~axis_x,
+    y = ~axis_y,
+    z = ~Regressionsebene,
+    opacity = 0.6,
+    showscale = FALSE,
+    showlegend = FALSE,
+    hoverinfo = "none",
+    
+    contours = list(
+      x = list(highlight = F),
+      y = list(highlight = F),
+      z = list(highlight = F)
+    )
+  ) %>% 
+  layout(
+    scene = list(
+      bgcolor = "#f2f2f2",
+      xaxis = list(
+        title = "Anteil Free Lunch",
+        showspikes = FALSE
+      ),
+      yaxis = list(
+        title = "Matheleistung Kl. 2",
+        showspikes = FALSE
+      ),
+      zaxis = list(
+        title = "Matheleistung Kl. 3",
+        showspikes = FALSE
+      ),
+      camera = list(
+        eye = list(x = 3*.7, y = 1.5*.7, z = 1.5*.7)
+      )
+    ),
+    paper_bgcolor = "#f2f2f2",
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      xanchor = "center",
+      y = -0.15,
+      yanchor = "bottom"
+    )
+  )
+```
+
+```{r}
+#| echo: false
+#| results: 'asis'
+#| warning: false
+#| label: fragen zu interkarive app lin reg
+library(exams)
+library(exams2forms)
+exams2forms("exams/regressionsebene-interpretieren.Rmd", n = 1)
+```
+
+## Algebraische Notation der multiplen Regression
+
+Die algeraische Notation der einfachen linearen Regression kann durch die Aufnahme weiterer $b_j \cdot x_{ji}$ Terme leicht zur Notation der multiplen linearen Regression ausgebaut werden. Weiterhin wird jedoch nur ein Term für das Residuum benötigt, da dies den Abstand parallel zur Achse der abhängigen Variable eines Datenpunktes und der Regressionsebene darstellt.
+
+$$
+y_i = b_0 + b_1 \cdot x_{1i} + b_2 \cdot x_{2i} + \dots +  \varepsilon_i
+$$ {#eq-multipleregression}
+
+Im folgenden Code-Fenster können Sie die Regressionskoeffizienten `b_0`, `b_1` und `b_2`, für die Daten in @fig-plot-mult-reg schätzen
+
+```{webr}
+#| setup: true
+#| exercise:
+#|   - mult lin reg anteil mk2 mk3
+data_star <- read_sav(
+  "https://raw.githubusercontent.com/sammerk/did_data/master/data_star.sav"
+)
+
+data_star_subset <- data_star %>%
+  group_by(g3tchid) %>%
+  summarize(
+    `Mathe Klassenmittelwert Kl. 2` = mean(g2tmathss, na.rm = T),
+    `Mathe Klassenmittelwert Kl. 3` = mean(g3tmathss, na.rm = T),
+    `Anteil Free Lunch` = mean(ifelse(g2freelunch == 1, 1, 0), na.rm = T),
+    g3classsize = mean(g3classsize, na.rm = T)
+  ) %>%
+  ungroup()
+```
+
+```{webr}
+#| exercise: mult lin reg anteil mk2 mk3
+mlm_mod <- lm(
+  `Mathe Klassenmittelwert Kl. 3` ~ 
+     `Mathe Klassenmittelwert Kl. 2` + `Anteil Free Lunch`,
+  data = data_star_subset
+)
+summary(mlm_mod)
+```
+
+:::: {.solution exercise="mult lin reg anteil mk2 mk3"}
+::: {.callout-tip collapse="false"}
+## Interpretation des Outputs
+
+Der so generierte Output kann wie folgt interpretiert werden:
+
+````
+Call:
+lm(formula = `Mathe Klassenmittelwert Kl. 3` ~ `Mathe Klassenmittelwert Kl. 2` + 
+    `Anteil Free Lunch`, data = data_star_subset)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-54.126 -10.978  -1.061  11.423  58.431 
+
+Coefficients:
+                                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                     365.33274   24.20436   15.09  < 2e-16 ***
+`Mathe Klassenmittelwert Kl. 2`   0.45200    0.04017   11.25  < 2e-16 ***
+`Anteil Free Lunch`             -21.46948    3.44614   -6.23 1.47e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 16.53 on 319 degrees of freedom
+  (15 observations deleted due to missingness)
+Multiple R-squared:  0.4623,    Adjusted R-squared:  0.4589 
+F-statistic: 137.1 on 2 and 319 DF,  p-value: < 2.2e-16      
+````
+
+
+1)  Der Achsenabschnitt `b_0` der Regressionsgeraden ist ungefähr 365. Der *p*-Wert zeigt bezieht sich auf die Nullhypothese $H_0:\;b_0 = 0$ mit der zweiseitigen Alternativhypothese $H_1:\;b_0 \neq 0$. Da der p-Wert kleiner als 0.05 ist, kann diese Nullhypothese verworfen werden.
+2)  Der Slope `b_1` der Regressionsgeraden ist ungefähr .45. Der *p*-Wert bezieht sich auf die Nullhypothese $H_0:\;b_1 = 0$ mit der zweiseitigen Alternativhypothese $H_1:\;b_1 \neq 0$. Da der p-Wert kleiner als 0.05 ist, kann die Nullhypothese verworfen werden. Man würde dies als *signifikanten Effekt* des `Mathe Klassenmittelwert Kl. 2` auf `Mathe Klassenmittelwert Kl. 3` nach Adjustierung um `Anteil Free Lunch` beschreiben.
+3)  Der Slope `b_2` der Regressionsgeraden ist ungefähr -21. Der *p*-Wert bezieht sich auf die Nullhypothese $H_0:\;b_1 = 0$ mit der zweiseitigen Alternativhypothese $H_1:\;b_1 \neq 0$. Da der p-Wert kleiner als 0.05 ist, kann die Nullhypothese verworfen werden. Man würde dies als *signifikanten Effekt* des `Mathe Anteil Free Lunch` auf `Mathe Klassenmittelwert Kl. 3` nach Adjustierung um `Klassenmittelwert Kl. 2` beschreiben.
+:::
+::::
+
+## Stochastische Notation der multiplen Regression
+
+Auch die stochastische Notation der multiplen Regression kann leicht aus der stochastischen Notation für die einfach lineare Regression verallgemeinert werden. Dazu wird schlicht das Polynom, mit dem der Erwartungswert der normalverteilten abhängigen Variable beschrieben wird einen Summanden erweitert: 
+$$
+y_i \sim \mathcal{N}\left(b_0 + b_1 \cdot x_{1i} + b_2 \cdot x_{2i}, \sigma^2\right)
+$$
+
+## Vergleich partieller multipler und einfacher linearer Regressionskoeffizienten
+
+Die interaktive Visualisierung zu Beginn dieses Kapitels (@fig-plot-mult-reg) zeigt nicht nur die Regressionsfläche als Summe der durch beide unabhängigen Variablen vorhergesagten Punkte. Vielmehr kann indirekt auch auf die Beziehung zwischen den beiden unabhängigen Variablen geschlossen werden, denn es fällt z.B. fällt auf, dass die Datenpunkte mit einer höheren `Matheleistung Kl. 2` nicht nur höhere Werte für `Mathe Klassenmittelwert Kl. 3` aufweisen, sondern auch einen geringeren Anteil an Schülern mit kostenlosem Mittagessen. Dies spiegelt auch die folgende Regressionstabelle wieder:
+
+```{r}
+#| label: tbl-multregression
+#| tbl-cap: "Regressionstabelle"
+tab_model(
+  lm(
+    `Mathe Klassenmittelwert Kl. 3` ~
+      `Anteil Free Lunch`,
+    data = data_star_subset
+  ),
+  lm(
+    `Mathe Klassenmittelwert Kl. 3` ~
+      `Mathe Klassenmittelwert Kl. 2`,
+    data = data_star_subset
+  ),
+  lm(
+    `Mathe Klassenmittelwert Kl. 3` ~
+      `Mathe Klassenmittelwert Kl. 2` + `Anteil Free Lunch`,
+    data = data_star_subset
+  ),
+  lm(
+    `Mathe Klassenmittelwert Kl. 2` ~ `Anteil Free Lunch`,
+    data = data_star_subset
+  ),
+  show.ci = F,
+  p.style = "stars"
+)
+
+
+```
+
+Denn addiert man die $R^2$ der beiden ersten Modelle, ist die Summe deutlich größer als das $R^2$ des dritten Modells - die beiden Prädiktoren sind also nicht unabhängig voneinander, sie scheinen gemeinsame Information über `Mathe Klassenmittelwert Kl. 3` zu liefern. Dies veranschaulicht auch die folgende interaktive Abbildung.
+
+```{r}
+#| label: fig-plot-mult-reg-mit
+#| cache: true
+#| echo: false
+#| warning: false
+#| fig-cap: "3D Scatterplot mit Regressionsfläche und einfachen Regressionsgeraden"
+#| fig-width: 17
+#| fig-height: 15
+
+plot_ly(data_star_subset) %>%
+  add_trace(
+    x = ~`Anteil Free Lunch`,
+    y = ~`Mathe Klassenmittelwert Kl. 2`,
+    z = ~`Mathe Klassenmittelwert Kl. 3`,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(size = 2, color = "#111111", symbol = 104),
+    showlegend = FALSE,
+    hoverinfo = "none"
+  ) %>%
+  add_surface(
+    x = ~axis_x,
+    y = ~axis_y,
+    z = ~Regressionsebene,
+    opacity = 0.6,
+    showscale = FALSE,
+    showlegend = FALSE,
+    hoverinfo = "none",
+    #colorscale = list(list('#a51e41', '#b4a069')),
+    contours = list(
+      x = list(highlight = F),
+      y = list(highlight = F),
+      z = list(highlight = F)
+    )
+  ) %>%
+  add_trace(
+    x = c(
+      min(`Anteil Free Lunch`, na.rm = T),
+      max(`Anteil Free Lunch`, na.rm = T)
+    ),
+    y = c(
+      min(`Mathe Klassenmittelwert Kl. 2`, na.rm = T),
+      min(`Mathe Klassenmittelwert Kl. 2`, na.rm = T)
+    ),
+    z = c(
+      coef(lm_freelunch)[1] +
+        coef(lm_freelunch)[2] * min(`Anteil Free Lunch`, na.rm = T),
+      coef(lm_freelunch)[1] +
+        coef(lm_freelunch)[2] * max(`Anteil Free Lunch`, na.rm = T)
+    ),
+    type = "scatter3d",
+    mode = "lines",
+    name = "Einf. Regression: Matheleistung Kl. 3 ~ Anteil FL",
+    line = list(color = "#dd7700", width = 4),
+    hoverinfo = "none"
+  ) %>% 
+  add_trace(
+    x = c(
+      max(`Anteil Free Lunch`, na.rm = T),
+      max(`Anteil Free Lunch`, na.rm = T)
+    ),
+    y = c(
+      min(`Mathe Klassenmittelwert Kl. 2`, na.rm = T),
+      max(`Mathe Klassenmittelwert Kl. 2`, na.rm = T)
+    ),
+    z = c(
+      coef(lm_mkl2)[1] +
+        coef(lm_mkl2)[2] * min(`Mathe Klassenmittelwert Kl. 2`, na.rm = T),
+      coef(lm_mkl2)[1] +
+        coef(lm_mkl2)[2] * max(`Mathe Klassenmittelwert Kl. 2`, na.rm = T)
+    ),
+    type = "scatter3d",
+    mode = "lines",
+    name = "Einf. Regression: Matheleistung Kl. 3 ~ Matheleistung Kl. 2",
+    line = list(color = "#267326", width = 4),
+    hoverinfo = "none"
+  ) %>%
+  layout(
+    scene = list(
+      bgcolor = "#f2f2f2",
+      xaxis = list(
+        title = "Anteil Free Lunch",
+        showspikes = FALSE
+      ),
+      yaxis = list(
+        title = "Matheleistung Kl. 2",
+        showspikes = FALSE
+      ),
+      zaxis = list(
+        title = "Matheleistung Kl. 3",
+        showspikes = FALSE
+      ),
+      camera = list(
+        eye = list(x = 3*.7, y = 1.5*.7, z = 1.5*.7)
+      )
+    ),
+    paper_bgcolor = "#f2f2f2",
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      xanchor = "center",
+      y = -0.15,
+      yanchor = "bottom"
+    )
+  )
+```
+
+Die Geraden in @fig-plot-mult-reg-mit stellen die einfachen linearen Regressionsgeraden für die beiden unabhängigen Variablen dar. Sie sind jeweils steiler als die Schnittgeraden der Regressionsfläche mit den Koordinatenebenen in denen diese Regressionsgeraden liegen.
+
+Dies verdeutlicht, dass die beiden unabhängigen Variablen nicht unabhängig voneinander sind. Das vierte Regressionsmodell in @tbl-multregression weist ebenfalls darauf hin.
+
+## Kausalanalytische Betrachtung
+
+Ergebnisse wie das des dritten Modells in @tbl-multregression werden oft mit *»Effekt des Vorwissens auf die Mathematikleistung auch nach Kontrolle des Sozioökonomischen Status«* beschrieben. Dabei kann der Eindruck entstehen, dass durch die Aufnahme weiterer Variablen in ein Regressionsmodell eine Art *»Bereinigung«* der Effekte der unabhängigen Variablen stattfindet, sodass kausale Effekte einzelner Prädiktoren isoliert betrachtet werden können. Dies ist allerdings nur sehr selten der Fall.
+
+> Die Ergebnisse von (multiplen) Regressionsanalysen sind (wie alle statistischen Modelle) nicht dazu geeignet kausale Zusammenhänge »zu entdecken« oder »aufzudecken« \[*the causes are not in the data*\].
+
+Vorab postulierte, theoretisch fundierte Kausalzusammenhänge können jedoch im Einklang oder im Widerspruch zu den Ergebnissen (multipler Regressionsmodelle) stehen: So sind die ersten beiden in @fig-DAG-multiple-Reg in Form von Direct Acyclic Graphs [@rohrer2018] dargestellten Kausalannahmen mit den Regressionsergebnissen vereinbar, die dritte jedoch nicht. Sie impliziert keine Kovarianz zwischen SES (Anteil Free Lunch) und der Matheleistung in Kl. 2, der sich jedoch empirisch zeigt. 
+
+![Hypothetische Kausalzusammenhänge in Form von Direct Acyclic Graphs.](img/DAG-multiple-Reg.svg){#fig-DAG-multiple-Reg fig-align="left" width="68%"}
+
+### Good and Bad Control/Adjustments Variables
+Ob die Aufnahme weiterer Variablen in ein Regressionsmodell zu einer besseren Abschätzung kausaler Effekte führt, hängt stark von der Rolle dieser Variablen im Kausalprozess ab. So können sogenannte *Bad Control Variables* (z.B. Collider) zu verzerrten Effektschätzungen führen, während *Good Control Variables* (z.B. Confounder) dabei helfen können, Verzerrungen zu reduzieren [siehe z.B. @cinelli2024; @mcelreath2020; @rohrer2018].
+
+![DAGs der Daten und zweier Analysemodelle](img/collider.svg){#fig-collider}
+
+In folgendem Code Chunk etwa werden Daten wie im linken DAG von @fig-collider simuliert.
+
+```{r}
+#| label: tbl-collider-effect
+set.seed(1893)
+n <- 1000
+data_sim_collider <-
+  tibble(
+    TransmissiveÜberzeugungen = rnorm(n),
+    Schülerleistungen = - .5*TransmissiveÜberzeugungen + rnorm(n),
+    KognitiveAktivierung = - 1 *
+      TransmissiveÜberzeugungen +
+      .7 * Schülerleistungen +
+      rnorm(n)
+  )
+```
+
+
+Analysiert man Hypothese 1, erhält man einen unverzerrten Effekt der Transmissiven Überzeugungen auf die `Schülerleistungen`, **solange man nicht um `KognitiveAktivierung` adjustiert**. Adjustiert man jedoch um `KognitiveAktivierung`, erhält man nicht nur eine Über- oder Unterschätzung des Effekts der Transmissiven Überzeugungen auf die `Schülerleistungen`, sondern sogar eine Umkehrung des Vorzeichens des Effekts, sodass man fälschlicherweise zu dem Schluss kommen könnte, dass Transmissive Überzeugungen einen positiven Effekt auf die Schülerleistungen haben - insbesondere dadurch, dass die Infernezstatistik konklusiv (»signifikant«) ist.
+
+
+```{r}
+#| label: tbl-collider-effect-1
+sjPlot::tab_model(
+  lm(Schülerleistungen ~ TransmissiveÜberzeugungen, data = data_sim_collider),
+  lm(
+    Schülerleistungen ~ TransmissiveÜberzeugungen + KognitiveAktivierung,
+    data = data_sim_collider
+  ),
+  show.ci = F,
+  p.style = "stars",
+  show.std = T
+)
+```

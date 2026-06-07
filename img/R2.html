@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R² Visualisierung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 10px;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .r2-h1 {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            color: #267326;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            font-size: clamp(20px, 5vw, 28px);
+            text-align: center;
+        }
+        
+        .r2-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        canvas {
+            border: 2px solid #ddd;
+            cursor: crosshair;
+            display: block;
+            margin: 15px auto;
+            background: white;
+            max-width: 100%;
+            height: auto;
+            touch-action: none;
+        }
+        
+        .r2-checkbox-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .r2-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .r2-info-panel {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #267326;
+        }
+        
+        .r2-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+        }
+        
+        .r2-stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .r2-stat-label {
+            font-weight: bold;
+            color: #267326;
+        }
+        
+        .r2-stat-value {
+            color: #333;
+        }
+        
+        .r2-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .r2-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .r2-legend-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .r2-container {
+                padding: 10px;
+                border-radius: 5px;
+            }
+            
+            canvas {
+                margin: 10px auto;
+            }
+            
+            .r2-checkbox-container {
+                gap: 10px;
+            }
+            
+            .r2-checkbox-label {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="r2-container">
+        <h1 class="r2-h1">R² Visualisierung</h1>
+        
+        <div class="r2-checkbox-container">
+            <label class="r2-checkbox-label">
+                <input type="checkbox" id="r2-showResiduals" checked>
+                <span>Residuenquadrate (RSS)</span>
+            </label>
+            <label class="r2-checkbox-label">
+                <input type="checkbox" id="r2-showVariance" checked>
+                <span>Varianzquadrate (TSS)</span>
+            </label>
+            <label class="r2-checkbox-label">
+                <input type="checkbox" id="r2-showExplained" checked>
+                <span>Erklärte Quadrate (ESS)</span>
+            </label>
+            <label class="r2-checkbox-label">
+                <input type="checkbox" id="r2-showFitted" checked>
+                <span>Fitted Values</span>
+            </label>
+        </div>
+        
+        <canvas id="r2-canvas" width="800" height="800"></canvas>
+        
+        <div class="r2-info-panel">
+            <div class="r2-stats" id="r2-stats"></div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const canvas = document.getElementById('r2-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let points = [];
+        let draggedPoint = null;
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        // Responsive canvas setup
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const maxWidth = Math.min(800, container.clientWidth - 30);
+            
+            canvas.width = maxWidth;
+            canvas.height = maxWidth;
+            
+            updateCanvasDimensions();
+            
+            if (points.length > 0 || canvas.hasAttribute('data-initialized')) {
+                draw();
+            }
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Canvas settings
+        let padding = 60;
+        let plotWidth = 0;
+        let plotHeight = 0;
+        
+        function updateCanvasDimensions() {
+            padding = Math.max(40, canvas.width * 0.075);
+            const availableSize = Math.min(canvas.width, canvas.height) - 2 * padding;
+            plotWidth = availableSize;
+            plotHeight = availableSize;
+        }
+        
+        updateCanvasDimensions();
+        
+        // Coordinate system range
+        let xMin = 0, xMax = 5;
+        let yMin = 0, yMax = 5;
+        
+        // Convert canvas coordinates to plot coordinates
+        function canvasToPlot(canvasX, canvasY) {
+            updateCanvasDimensions();
+            const x = xMin + (canvasX - padding) / plotWidth * (xMax - xMin);
+            const y = yMax - (canvasY - padding) / plotHeight * (yMax - yMin);
+            return { x, y };
+        }
+        
+        // Convert plot coordinates to canvas coordinates
+        function plotToCanvas(x, y) {
+            const canvasX = padding + (x - xMin) / (xMax - xMin) * plotWidth;
+            const canvasY = padding + (yMax - y) / (yMax - yMin) * plotHeight;
+            return { canvasX, canvasY };
+        }
+        
+        // Calculate regression and statistics
+        function calculateStats() {
+            if (points.length < 2) return null;
+            
+            const n = points.length;
+            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+            
+            points.forEach(p => {
+                sumX += p.x;
+                sumY += p.y;
+                sumXY += p.x * p.y;
+                sumX2 += p.x * p.x;
+                sumY2 += p.y * p.y;
+            });
+            
+            const meanX = sumX / n;
+            const meanY = sumY / n;
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = meanY - slope * meanX;
+            
+            // Total sum of squares (TSS)
+            let tss = 0;
+            points.forEach(p => {
+                const deviation = p.y - meanY;
+                tss += deviation * deviation;
+            });
+            
+            // Residual sum of squares (RSS)
+            let rss = 0;
+            points.forEach(p => {
+                const predicted = slope * p.x + intercept;
+                const residual = p.y - predicted;
+                rss += residual * residual;
+            });
+            
+            // Explained sum of squares (ESS)
+            const ess = tss - rss;
+            
+            // R-squared
+            const r2 = tss > 0 ? ess / tss : 0;
+            
+            return { slope, intercept, meanX, meanY, tss, rss, ess, r2 };
+        }
+        
+        // Draw axes
+        function drawAxes() {
+            updateCanvasDimensions();
+            
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = Math.max(1, canvas.width / 400);
+            const fontSize = Math.max(10, canvas.width / 60);
+            ctx.font = fontSize + 'px Arial';
+            ctx.fillStyle = '#333';
+            
+            const origin = plotToCanvas(0, 0);
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(padding, origin.canvasY);
+            ctx.lineTo(canvas.width - padding, origin.canvasY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(origin.canvasX, padding);
+            ctx.lineTo(origin.canvasX, canvas.height - padding);
+            ctx.stroke();
+            
+            // Tick marks and labels
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#999';
+            ctx.fillStyle = '#666';
+            
+            // X-axis ticks
+            for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+                if (x === 0) continue;
+                const pos = plotToCanvas(x, 0);
+                ctx.beginPath();
+                ctx.moveTo(pos.canvasX, origin.canvasY - 5);
+                ctx.lineTo(pos.canvasX, origin.canvasY + 5);
+                ctx.stroke();
+                ctx.fillText(x.toString(), pos.canvasX - 5, origin.canvasY + 20);
+            }
+            
+            // Y-axis ticks
+            for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+                if (y === 0) continue;
+                const pos = plotToCanvas(0, y);
+                ctx.beginPath();
+                ctx.moveTo(origin.canvasX - 5, pos.canvasY);
+                ctx.lineTo(origin.canvasX + 5, pos.canvasY);
+                ctx.stroke();
+                ctx.fillText(y.toString(), origin.canvasX - 25, pos.canvasY + 5);
+            }
+            
+            // Axis labels
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('x', canvas.width - padding + 20, origin.canvasY);
+            ctx.fillText('y', origin.canvasX, padding - 20);
+        }
+        
+        // Draw mean line
+        function drawMeanLine() {
+            const stats = calculateStats();
+            if (!stats) return;
+            
+            const start = plotToCanvas(xMin, stats.meanY);
+            const end = plotToCanvas(xMax, stats.meanY);
+            
+            ctx.strokeStyle = '#d77d00';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(start.canvasX, start.canvasY);
+            ctx.lineTo(end.canvasX, end.canvasY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Label
+            ctx.fillStyle = '#d77d00';
+            ctx.font = 'bold 12px Source Sans Pro';
+            ctx.fillText('ȳ = ' + stats.meanY.toFixed(2), start.canvasX + 5, start.canvasY - 8);
+        }
+        
+        // Draw regression line
+        function drawRegressionLine() {
+            const stats = calculateStats();
+            if (!stats) return;
+            
+            const y1 = stats.slope * xMin + stats.intercept;
+            const y2 = stats.slope * xMax + stats.intercept;
+            
+            const start = plotToCanvas(xMin, y1);
+            const end = plotToCanvas(xMax, y2);
+            
+            ctx.strokeStyle = '#267326';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(start.canvasX, start.canvasY);
+            ctx.lineTo(end.canvasX, end.canvasY);
+            ctx.stroke();
+        }
+        
+        // Draw variance squares (TSS)
+        function drawVarianceSquares() {
+            if (!document.getElementById('r2-showVariance').checked) return;
+            
+            const stats = calculateStats();
+            if (!stats) return;
+            
+            points.forEach(point => {
+                const pointPos = plotToCanvas(point.x, point.y);
+                const meanPos = plotToCanvas(point.x, stats.meanY);
+                
+                const sideLength = Math.abs(pointPos.canvasY - meanPos.canvasY);
+                
+                ctx.fillStyle = 'rgba(215, 125, 0, 0.3)';
+                ctx.strokeStyle = '#d77d00';
+                ctx.lineWidth = 1;
+                
+                if (point.y > stats.meanY) {
+                    ctx.fillRect(pointPos.canvasX, pointPos.canvasY, sideLength, sideLength);
+                    ctx.strokeRect(pointPos.canvasX, pointPos.canvasY, sideLength, sideLength);
+                } else {
+                    ctx.fillRect(meanPos.canvasX, meanPos.canvasY, sideLength, sideLength);
+                    ctx.strokeRect(meanPos.canvasX, meanPos.canvasY, sideLength, sideLength);
+                }
+            });
+        }
+        
+        // Draw residual squares (RSS)
+        function drawResidualSquares() {
+            if (!document.getElementById('r2-showResiduals').checked) return;
+            
+            const stats = calculateStats();
+            if (!stats) return;
+            
+            points.forEach(point => {
+                const predictedY = stats.slope * point.x + stats.intercept;
+                const pointPos = plotToCanvas(point.x, point.y);
+                const predPos = plotToCanvas(point.x, predictedY);
+                
+                const sideLength = Math.abs(pointPos.canvasY - predPos.canvasY);
+                
+                ctx.fillStyle = 'rgba(0, 120, 165, 0.3)';
+                ctx.strokeStyle = '#0078A5';
+                ctx.lineWidth = 1;
+                
+                if (point.y > predictedY) {
+                    ctx.fillRect(pointPos.canvasX - sideLength, pointPos.canvasY, sideLength, sideLength);
+                    ctx.strokeRect(pointPos.canvasX - sideLength, pointPos.canvasY, sideLength, sideLength);
+                } else {
+                    ctx.fillRect(predPos.canvasX - sideLength, predPos.canvasY, sideLength, sideLength);
+                    ctx.strokeRect(predPos.canvasX - sideLength, predPos.canvasY, sideLength, sideLength);
+                }
+            });
+        }
+        
+        // Draw explained squares (ESS)
+        function drawExplainedSquares() {
+            if (!document.getElementById('r2-showExplained').checked) return;
+            
+            const stats = calculateStats();
+            if (!stats) return;
+            
+            points.forEach(point => {
+                const predictedY = stats.slope * point.x + stats.intercept;
+                const predPos = plotToCanvas(point.x, predictedY);
+                const meanPos = plotToCanvas(point.x, stats.meanY);
+                
+                const sideLength = Math.abs(predPos.canvasY - meanPos.canvasY);
+                
+                ctx.fillStyle = 'rgba(38, 115, 38, 0.3)';
+                ctx.strokeStyle = '#267326';
+                ctx.lineWidth = 1;
+                
+                if (predictedY > stats.meanY) {
+                    ctx.fillRect(predPos.canvasX, predPos.canvasY, sideLength, sideLength);
+                    ctx.strokeRect(predPos.canvasX, predPos.canvasY, sideLength, sideLength);
+                } else {
+                    ctx.fillRect(meanPos.canvasX, meanPos.canvasY, sideLength, sideLength);
+                    ctx.strokeRect(meanPos.canvasX, meanPos.canvasY, sideLength, sideLength);
+                }
+            });
+        }
+        
+        // Draw fitted values
+        function drawFittedValues() {
+            if (!document.getElementById('r2-showFitted').checked) return;
+            
+            const stats = calculateStats();
+            if (!stats) return;
+            
+            const fittedRadius = Math.max(3, canvas.width / 200);
+            
+            points.forEach(point => {
+                const predictedY = stats.slope * point.x + stats.intercept;
+                const predPos = plotToCanvas(point.x, predictedY);
+                
+                ctx.beginPath();
+                ctx.arc(predPos.canvasX, predPos.canvasY, fittedRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#000';
+                ctx.fill();
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+        }
+        
+        // Draw points
+        function drawPoints() {
+            const pointRadius = Math.max(5, canvas.width / 130);
+            points.forEach(point => {
+                const pos = plotToCanvas(point.x, point.y);
+                
+                ctx.beginPath();
+                ctx.arc(pos.canvasX, pos.canvasY, pointRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#267326';
+                ctx.fill();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = Math.max(2, canvas.width / 400);
+                ctx.stroke();
+            });
+        }
+        
+        // Update statistics display
+        function updateDisplay() {
+            const stats = calculateStats();
+            const statsDiv = document.getElementById('r2-stats');
+            
+            if (stats) {
+                statsDiv.innerHTML = `
+                    <div style="display: flex; gap: 20px; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <span style="color: #d77d00;"><strong>TSS:</strong> ${stats.tss.toFixed(2)}</span>
+                            <span style="color: #267326;"><strong>ESS:</strong> ${stats.ess.toFixed(2)}</span>
+                            <span style="color: #0078A5;"><strong>RSS:</strong> ${stats.rss.toFixed(2)}</span>
+                        </div>
+                        <span style="color: #267326;"><strong>R²:</strong> ${stats.r2.toFixed(4)}</span>
+                    </div>
+                `;
+            } else {
+                statsDiv.innerHTML = '<div>Mindestens 2 Punkte erforderlich</div>';
+            }
+        }
+        
+        // Main draw function
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawAxes();
+            drawMeanLine();
+            drawRegressionLine();
+            drawVarianceSquares();
+            drawExplainedSquares();
+            drawResidualSquares();
+            drawFittedValues();
+            drawPoints();
+            updateDisplay();
+        }
+        
+        // Event handlers
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = e.clientX - rect.left;
+            const canvasY = e.clientY - rect.top;
+            
+            for (let i = 0; i < points.length; i++) {
+                const pos = plotToCanvas(points[i].x, points[i].y);
+                const dist = Math.sqrt(Math.pow(canvasX - pos.canvasX, 2) + Math.pow(canvasY - pos.canvasY, 2));
+                
+                if (dist < 15) {
+                    draggedPoint = i;
+                    offsetX = canvasX - pos.canvasX;
+                    offsetY = canvasY - pos.canvasY;
+                    return;
+                }
+            }
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (draggedPoint !== null) {
+                const rect = canvas.getBoundingClientRect();
+                const canvasX = e.clientX - rect.left - offsetX;
+                const canvasY = e.clientY - rect.top - offsetY;
+                
+                const plotCoords = canvasToPlot(canvasX, canvasY);
+                plotCoords.x = Math.round(plotCoords.x / 0.2) * 0.2;
+                plotCoords.y = Math.round(plotCoords.y / 0.2) * 0.2;
+                
+                points[draggedPoint] = plotCoords;
+                draw();
+            }
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            draggedPoint = null;
+        });
+        
+        canvas.addEventListener('mouseleave', () => {
+            draggedPoint = null;
+        });
+        
+        // Touch events
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = touch.clientX - rect.left;
+            const canvasY = touch.clientY - rect.top;
+            
+            const touchRadius = Math.max(20, canvas.width / 50);
+            for (let i = 0; i < points.length; i++) {
+                const pos = plotToCanvas(points[i].x, points[i].y);
+                const dist = Math.sqrt(Math.pow(canvasX - pos.canvasX, 2) + Math.pow(canvasY - pos.canvasY, 2));
+                
+                if (dist < touchRadius) {
+                    draggedPoint = i;
+                    offsetX = canvasX - pos.canvasX;
+                    offsetY = canvasY - pos.canvasY;
+                    return;
+                }
+            }
+        });
+        
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (draggedPoint !== null) {
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const canvasX = touch.clientX - rect.left - offsetX;
+                const canvasY = touch.clientY - rect.top - offsetY;
+                
+                const plotCoords = canvasToPlot(canvasX, canvasY);
+                plotCoords.x = Math.round(plotCoords.x / 0.2) * 0.2;
+                plotCoords.y = Math.round(plotCoords.y / 0.2) * 0.2;
+                
+                points[draggedPoint] = plotCoords;
+                draw();
+            }
+        });
+        
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            draggedPoint = null;
+        });
+        
+        canvas.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            draggedPoint = null;
+        });
+        
+        // Checkbox event listeners
+        document.getElementById('r2-showResiduals').addEventListener('change', draw);
+        document.getElementById('r2-showVariance').addEventListener('change', draw);
+        document.getElementById('r2-showExplained').addEventListener('change', draw);
+        document.getElementById('r2-showFitted').addEventListener('change', draw);
+        
+        // Initial points (3 points as in GeoGebra app)
+        points = [
+            { x: 0.6, y: 0.4 },
+            { x: 3, y: 3 },
+            { x: 4.5, y: 2.2 }
+        ];
+        
+        canvas.setAttribute('data-initialized', 'true');
+        resizeCanvas();
+        draw();
+    })();
+    </script>
+</body>
+</html>
