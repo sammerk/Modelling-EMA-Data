@@ -124,10 +124,10 @@ Außerdem ist sie durch statistische Prozeduren nur schwer zu detektieren. Als G
 ## Decken- und Bodeneffekte
 Zur Deskription von EMA-Daten wird oft auch die Beschreibung von Boden- und Deckeneffekten empfohlen. Damit ist jeweils eine vglw.hohe Dichte der Daten an den Enden von Skalen gemeint, die dann automatisch mit einer Schiefe der Verteilung einhergeht [@siepe2025].
 Meist werden Boden- und Deckeneffekte als problematisch angesehen, da man annimmt, dass sie die Varianz von Daten reduzieren oder dass Schiefe zur Nicht-Angemessenheit von Verteilungsannahmen führt. Das kann insbesondere für psychometrische Items tatsächlich der Fall sein.
-Sehr oft aber resultiert diese Ansicht aus einer Beschränkung der Modellierenden auf wenige Verteilungen (hauptsächlich ausschließlich Normalverteilung). Dann wird etwa der empirischen Verteilung des EMA-Items »*How many alcoholic beverages did you have last night*« ein Bodeneffekt attestiert, aufgrund des Wunsches, dass die Daten normalverteilt sein sollten. Tatsächlich wäre hier aber eine ordinal sequentielle Verteilung theoretisch wesentlich angemessener (und zeigt etwa bei Dora et al [-@dora2024] auch einen wesentlich besseren Fit).
+Sehr oft aber resultiert diese Ansicht aus einer Beschränkung der Modellierenden auf wenige Verteilungen (hauptsächlich ausschließlich Normalverteilung). Dann wird etwa der empirischen Verteilung des EMA-Items »*How many alcoholic beverages did you have last night*« ein Bodeneffekt attestiert, aufgrund des Wunsches, dass die Daten normalverteilt sein sollten. Tatsächlich wäre hier aber eine ordinal sequentielle ordinale Verteilung theoretisch wesentlich angemessener (und zeigt etwa bei Dora et al [-@dora2024] auch einen wesentlich besseren Fit).
 
 ## Kontextkovarianz
-EMA-Studien wir die Möglichkeit zugesprochen » to captur[e] life as it is lived«  [@bolger2003]. Wenn dem so ist, sollten Kontexte Kovarianz mit entsprechenden Items zeigen. Ob dies in plausibler Art und Weise passiert, kann ebenfalls mit Plots sehr gut validiert werden.
+EMA-Studien wir die Möglichkeit zugesprochen »to captur[e] life as it is lived«  [@bolger2003]. Wenn dem so ist, sollten Kontexte Kovarianz mit entsprechenden Items zeigen. Ob dies in plausibler Art und Weise passiert, kann ebenfalls mit Plots sehr gut validiert werden.
 
 ![Abbildung 4 in @siepe2025](img/fig4-siepe.png)
 Abbildung 4 in Siepe et al. [-@siepe2025] zeigt etwa Itemmittelwerte in Abhängigkeit von Arbeit-/Freizeit und Beep-Time.

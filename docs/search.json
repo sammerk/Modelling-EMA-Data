@@ -20,6 +20,66 @@
     ]
   },
   {
+    "objectID": "Deskription von EMA-Daten.html#deskription-der-ema-daten-aus-siepe-et-al.--siepe2025",
+    "href": "Deskription von EMA-Daten.html#deskription-der-ema-daten-aus-siepe-et-al.--siepe2025",
+    "title": "Deskription von EMA-Daten",
+    "section": "2 Deskription der EMA-Daten aus Siepe et al. (2025)",
+    "text": "2 Deskription der EMA-Daten aus Siepe et al. (2025)\nIm folgenden werden die Daten aus Siepe et al. (2025) deskriptiv analysiert. Dabei wird recht direkt der Darstellung in diesem Tutorial gefolgt. In diesem Dokument wird jeweils der Code gezeigt, der dann in einer eigenen R-Installation ausgeführt werden kann. Wir interpretieren dann die Ergebnisse gemeinsam und übertragen sie auf Fragestellungen, die sich aus EMA-Daten der Teilnehmer:innen ergeben können.\n\n2.1 Datenimport\nDie Originaldaten sind auf dem Open Science Framework verfügbar. Eine aufbereitete Version kann schon direkt aus dem Netz importiert werden.\n\nlibrary(haven)\ndata_long &lt;- read_sav(paste0(\n  \"https://raw.githubusercontent.com/\",\n  \"sammerk/Modelling-EMA-Data/master/data/data_long_siepe.sav\"\n))\n\n\n\n2.2 Raincloud Plot\n\nlibrary(ggrain)\n\nLoading required package: ggplot2\n\n\nRegistered S3 methods overwritten by 'ggpp':\n  method                  from   \n  heightDetails.titleGrob ggplot2\n  widthDetails.titleGrob  ggplot2\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.1.6\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ lubridate 1.9.4     ✔ tibble    3.3.1\n✔ purrr     1.2.1     ✔ tidyr     1.3.2\n\n\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n# Zuerst wählen wir Items aus, die wir in einem Raincloud Plot darstellen wollen\nselected_items &lt;- c(\n  \"sad\",\n  \"irritable\",\n  \"sad\",\n  \"ruminate\",\n  \"tired\",\n  \"motivated\",\n  \"relaxed\"\n)\n\n\ndata_long %&gt;%\n  # Gruppieren nach Person und Item\n  group_by(user_id, item) %&gt;%\n  # Berechnen des Mittelwerts pro Person und Item\n  summarize(imean = mean(answer_id, na.rm = TRUE)) %&gt;%\n  # Groupierung aufheben\n  ungroup() %&gt;%\n  # Items filtern\n  filter(item %in% selected_items[1:5]) %&gt;%\n  # raincloud plot\n  ggplot(aes(x = item, y = imean)) +\n  geom_rain() +\n  theme_minimal()\n\n`summarise()` has regrouped the output.\nℹ Summaries were computed grouped by user_id and item.\nℹ Output is grouped by user_id.\nℹ Use `summarise(.groups = \"drop_last\")` to silence this message.\nℹ Use `summarise(.by = c(user_id, item))` for per-operation grouping\n  (`?dplyr::dplyr_by`) instead.\n\n\n\n\n\n\n\n\n\n\n\n2.3 Tabelle mit Standardstatistiken der ausgewählten Items\n\nBetween-Person-Statistiken\n\ndata_long %&gt;%\n  filter(item %in% selected_items) %&gt;%\n  group_by(item) %&gt;%\n  summarize(\n    mean = mean(answer_id, na.rm = TRUE),\n    med = median(answer_id, na.rm = TRUE),\n    sd = sd(answer_id, na.rm = TRUE),\n    skew = moments::skewness(answer_id, na.rm = TRUE),\n    rmssd = psych::rmssd(answer_id, na.rm = TRUE)\n  ) %&gt;%\n    arrange(item)\n\n# A tibble: 6 × 6\n  item       mean   med    sd   skew rmssd\n  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1 irritable  3.11     3  1.91 0.546   2.23\n2 motivated  3.84     4  1.89 0.0893  2.07\n3 relaxed    3.83     4  1.88 0.101   2.08\n4 ruminate   3.09     3  1.90 0.564   2.21\n5 sad        3.10     3  1.91 0.559   2.21\n6 tired      3.10     3  1.91 0.563   2.22\n\n\nWährend Mean und Median wahrscheinlich geläufige Statistiken sind, werden hier zur nochmals SD, Skewness und RMSSD erklärt:\n\nStandardabweichung (SD): \\(SD = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N} (x_i - \\bar{x})^2}\\). Die SD beschreibt den durchschnittlichen »Abstand« der Datenpunkte zum Mittelwert und ist damit ein klassisches Streuungsmaß.\nSchiefe (Skewness): \\(Skewness = \\frac{1}{N} \\sum_{i=1}^N\\left(\\frac{x_i-\\bar{x}}{SD}\\right)^3\\). Die Schiefe nennt man auch das dritte Moment einer Verteilung, da die Differenz zwischen jedem Punkt und dem Mittelwert mit 3 potenziert wird. Dadurch beschreibt sie die Asymmetrie der Verteilung. Eine positive Schiefe bedeutet, dass die obere Hälfte der Datenpunkte stärker streut.\nRoot Mean Square of Successive Differences (RMSSD): \\(RMSSD = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N-1} (x_{i+1} - x_i)^2}\\). Die RMSSD beschreibt die durchschnittliche Differenz zwischen direkt aufeinanderfolgenden Datenpunkten und ist damit ein Maß für die (In-)Stabilität einer Zeitreihe und damit besonders interessant für EMA-Daten.\n\n\n\nWithin-Person-Statistiken\n\ndata_long %&gt;%\n  filter(item %in% selected_items) %&gt;%\n  group_by(user_id, item) %&gt;%\n  summarize(\n    imean = mean(answer_id, na.rm = TRUE),\n    imed = median(answer_id, na.rm = TRUE),\n    isd = sd(answer_id, na.rm = TRUE),\n    iskew = moments::skewness(answer_id, na.rm = TRUE),\n    irmssd = psych::rmssd(answer_id, na.rm = TRUE)\n  ) %&gt;%\n  ungroup() %&gt;%\n  group_by(item) %&gt;%\n  skimr::skim()\n\n`summarise()` has regrouped the output.\nℹ Summaries were computed grouped by user_id and item.\nℹ Output is grouped by user_id.\nℹ Use `summarise(.groups = \"drop_last\")` to silence this message.\nℹ Use `summarise(.by = c(user_id, item))` for per-operation grouping\n  (`?dplyr::dplyr_by`) instead.\n\n\n\nData summary\n\n\nName\nPiped data\n\n\nNumber of rows\n600\n\n\nNumber of columns\n7\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nnumeric\n6\n\n\n________________________\n\n\n\nGroup variables\nitem\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nitem\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nuser_id\nirritable\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nmotivated\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nrelaxed\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nruminate\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nsad\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\ntired\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nimean\nirritable\n0\n1\n3.11\n1.09\n1.15\n2.31\n3.09\n4.02\n5.73\n▃▇▆▆▂\n\n\nimean\nmotivated\n0\n1\n3.84\n1.20\n1.21\n3.04\n3.92\n4.87\n6.38\n▂▇▆▆▂\n\n\nimean\nrelaxed\n0\n1\n3.83\n1.19\n1.30\n3.01\n3.93\n4.86\n6.40\n▃▇▆▆▂\n\n\nimean\nruminate\n0\n1\n3.09\n1.09\n1.16\n2.29\n3.07\n3.99\n5.77\n▃▇▅▆▂\n\n\nimean\nsad\n0\n1\n3.10\n1.09\n1.16\n2.32\n3.01\n4.05\n5.81\n▃▇▃▅▂\n\n\nimean\ntired\n0\n1\n3.10\n1.10\n1.17\n2.31\n3.06\n4.04\n5.81\n▃▇▆▆▂\n\n\nimed\nirritable\n0\n1\n2.86\n1.33\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▅▅▁▁\n\n\nimed\nmotivated\n0\n1\n3.84\n1.40\n1.00\n3.00\n4.00\n5.00\n7.00\n▅▇▆▇▂\n\n\nimed\nrelaxed\n0\n1\n3.84\n1.40\n1.00\n3.00\n4.00\n5.00\n7.00\n▅▇▆▇▂\n\n\nimed\nruminate\n0\n1\n2.86\n1.34\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▅▅▁▁\n\n\nimed\nsad\n0\n1\n2.86\n1.32\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▃▅▁▁\n\n\nimed\ntired\n0\n1\n2.86\n1.33\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▅▅▁▁\n\n\nisd\nirritable\n0\n1\n1.55\n0.27\n0.45\n1.50\n1.60\n1.74\n1.91\n▁▁▃▅▇\n\n\nisd\nmotivated\n0\n1\n1.46\n0.21\n0.57\n1.46\n1.52\n1.57\n1.76\n▁▂▁▅▇\n\n\nisd\nrelaxed\n0\n1\n1.45\n0.21\n0.65\n1.42\n1.52\n1.57\n1.74\n▁▂▂▅▇\n\n\nisd\nruminate\n0\n1\n1.54\n0.26\n0.47\n1.49\n1.61\n1.70\n1.89\n▁▁▂▅▇\n\n\nisd\nsad\n0\n1\n1.54\n0.26\n0.49\n1.48\n1.61\n1.73\n1.88\n▁▁▂▅▇\n\n\nisd\ntired\n0\n1\n1.54\n0.27\n0.47\n1.48\n1.61\n1.73\n1.89\n▁▁▃▅▇\n\n\niskew\nirritable\n0\n1\n0.69\n0.50\n-0.28\n0.39\n0.56\n0.91\n3.09\n▃▇▂▁▁\n\n\niskew\nmotivated\n0\n1\n0.06\n0.57\n-1.34\n-0.27\n0.04\n0.29\n2.50\n▁▇▅▁▁\n\n\niskew\nrelaxed\n0\n1\n0.06\n0.54\n-1.36\n-0.25\n0.04\n0.29\n1.93\n▂▆▇▂▁\n\n\niskew\nruminate\n0\n1\n0.71\n0.51\n-0.32\n0.44\n0.60\n0.94\n3.05\n▂▇▂▁▁\n\n\niskew\nsad\n0\n1\n0.70\n0.51\n-0.39\n0.38\n0.58\n0.92\n3.00\n▁▇▂▁▁\n\n\niskew\ntired\n0\n1\n0.69\n0.50\n-0.38\n0.39\n0.58\n0.92\n2.79\n▁▇▃▁▁\n\n\nirmssd\nirritable\n0\n1\n2.19\n0.39\n0.62\n2.08\n2.27\n2.46\n2.77\n▁▁▃▇▇\n\n\nirmssd\nmotivated\n0\n1\n2.05\n0.29\n0.83\n2.02\n2.11\n2.22\n2.48\n▁▂▁▇▇\n\n\nirmssd\nrelaxed\n0\n1\n2.05\n0.31\n0.93\n1.97\n2.15\n2.23\n2.46\n▁▂▂▆▇\n\n\nirmssd\nruminate\n0\n1\n2.18\n0.38\n0.66\n2.07\n2.26\n2.44\n2.71\n▁▁▃▆▇\n\n\nirmssd\nsad\n0\n1\n2.18\n0.38\n0.69\n2.04\n2.30\n2.44\n2.77\n▁▁▃▇▇\n\n\nirmssd\ntired\n0\n1\n2.18\n0.39\n0.66\n2.04\n2.31\n2.45\n2.74\n▁▁▃▆▇",
+    "crumbs": [
+      "Deskription von EMA-Daten"
+    ]
+  },
+  {
+    "objectID": "Deskription von EMA-Daten.html#modalität",
+    "href": "Deskription von EMA-Daten.html#modalität",
+    "title": "Deskription von EMA-Daten",
+    "section": "3 Modalität",
+    "text": "3 Modalität\nSehr bedeutsam, aber schwierig in Standardstatistiken zu detektieren ist die Modalität von Verteilungen. Modalität beschreibt die Anzahl der Modi, also der Werte, die am häufigsten in einer Verteilung vorkommen. Eine unimodale Verteilung hat einen Modus, eine bimodale Verteilung hat zwei Modi und eine multimodale Verteilung hat mehr als zwei Modi. Modalität kann wichtige Informationen über die zugrunde liegenden Prozesse liefern, die die Daten generieren - etwa inwiefern Mischverteilungen vorliegen (z.B. aufgrund von State-Switching). Die Modalität kann wieder zwischen und innerhalb von Personen sehr unterschiedlich ausgeprägt sein. Außerdem ist sie durch statistische Prozeduren nur schwer zu detektieren. Als Goldstandard gilt die visuelle Inspektion von Dichteplots, diese ist für EMA-Daten aber oft nicht ökonomisch leistbar. Haslbeck et al. (2023) haben daher einen Algorithmus entwickelt, der die Modalität von Verteilungen anhand von statistischen Kriterien bestimmt. Dieser Algorithmus ist in dem R-Package {multimode} (Ameijeiras-Alonso, Crujeiras, & Rodriguez-Casal, 2021) implementiert und kann auch für EMA-Daten angewendet werden.",
+    "crumbs": [
+      "Deskription von EMA-Daten"
+    ]
+  },
+  {
+    "objectID": "Deskription von EMA-Daten.html#decken--und-bodeneffekte",
+    "href": "Deskription von EMA-Daten.html#decken--und-bodeneffekte",
+    "title": "Deskription von EMA-Daten",
+    "section": "4 Decken- und Bodeneffekte",
+    "text": "4 Decken- und Bodeneffekte\nZur Deskription von EMA-Daten wird oft auch die Beschreibung von Boden- und Deckeneffekten empfohlen. Damit ist jeweils eine vglw.hohe Dichte der Daten an den Enden von Skalen gemeint, die dann automatisch mit einer Schiefe der Verteilung einhergeht (Siepe u. a., 2025). Meist werden Boden- und Deckeneffekte als problematisch angesehen, da man annimmt, dass sie die Varianz von Daten reduzieren oder dass Schiefe zur Nicht-Angemessenheit von Verteilungsannahmen führt. Das kann insbesondere für psychometrische Items tatsächlich der Fall sein. Sehr oft aber resultiert diese Ansicht aus einer Beschränkung der Modellierenden auf wenige Verteilungen (hauptsächlich ausschließlich Normalverteilung). Dann wird etwa der empirischen Verteilung des EMA-Items »How many alcoholic beverages did you have last night« ein Bodeneffekt attestiert, aufgrund des Wunsches, dass die Daten normalverteilt sein sollten. Tatsächlich wäre hier aber eine ordinal sequentielle ordinale Verteilung theoretisch wesentlich angemessener (und zeigt etwa bei Dora et al (2024) auch einen wesentlich besseren Fit).",
+    "crumbs": [
+      "Deskription von EMA-Daten"
+    ]
+  },
+  {
+    "objectID": "Deskription von EMA-Daten.html#kontextkovarianz",
+    "href": "Deskription von EMA-Daten.html#kontextkovarianz",
+    "title": "Deskription von EMA-Daten",
+    "section": "5 Kontextkovarianz",
+    "text": "5 Kontextkovarianz\nEMA-Studien wir die Möglichkeit zugesprochen »to captur[e] life as it is lived« (Bolger, Davis, & Rafaeli, 2003). Wenn dem so ist, sollten Kontexte Kovarianz mit entsprechenden Items zeigen. Ob dies in plausibler Art und Weise passiert, kann ebenfalls mit Plots sehr gut validiert werden.\n Abbildung 4 in Siepe et al. (2025) zeigt etwa Itemmittelwerte in Abhängigkeit von Arbeit-/Freizeit und Beep-Time.",
+    "crumbs": [
+      "Deskription von EMA-Daten"
+    ]
+  },
+  {
+    "objectID": "Deskription von EMA-Daten.html#zeitliche-fluktuation",
+    "href": "Deskription von EMA-Daten.html#zeitliche-fluktuation",
+    "title": "Deskription von EMA-Daten",
+    "section": "6 Zeitliche Fluktuation",
+    "text": "6 Zeitliche Fluktuation\nAuch die zeitliche Fluktuation bzw. die Autokorrelatation ist in EMA-Daten eine entscheidende Itemcharakteristik und kann gut über Visualisierungen inspiziert werden. Etwa wie in Abbildung 5 in Siepe et al. (2025).\n\n\n\nAbbildung 5 in Siepe et al. (2025)",
+    "crumbs": [
+      "Deskription von EMA-Daten"
+    ]
+  },
+  {
+    "objectID": "Deskription von EMA-Daten.html#baselinekovariation",
+    "href": "Deskription von EMA-Daten.html#baselinekovariation",
+    "title": "Deskription von EMA-Daten",
+    "section": "7 Baselinekovariation",
+    "text": "7 Baselinekovariation\nItemvarianz on EMA-Daten lässt sich wie gesehen auf Kontext- und Zeit- aber eben auch auf Personencharakteristika zurückführen. Zur Untersuchung dieser Itemperformanzen eignen sich u.a. Mosaicplots der Varianzdekomposition und Clustered Heatmaps der Baselinekorrelationen wie in Abbildung 9 & 10 in Siepe et al. (2025) dargelegt.\n\n\n\nAbbildungen 9 & 10 in Siepe et al. (2025)",
+    "crumbs": [
+      "Deskription von EMA-Daten"
+    ]
+  },
+  {
     "objectID": "exams/BESD-Scatterplot-zuordnen.html",
     "href": "exams/BESD-Scatterplot-zuordnen.html",
     "title": "1 Question",
@@ -227,83 +287,13 @@
     ]
   },
   {
-    "objectID": "Deskription von EMA-Daten.html#deskription-der-ema-daten-aus-siepe-et-al.--siepe2025",
-    "href": "Deskription von EMA-Daten.html#deskription-der-ema-daten-aus-siepe-et-al.--siepe2025",
-    "title": "Deskription von EMA-Daten",
-    "section": "2 Deskription der EMA-Daten aus Siepe et al. (2025)",
-    "text": "2 Deskription der EMA-Daten aus Siepe et al. (2025)\nIm folgenden werden die Daten aus Siepe et al. (2025) deskriptiv analysiert. Dabei wird recht direkt der Darstellung in diesem Tutorial gefolgt. In diesem Dokument wird jeweils der Code gezeigt, der dann in einer eigenen R-Installation ausgeführt werden kann. Wir interpretieren dann die Ergebnisse gemeinsam und übertragen sie auf Fragestellungen, die sich aus EMA-Daten der Teilnehmer:innen ergeben können.\n\n2.1 Datenimport\nDie Originaldaten sind auf dem Open Science Framework verfügbar. Eine aufbereitete Version kann schon direkt aus dem Netz importiert werden.\n\nlibrary(haven)\ndata_long &lt;- read_sav(paste0(\n  \"https://raw.githubusercontent.com/\",\n  \"sammerk/Modelling-EMA-Data/master/data/data_long_siepe.sav\"\n))\n\n\n\n2.2 Raincloud Plot\n\nlibrary(ggrain)\n\nLoading required package: ggplot2\n\n\nRegistered S3 methods overwritten by 'ggpp':\n  method                  from   \n  heightDetails.titleGrob ggplot2\n  widthDetails.titleGrob  ggplot2\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.1.6\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ lubridate 1.9.4     ✔ tibble    3.3.1\n✔ purrr     1.2.1     ✔ tidyr     1.3.2\n\n\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n# Zuerst wählen wir Items aus, die wir in einem Raincloud Plot darstellen wollen\nselected_items &lt;- c(\n  \"sad\",\n  \"irritable\",\n  \"sad\",\n  \"ruminate\",\n  \"tired\",\n  \"motivated\",\n  \"relaxed\"\n)\n\n\ndata_long %&gt;%\n  # Gruppieren nach Person und Item\n  group_by(user_id, item) %&gt;%\n  # Berechnen des Mittelwerts pro Person und Item\n  summarize(imean = mean(answer_id, na.rm = TRUE)) %&gt;%\n  # Groupierung aufheben\n  ungroup() %&gt;%\n  # Items filtern\n  filter(item %in% selected_items[1:5]) %&gt;%\n  # raincloud plot\n  ggplot(aes(x = item, y = imean)) +\n  geom_rain() +\n  theme_minimal()\n\n`summarise()` has regrouped the output.\nℹ Summaries were computed grouped by user_id and item.\nℹ Output is grouped by user_id.\nℹ Use `summarise(.groups = \"drop_last\")` to silence this message.\nℹ Use `summarise(.by = c(user_id, item))` for per-operation grouping\n  (`?dplyr::dplyr_by`) instead.\n\n\n\n\n\n\n\n\n\n\n\n2.3 Tabelle mit Standardstatistiken der ausgewählten Items\n\nBetween-Person-Statistiken\n\ndata_long %&gt;%\n  filter(item %in% selected_items) %&gt;%\n  group_by(item) %&gt;%\n  summarize(\n    mean = mean(answer_id, na.rm = TRUE),\n    med = median(answer_id, na.rm = TRUE),\n    sd = sd(answer_id, na.rm = TRUE),\n    skew = moments::skewness(answer_id, na.rm = TRUE),\n    rmssd = psych::rmssd(answer_id, na.rm = TRUE)\n  ) %&gt;%\n    arrange(item)\n\n# A tibble: 6 × 6\n  item       mean   med    sd   skew rmssd\n  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1 irritable  3.11     3  1.91 0.546   2.23\n2 motivated  3.84     4  1.89 0.0893  2.07\n3 relaxed    3.83     4  1.88 0.101   2.08\n4 ruminate   3.09     3  1.90 0.564   2.21\n5 sad        3.10     3  1.91 0.559   2.21\n6 tired      3.10     3  1.91 0.563   2.22\n\n\nWährend Mean und Median wahrscheinlich geläufige Statistiken sind, werden hier zur nochmals SD, Skewness und RMSSD erklärt:\n\nStandardabweichung (SD): \\(SD = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N} (x_i - \\bar{x})^2}\\). Die SD beschreibt den durchschnittlichen »Abstand« der Datenpunkte zum Mittelwert und ist damit ein klassisches Streuungsmaß.\nSchiefe (Skewness): \\(Skewness = \\frac{1}{N} \\sum_{i=1}^N\\left(\\frac{x_i-\\bar{x}}{SD}\\right)^3\\). Die Schiefe nennt man auch das dritte Moment einer Verteilung, da die Differenz zwischen jedem Punkt und dem Mittelwert mit 3 potenziert wird. Dadurch beschreibt sie die Asymmetrie der Verteilung. Eine positive Schiefe bedeutet, dass die obere Hälfte der Datenpunkte stärker streut.\nRoot Mean Square of Successive Differences (RMSSD): \\(RMSSD = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N-1} (x_{i+1} - x_i)^2}\\). Die RMSSD beschreibt die durchschnittliche Differenz zwischen direkt aufeinanderfolgenden Datenpunkten und ist damit ein Maß für die (In-)Stabilität einer Zeitreihe und damit besonders interessant für EMA-Daten.\n\n\n\nWithin-Person-Statistiken\n\ndata_long %&gt;%\n  filter(item %in% selected_items) %&gt;%\n  group_by(user_id, item) %&gt;%\n  summarize(\n    imean = mean(answer_id, na.rm = TRUE),\n    imed = median(answer_id, na.rm = TRUE),\n    isd = sd(answer_id, na.rm = TRUE),\n    iskew = moments::skewness(answer_id, na.rm = TRUE),\n    irmssd = psych::rmssd(answer_id, na.rm = TRUE)\n  ) %&gt;%\n  ungroup() %&gt;%\n  group_by(item) %&gt;%\n  skimr::skim()\n\n`summarise()` has regrouped the output.\nℹ Summaries were computed grouped by user_id and item.\nℹ Output is grouped by user_id.\nℹ Use `summarise(.groups = \"drop_last\")` to silence this message.\nℹ Use `summarise(.by = c(user_id, item))` for per-operation grouping\n  (`?dplyr::dplyr_by`) instead.\n\n\n\nData summary\n\n\nName\nPiped data\n\n\nNumber of rows\n600\n\n\nNumber of columns\n7\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nnumeric\n6\n\n\n________________________\n\n\n\nGroup variables\nitem\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nitem\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nuser_id\nirritable\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nmotivated\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nrelaxed\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nruminate\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\nsad\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nuser_id\ntired\n0\n1\n50.50\n29.01\n1.00\n25.75\n50.50\n75.25\n100.00\n▇▇▇▇▇\n\n\nimean\nirritable\n0\n1\n3.11\n1.09\n1.15\n2.31\n3.09\n4.02\n5.73\n▃▇▆▆▂\n\n\nimean\nmotivated\n0\n1\n3.84\n1.20\n1.21\n3.04\n3.92\n4.87\n6.38\n▂▇▆▆▂\n\n\nimean\nrelaxed\n0\n1\n3.83\n1.19\n1.30\n3.01\n3.93\n4.86\n6.40\n▃▇▆▆▂\n\n\nimean\nruminate\n0\n1\n3.09\n1.09\n1.16\n2.29\n3.07\n3.99\n5.77\n▃▇▅▆▂\n\n\nimean\nsad\n0\n1\n3.10\n1.09\n1.16\n2.32\n3.01\n4.05\n5.81\n▃▇▃▅▂\n\n\nimean\ntired\n0\n1\n3.10\n1.10\n1.17\n2.31\n3.06\n4.04\n5.81\n▃▇▆▆▂\n\n\nimed\nirritable\n0\n1\n2.86\n1.33\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▅▅▁▁\n\n\nimed\nmotivated\n0\n1\n3.84\n1.40\n1.00\n3.00\n4.00\n5.00\n7.00\n▅▇▆▇▂\n\n\nimed\nrelaxed\n0\n1\n3.84\n1.40\n1.00\n3.00\n4.00\n5.00\n7.00\n▅▇▆▇▂\n\n\nimed\nruminate\n0\n1\n2.86\n1.34\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▅▅▁▁\n\n\nimed\nsad\n0\n1\n2.86\n1.32\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▃▅▁▁\n\n\nimed\ntired\n0\n1\n2.86\n1.33\n1.00\n2.00\n3.00\n4.00\n6.00\n▇▅▅▁▁\n\n\nisd\nirritable\n0\n1\n1.55\n0.27\n0.45\n1.50\n1.60\n1.74\n1.91\n▁▁▃▅▇\n\n\nisd\nmotivated\n0\n1\n1.46\n0.21\n0.57\n1.46\n1.52\n1.57\n1.76\n▁▂▁▅▇\n\n\nisd\nrelaxed\n0\n1\n1.45\n0.21\n0.65\n1.42\n1.52\n1.57\n1.74\n▁▂▂▅▇\n\n\nisd\nruminate\n0\n1\n1.54\n0.26\n0.47\n1.49\n1.61\n1.70\n1.89\n▁▁▂▅▇\n\n\nisd\nsad\n0\n1\n1.54\n0.26\n0.49\n1.48\n1.61\n1.73\n1.88\n▁▁▂▅▇\n\n\nisd\ntired\n0\n1\n1.54\n0.27\n0.47\n1.48\n1.61\n1.73\n1.89\n▁▁▃▅▇\n\n\niskew\nirritable\n0\n1\n0.69\n0.50\n-0.28\n0.39\n0.56\n0.91\n3.09\n▃▇▂▁▁\n\n\niskew\nmotivated\n0\n1\n0.06\n0.57\n-1.34\n-0.27\n0.04\n0.29\n2.50\n▁▇▅▁▁\n\n\niskew\nrelaxed\n0\n1\n0.06\n0.54\n-1.36\n-0.25\n0.04\n0.29\n1.93\n▂▆▇▂▁\n\n\niskew\nruminate\n0\n1\n0.71\n0.51\n-0.32\n0.44\n0.60\n0.94\n3.05\n▂▇▂▁▁\n\n\niskew\nsad\n0\n1\n0.70\n0.51\n-0.39\n0.38\n0.58\n0.92\n3.00\n▁▇▂▁▁\n\n\niskew\ntired\n0\n1\n0.69\n0.50\n-0.38\n0.39\n0.58\n0.92\n2.79\n▁▇▃▁▁\n\n\nirmssd\nirritable\n0\n1\n2.19\n0.39\n0.62\n2.08\n2.27\n2.46\n2.77\n▁▁▃▇▇\n\n\nirmssd\nmotivated\n0\n1\n2.05\n0.29\n0.83\n2.02\n2.11\n2.22\n2.48\n▁▂▁▇▇\n\n\nirmssd\nrelaxed\n0\n1\n2.05\n0.31\n0.93\n1.97\n2.15\n2.23\n2.46\n▁▂▂▆▇\n\n\nirmssd\nruminate\n0\n1\n2.18\n0.38\n0.66\n2.07\n2.26\n2.44\n2.71\n▁▁▃▆▇\n\n\nirmssd\nsad\n0\n1\n2.18\n0.38\n0.69\n2.04\n2.30\n2.44\n2.77\n▁▁▃▇▇\n\n\nirmssd\ntired\n0\n1\n2.18\n0.39\n0.66\n2.04\n2.31\n2.45\n2.74\n▁▁▃▆▇",
-    "crumbs": [
-      "Deskription von EMA-Daten"
-    ]
-  },
-  {
     "objectID": "Multiple lineare Regression.html#prüfung-inferenzstatistischer-annahmen",
     "href": "Multiple lineare Regression.html#prüfung-inferenzstatistischer-annahmen",
     "title": "Multiple lineare Regression",
     "section": "6 Prüfung Inferenzstatistischer Annahmen",
-    "text": "6 Prüfung Inferenzstatistischer Annahmen\nDie Prüfung der inferenzstatistischen Annahmen für multiple lineare Regressionen erfolgt analog zur Prüfung der Annahmen für einfache lineare Regressionen. Als Goldstandard gilt die visuelle Inspektion diagnostischer Plots, ergänzt um die Berechnung von statistischen Kennwerten, die die Einhaltung der Annahmen quantifizieren, wie etwa die Berechnung von Variance Inflation Factors (VIF) zur Quantifizierung von Multikollinearität oder die Berechnung von Cook’s Distance zur Identifikation von einflussreichen Datenpunkten.\n\nlibrary(performance)\n\nmodel_to_check &lt;- lm(\n  Schülerleistungen ~ TransmissiveÜberzeugungen + KognitiveAktivierung,\n  data = data_sim_collider\n)\ncheck_model(model_to_check)",
+    "text": "6 Prüfung Inferenzstatistischer Annahmen\nDie Prüfung der inferenzstatistischen Annahmen für multiple lineare Regressionen erfolgt analog zur Prüfung der Annahmen für einfache lineare Regressionen. Als Goldstandard gilt die visuelle Inspektion diagnostischer Plots, ergänzt um die Berechnung von statistischen Kennwerten, die die Einhaltung der Annahmen quantifizieren, wie etwa die Berechnung von Variance Inflation Factors (VIF) zur Quantifizierung von Multikollinearität oder die Berechnung der Leverage zur Identifikation von einflussreichen Datenpunkten.\n\nlibrary(performance)\n\nmodel_to_check &lt;- lm(\n  Schülerleistungen ~ TransmissiveÜberzeugungen + KognitiveAktivierung,\n  data = data_sim_collider\n)\ncheck_model(model_to_check)",
     "crumbs": [
       "Multiple lineare Regression"
-    ]
-  },
-  {
-    "objectID": "Deskription von EMA-Daten.html#modalität",
-    "href": "Deskription von EMA-Daten.html#modalität",
-    "title": "Deskription von EMA-Daten",
-    "section": "3 Modalität",
-    "text": "3 Modalität\nSehr bedeutsam, aber schwierig in Standardstatistiken zu detektieren ist die Modalität von Verteilungen. Modalität beschreibt die Anzahl der Modi, also der Werte, die am häufigsten in einer Verteilung vorkommen. Eine unimodale Verteilung hat einen Modus, eine bimodale Verteilung hat zwei Modi und eine multimodale Verteilung hat mehr als zwei Modi. Modalität kann wichtige Informationen über die zugrunde liegenden Prozesse liefern, die die Daten generieren - etwa inwiefern Mischverteilungen vorliegen (z.B. aufgrund von State-Switching). Die Modalität kann wieder zwischen und innerhalb von Personen sehr unterschiedlich ausgeprägt sein. Außerdem ist sie durch statistische Prozeduren nur schwer zu detektieren. Als Goldstandard gilt die visuelle Inspektion von Dichteplots, diese ist für EMA-Daten aber oft nicht ökonomisch leistbar. Haslbeck et al. (2023) haben daher einen Algorithmus entwickelt, der die Modalität von Verteilungen anhand von statistischen Kriterien bestimmt. Dieser Algorithmus ist in dem R-Package {multimode} (Ameijeiras-Alonso, Crujeiras, & Rodriguez-Casal, 2021) implementiert und kann auch für EMA-Daten angewendet werden.",
-    "crumbs": [
-      "Deskription von EMA-Daten"
-    ]
-  },
-  {
-    "objectID": "Deskription von EMA-Daten.html#decken--und-bodeneffekte",
-    "href": "Deskription von EMA-Daten.html#decken--und-bodeneffekte",
-    "title": "Deskription von EMA-Daten",
-    "section": "4 Decken- und Bodeneffekte",
-    "text": "4 Decken- und Bodeneffekte\nZur Deskription von EMA-Daten wird oft auch die Beschreibung von Boden- und Deckeneffekten empfohlen. Damit ist jeweils eine vglw.hohe Dichte der Daten an den Enden von Skalen gemeint, die dann automatisch mit einer Schiefe der Verteilung einhergeht (Siepe u. a., 2025). Meist werden Boden- und Deckeneffekte als problematisch angesehen, da man annimmt, dass sie die Varianz von Daten reduzieren oder dass Schiefe zur Nicht-Angemessenheit von Verteilungsannahmen führt. Das kann insbesondere für psychometrische Items tatsächlich der Fall sein. Sehr oft aber resultiert diese Ansicht aus einer Beschränkung der Modellierenden auf wenige Verteilungen (hauptsächlich ausschließlich Normalverteilung). Dann wird etwa der empirischen Verteilung des EMA-Items »How many alcoholic beverages did you have last night« ein Bodeneffekt attestiert, aufgrund des Wunsches, dass die Daten normalverteilt sein sollten. Tatsächlich wäre hier aber eine ordinal sequentielle Verteilung theoretisch wesentlich angemessener (und zeigt etwa bei Dora et al (2024) auch einen wesentlich besseren Fit).",
-    "crumbs": [
-      "Deskription von EMA-Daten"
-    ]
-  },
-  {
-    "objectID": "Deskription von EMA-Daten.html#kontextkovarianz",
-    "href": "Deskription von EMA-Daten.html#kontextkovarianz",
-    "title": "Deskription von EMA-Daten",
-    "section": "5 Kontextkovarianz",
-    "text": "5 Kontextkovarianz\nEMA-Studien wir die Möglichkeit zugesprochen » to captur[e] life as it is lived« (Bolger, Davis, & Rafaeli, 2003). Wenn dem so ist, sollten Kontexte Kovarianz mit entsprechenden Items zeigen. Ob dies in plausibler Art und Weise passiert, kann ebenfalls mit Plots sehr gut validiert werden.\n Abbildung 4 in Siepe et al. (2025) zeigt etwa Itemmittelwerte in Abhängigkeit von Arbeit-/Freizeit und Beep-Time.",
-    "crumbs": [
-      "Deskription von EMA-Daten"
-    ]
-  },
-  {
-    "objectID": "Deskription von EMA-Daten.html#zeitliche-fluktuation",
-    "href": "Deskription von EMA-Daten.html#zeitliche-fluktuation",
-    "title": "Deskription von EMA-Daten",
-    "section": "6 Zeitliche Fluktuation",
-    "text": "6 Zeitliche Fluktuation\nAuch die zeitliche Fluktuation bzw. die Autokorrelatation ist in EMA-Daten eine entscheidende Itemcharakteristik und kann gut über Visualisierungen inspiziert werden. Etwa wie in Abbildung 5 in Siepe et al. (2025).\n\n\n\nAbbildung 5 in Siepe et al. (2025)",
-    "crumbs": [
-      "Deskription von EMA-Daten"
-    ]
-  },
-  {
-    "objectID": "Deskription von EMA-Daten.html#varianzdekomposition",
-    "href": "Deskription von EMA-Daten.html#varianzdekomposition",
-    "title": "Deskription von EMA-Daten",
-    "section": "7 Varianzdekomposition",
-    "text": "7 Varianzdekomposition",
-    "crumbs": [
-      "Deskription von EMA-Daten"
-    ]
-  },
-  {
-    "objectID": "Deskription von EMA-Daten.html#baselinekovariation",
-    "href": "Deskription von EMA-Daten.html#baselinekovariation",
-    "title": "Deskription von EMA-Daten",
-    "section": "7 Baselinekovariation",
-    "text": "7 Baselinekovariation\nItemvarianz on EMA-Daten lässt sich wie gesehen auf Kontext- und Zeit- aber eben auch auf Personencharakteristika zurückführen. Zur Untersuchung dieser Itemperformanzen eignen sich u.a. Mosaicplots der Varianzdekomposition und Clustered Heatmaps der Baselinekorrelationen wie in Abbildung 9 & 10 in Siepe et al. (2025) dargelegt.\n\n\n\nAbbildungen 9 & 10 in Siepe et al. (2025)",
-    "crumbs": [
-      "Deskription von EMA-Daten"
     ]
   }
 ]
