@@ -8,7 +8,7 @@
 
 <meta name="author" content="Samuel Merk">
 
-<title>Deskription von EMA-Daten.qmd – Modelling EMA Data</title>
+<title>Deskription von EMA-Daten – Modelling EMA Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -67,6 +102,9 @@ div.csl-indent {
 <link href="site_libs/bootstrap/bootstrap-9216e3d85de287eb864967ea7072d2d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -97,6 +135,35 @@ div.csl-indent {
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="exams/webex.css">
@@ -123,7 +190,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Deskription von EMA-Daten.html">Deskription von EMA-Daten.qmd</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Deskription von EMA-Daten.html">Deskription von EMA-Daten</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -162,7 +229,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Deskription von EMA-Daten.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Deskription von EMA-Daten.qmd</span></a>
+ <span class="menu-text">Deskription von EMA-Daten</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -184,8 +251,15 @@ div.csl-indent {
   <li><a href="#wozu-deskription" id="toc-wozu-deskription" class="nav-link active" data-scroll-target="#wozu-deskription"><span class="header-section-number">1</span> Wozu Deskription?</a></li>
   <li><a href="#deskription-der-ema-daten-aus-siepe-et-al.--siepe2025" id="toc-deskription-der-ema-daten-aus-siepe-et-al.--siepe2025" class="nav-link" data-scroll-target="#deskription-der-ema-daten-aus-siepe-et-al.--siepe2025"><span class="header-section-number">2</span> Deskription der EMA-Daten aus Siepe et al. <span class="citation" data-cites="siepe2025">(2025)</span></a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">2.1</span> </a></li>
+  <li><a href="#datenimport" id="toc-datenimport" class="nav-link" data-scroll-target="#datenimport"><span class="header-section-number">2.1</span> Datenimport</a></li>
+  <li><a href="#raincloud-plot" id="toc-raincloud-plot" class="nav-link" data-scroll-target="#raincloud-plot"><span class="header-section-number">2.2</span> Raincloud Plot</a></li>
+  <li><a href="#tabelle-mit-standardstatistiken-der-ausgewählten-items" id="toc-tabelle-mit-standardstatistiken-der-ausgewählten-items" class="nav-link" data-scroll-target="#tabelle-mit-standardstatistiken-der-ausgewählten-items"><span class="header-section-number">2.3</span> Tabelle mit Standardstatistiken der ausgewählten Items</a></li>
   </ul></li>
+  <li><a href="#modalität" id="toc-modalität" class="nav-link" data-scroll-target="#modalität"><span class="header-section-number">3</span> Modalität</a></li>
+  <li><a href="#decken--und-bodeneffekte" id="toc-decken--und-bodeneffekte" class="nav-link" data-scroll-target="#decken--und-bodeneffekte"><span class="header-section-number">4</span> Decken- und Bodeneffekte</a></li>
+  <li><a href="#kontextkovarianz" id="toc-kontextkovarianz" class="nav-link" data-scroll-target="#kontextkovarianz"><span class="header-section-number">5</span> Kontextkovarianz</a></li>
+  <li><a href="#zeitliche-fluktuation" id="toc-zeitliche-fluktuation" class="nav-link" data-scroll-target="#zeitliche-fluktuation"><span class="header-section-number">6</span> Zeitliche Fluktuation</a></li>
+  <li><a href="#baselinekovariation" id="toc-baselinekovariation" class="nav-link" data-scroll-target="#baselinekovariation"><span class="header-section-number">7</span> Baselinekovariation</a></li>
   </ul>
 </nav>
     </div>
@@ -194,7 +268,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Deskription von EMA-Daten.qmd</h1>
+<h1 class="title">Deskription von EMA-Daten</h1>
 </div>
 
 
@@ -226,7 +300,10 @@ div.csl-indent {
 
 <section id="wozu-deskription" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="wozu-deskription"><span class="header-section-number">1</span> Wozu Deskription?</h2>
-<p>Oft wird unter dem Begriff der <em>»deskriptiven Statistik«</em> eine Art <em>»einfache Statistik«</em> oder das Gegenteil zur Inferenzstatistik gesehen und entsprechend die Bestimmung von Lage- und Streuungsmaßen als assoziiert. Methodologisch gesehen sind Komplemente zur Deskription jedoch eher die Prädiktion, Explanation und Exploration, also das die Erkenntisziele Daten vorherzusagen oder zu imputieren (Prädiktion), kausale Aussagen zu falsifizieren/verifizieren (Explanation) oder (deskriptive/explanative) Hypothesen aufzustellen (Exploration). <em>»Deskriptionen«</em> wollen hingegen die Ausprägung von Variablen(-parametern) in Populationen bestimmen <span class="citation" data-cites="doering2016">(<a href="#ref-doering2016" role="doc-biblioref">Döring &amp; Bortz, 2016</a>)</span>. Bei der Unterscheidung von deskriptiver und Inferenz<strong>statistik</strong> meint »deskriptiv« meist, dass nicht über den Datensatz hinaus geschlussfolgert wird. Das ist m.E. jedoch sehr irreführend, denn die »Berechnung« eines arithmetischen Mittelwerts oder Medians kann eben auch die Punktschätzung eines Erwartungswertes einer normalverteilten Variable sein und damit in seiner Bedeutung sehr wohl über den Datensatz hinaus in die Population (besser: den datengenerierenden Mechanismus) hinein reichen. Statt deskriptive von Inferenzstatistik zu unterscheiden, ist es hilfreicher <strong>Punktschätzungen</strong> (z.B. Mittelwert als Schätzer für Erwartungswert) von <strong>Intervallschätzungen</strong> zur Bestimmung der Schätzunsicherheit (Standardfehler, Konfidenzintervall) zu unterscheiden. Weiterhin ist es hilfreich den Bereich der Inferenzstatistik einerseits in Testing- und Estimation-Ansätze zu unterscheiden, andererseits in frequentistische und bayesianische Ansätze.</p>
+<p>Oft wird unter dem Begriff der <em>»deskriptiven Statistik«</em> eine Art <em>»einfache Statistik«</em> oder das Gegenteil zur Inferenzstatistik gesehen und entsprechend die Bestimmung von Lage- und Streuungsmaßen assoziiert.</p>
+<p>Methodologisch gesehen sind Komplemente zur Deskription jedoch eher die Prädiktion, Explanation und Exploration, also das die Erkenntisziele Daten vorherzusagen oder zu imputieren (Prädiktion), kausale Aussagen zu falsifizieren/verifizieren (Explanation) oder (deskriptive/explanative) Hypothesen aufzustellen (Exploration). <em>»Deskriptionen«</em> wollen hingegen die Ausprägung von Variablen(-parametern) in Populationen bestimmen <span class="citation" data-cites="doering2016">(<a href="#ref-doering2016" role="doc-biblioref">Döring &amp; Bortz, 2016</a>)</span>.</p>
+<p>Bei der Unterscheidung von deskriptiver und Inferenz<strong>statistik</strong> meint »deskriptiv« meist, dass nicht über den Datensatz hinaus geschlussfolgert wird. Das ist m.E. jedoch sehr irreführend, denn die »Berechnung« eines arithmetischen Mittelwerts oder Medians kann eben auch die Punktschätzung eines Erwartungswertes einer normalverteilten Variable sein und damit in seiner Bedeutung sehr wohl über den Datensatz hinaus in die Population (besser: den datengenerierenden Mechanismus) hinein reichen.</p>
+<p>Statt deskriptive von Inferenzstatistik zu unterscheiden, ist es hilfreicher <strong>Punktschätzungen</strong> (z.B. Mittelwert als Schätzer für Erwartungswert) von <strong>Intervallschätzungen</strong> zur Bestimmung der Schätzunsicherheit (Standardfehler, Konfidenzintervall) zu unterscheiden. Weiterhin ist es hilfreich den Bereich der Inferenzstatistik einerseits in Testing- und Estimation-Ansätze zu unterscheiden, andererseits in frequentistische und bayesianische Ansätze <span class="citation" data-cites="kruschke2018">(<a href="#ref-kruschke2018" role="doc-biblioref">Kruschke &amp; Liddell, 2018</a>)</span>.</p>
 <table class="table">
 <colgroup>
 <col style="width: 25%">
@@ -254,15 +331,765 @@ div.csl-indent {
 </tbody>
 </table>
 <blockquote class="blockquote">
-<p>Inferenzstatistische <em>Schätzung</em> (estimation with quantified uncertainty) trifft anhand von Stichproben Aussagen über Parameter der Grundgesamtheit (Population) aus der die Stichprobe gezogen wurde. <br><br> (Inferenzstatistische) <em>Hypothesentests</em> bewerten anhand von Stichprobendaten die Gültigkeit von Hypothesen in der Grundgesamtheit (Population) aus der die Stichprobe gezogen wurde <span class="citation" data-cites="kruschke2018">(<a href="#ref-kruschke2018" role="doc-biblioref">Kruschke &amp; Liddell, 2018</a>)</span>.</p>
+<p>Inferenzstatistische <em>Schätzung</em> (estimation with quantified uncertainty) trifft anhand von Stichproben Aussagen über Parameter der Population (über den datengenerierenden Mechanismus). <br><br> (Inferenzstatistische) <em>Hypothesentests</em> bewerten anhand von Stichprobendaten die Gültigkeit von Hypothesen in der Population (bzgl. des datengenerierenden Mechanismus).</p>
 </blockquote>
 </section>
 <section id="deskription-der-ema-daten-aus-siepe-et-al.--siepe2025" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="deskription-der-ema-daten-aus-siepe-et-al.--siepe2025"><span class="header-section-number">2</span> Deskription der EMA-Daten aus Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span></h2>
-<p>Im folgenden werden die Daten aus Siepe et al.&nbsp;(2025) <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">Siepe u.&nbsp;a., 2025</a>)</span> deskriptiv analysiert. Dabei wird recht nah der Darstellung in diesem Tutorial gefolgt.</p>
-<section id="section" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="section"><span class="header-section-number">2.1</span> </h3>
-<p><span class="citation" data-cites="article">(<a href="#ref-article" role="doc-biblioref"><strong>article?</strong></a>)</span>{siepe2025, title = {Understanding {{Ecological-Momentary-Assessment Data}}: {{A Tutorial}} on {{Exploring Item Performance}} in {{Ecological-Momentary-Assessment Data}}}, shorttitle = {Understanding {{Ecological-Momentary-Assessment Data}}}, author = {Siepe, Bj{"o}rn S. and Rieble, Carlotta L. and Tutunji, Rayyan and Rimpler, Aljoscha and M{"a}rz</p>
+<p>Im folgenden werden die Daten aus Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span> deskriptiv analysiert. Dabei wird recht direkt der Darstellung in diesem Tutorial gefolgt. In diesem Dokument wird jeweils der Code gezeigt, der dann in einer eigenen R-Installation ausgeführt werden kann. Wir interpretieren dann die Ergebnisse gemeinsam und übertragen sie auf Fragestellungen, die sich aus EMA-Daten der Teilnehmer:innen ergeben können.</p>
+<section id="datenimport" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="datenimport"><span class="header-section-number">2.1</span> Datenimport</h3>
+<p>Die Originaldaten sind auf dem Open Science Framework verfügbar. Eine aufbereitete Version kann schon direkt aus dem Netz importiert werden.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="fu">paste0</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://raw.githubusercontent.com/"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sammerk/Modelling-EMA-Data/master/data/data_long_siepe.sav"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="raincloud-plot" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="raincloud-plot"><span class="header-section-number">2.2</span> Raincloud Plot</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrain)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 methods overwritten by 'ggpp':
+  method                  from   
+  heightDetails.titleGrob ggplot2
+  widthDetails.titleGrob  ggplot2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.0     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ lubridate 1.9.4     ✔ tibble    3.3.1
+✔ purrr     1.2.1     ✔ tidyr     1.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Zuerst wählen wir Items aus, die wir in einem Raincloud Plot darstellen wollen</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>selected_items <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sad"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"irritable"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sad"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ruminate"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tired"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"motivated"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"relaxed"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>data_long <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gruppieren nach Person und Item</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(user_id, item) <span class="sc">%&gt;%</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Berechnen des Mittelwerts pro Person und Item</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">imean =</span> <span class="fu">mean</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Groupierung aufheben</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Items filtern</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(item <span class="sc">%in%</span> selected_items[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># raincloud plot</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> item, <span class="at">y =</span> imean)) <span class="sc">+</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rain</span>() <span class="sc">+</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by user_id and item.
+ℹ Output is grouped by user_id.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(user_id, item))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Deskription-von-EMA-Daten_files/figure-html/raincloudplot-1.png" class="img-fluid figure-img" width="2100"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tabelle-mit-standardstatistiken-der-ausgewählten-items" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="tabelle-mit-standardstatistiken-der-ausgewählten-items"><span class="header-section-number">2.3</span> Tabelle mit Standardstatistiken der ausgewählten Items</h3>
+<section id="between-person-statistiken" class="level4">
+<h4 class="anchored" data-anchor-id="between-person-statistiken">Between-Person-Statistiken</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_long <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(item <span class="sc">%in%</span> selected_items) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(item) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">med =</span> <span class="fu">median</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">skew =</span> moments<span class="sc">::</span><span class="fu">skewness</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">rmssd =</span> psych<span class="sc">::</span><span class="fu">rmssd</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(item)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  item       mean   med    sd   skew rmssd
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 irritable  3.11     3  1.91 0.546   2.23
+2 motivated  3.84     4  1.89 0.0893  2.07
+3 relaxed    3.83     4  1.88 0.101   2.08
+4 ruminate   3.09     3  1.90 0.564   2.21
+5 sad        3.10     3  1.91 0.559   2.21
+6 tired      3.10     3  1.91 0.563   2.22</code></pre>
+</div>
+</div>
+<p>Während Mean und Median wahrscheinlich geläufige Statistiken sind, werden hier zur nochmals SD, Skewness und RMSSD erklärt:</p>
+<ul>
+<li><strong>Standardabweichung (SD)</strong>: <span class="math inline">\(SD = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N} (x_i - \bar{x})^2}\)</span>. Die SD beschreibt den durchschnittlichen »Abstand« der Datenpunkte zum Mittelwert und ist damit ein klassisches Streuungsmaß.</li>
+<li><strong>Schiefe (Skewness)</strong>: <span class="math inline">\(Skewness = \frac{1}{N} \sum_{i=1}^N\left(\frac{x_i-\bar{x}}{SD}\right)^3\)</span>. Die Schiefe nennt man auch das dritte Moment einer Verteilung, da die Differenz zwischen jedem Punkt und dem Mittelwert mit 3 potenziert wird. Dadurch beschreibt sie die Asymmetrie der Verteilung. Eine positive Schiefe bedeutet, dass die obere Hälfte der Datenpunkte stärker streut.</li>
+<li><strong>Root Mean Square of Successive Differences (RMSSD)</strong>: <span class="math inline">\(RMSSD = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (x_{i+1} - x_i)^2}\)</span>. Die RMSSD beschreibt die durchschnittliche Differenz zwischen direkt aufeinanderfolgenden Datenpunkten und ist damit ein Maß für die (In-)Stabilität einer Zeitreihe und damit besonders interessant für EMA-Daten.</li>
+</ul>
+</section>
+<section id="within-person-statistiken" class="level4">
+<h4 class="anchored" data-anchor-id="within-person-statistiken">Within-Person-Statistiken</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_long <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(item <span class="sc">%in%</span> selected_items) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(user_id, item) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">imean =</span> <span class="fu">mean</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">imed =</span> <span class="fu">median</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">isd =</span> <span class="fu">sd</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">iskew =</span> moments<span class="sc">::</span><span class="fu">skewness</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">irmssd =</span> psych<span class="sc">::</span><span class="fu">rmssd</span>(answer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(item) <span class="sc">%&gt;%</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  skimr<span class="sc">::</span><span class="fu">skim</span>()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by user_id and item.
+ℹ Output is grouped by user_id.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(user_id, item))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">Piped data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">item</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: left;">item</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">user_id</td>
+<td style="text-align: left;">irritable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">29.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.25</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">user_id</td>
+<td style="text-align: left;">motivated</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">29.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.25</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">user_id</td>
+<td style="text-align: left;">relaxed</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">29.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.25</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">user_id</td>
+<td style="text-align: left;">ruminate</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">29.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.25</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">user_id</td>
+<td style="text-align: left;">sad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">29.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.25</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">user_id</td>
+<td style="text-align: left;">tired</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">29.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.25</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">irritable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.11</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">2.31</td>
+<td style="text-align: right;">3.09</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: right;">5.73</td>
+<td style="text-align: left;">▃▇▆▆▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">motivated</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.84</td>
+<td style="text-align: right;">1.20</td>
+<td style="text-align: right;">1.21</td>
+<td style="text-align: right;">3.04</td>
+<td style="text-align: right;">3.92</td>
+<td style="text-align: right;">4.87</td>
+<td style="text-align: right;">6.38</td>
+<td style="text-align: left;">▂▇▆▆▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">relaxed</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.83</td>
+<td style="text-align: right;">1.19</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">3.01</td>
+<td style="text-align: right;">3.93</td>
+<td style="text-align: right;">4.86</td>
+<td style="text-align: right;">6.40</td>
+<td style="text-align: left;">▃▇▆▆▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">ruminate</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.09</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">2.29</td>
+<td style="text-align: right;">3.07</td>
+<td style="text-align: right;">3.99</td>
+<td style="text-align: right;">5.77</td>
+<td style="text-align: left;">▃▇▅▆▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">sad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.10</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">2.32</td>
+<td style="text-align: right;">3.01</td>
+<td style="text-align: right;">4.05</td>
+<td style="text-align: right;">5.81</td>
+<td style="text-align: left;">▃▇▃▅▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">tired</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.10</td>
+<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">2.31</td>
+<td style="text-align: right;">3.06</td>
+<td style="text-align: right;">4.04</td>
+<td style="text-align: right;">5.81</td>
+<td style="text-align: left;">▃▇▆▆▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">irritable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▇▅▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">motivated</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.84</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: left;">▅▇▆▇▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">relaxed</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.84</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: left;">▅▇▆▇▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">ruminate</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: right;">1.34</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▇▅▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">sad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▇▃▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">tired</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▇▅▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">irritable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">1.74</td>
+<td style="text-align: right;">1.91</td>
+<td style="text-align: left;">▁▁▃▅▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">motivated</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">1.52</td>
+<td style="text-align: right;">1.57</td>
+<td style="text-align: right;">1.76</td>
+<td style="text-align: left;">▁▂▁▅▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">relaxed</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.45</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">1.42</td>
+<td style="text-align: right;">1.52</td>
+<td style="text-align: right;">1.57</td>
+<td style="text-align: right;">1.74</td>
+<td style="text-align: left;">▁▂▂▅▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">ruminate</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">1.49</td>
+<td style="text-align: right;">1.61</td>
+<td style="text-align: right;">1.70</td>
+<td style="text-align: right;">1.89</td>
+<td style="text-align: left;">▁▁▂▅▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">sad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.48</td>
+<td style="text-align: right;">1.61</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;">1.88</td>
+<td style="text-align: left;">▁▁▂▅▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">tired</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">1.48</td>
+<td style="text-align: right;">1.61</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;">1.89</td>
+<td style="text-align: left;">▁▁▃▅▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">irritable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">-0.28</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.56</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">3.09</td>
+<td style="text-align: left;">▃▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">motivated</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">-1.34</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: left;">▁▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">relaxed</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">-1.36</td>
+<td style="text-align: right;">-0.25</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">1.93</td>
+<td style="text-align: left;">▂▆▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">ruminate</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">-0.32</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">3.05</td>
+<td style="text-align: left;">▂▇▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">sad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">-0.39</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: left;">▁▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">tired</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">-0.38</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">2.79</td>
+<td style="text-align: left;">▁▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">irritable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.19</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">2.08</td>
+<td style="text-align: right;">2.27</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">2.77</td>
+<td style="text-align: left;">▁▁▃▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">motivated</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.05</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">2.02</td>
+<td style="text-align: right;">2.11</td>
+<td style="text-align: right;">2.22</td>
+<td style="text-align: right;">2.48</td>
+<td style="text-align: left;">▁▂▁▇▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">relaxed</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.05</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">1.97</td>
+<td style="text-align: right;">2.15</td>
+<td style="text-align: right;">2.23</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: left;">▁▂▂▆▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">ruminate</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.18</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">2.07</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: right;">2.44</td>
+<td style="text-align: right;">2.71</td>
+<td style="text-align: left;">▁▁▃▆▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">sad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.18</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">2.30</td>
+<td style="text-align: right;">2.44</td>
+<td style="text-align: right;">2.77</td>
+<td style="text-align: left;">▁▁▃▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">tired</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.18</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">2.31</td>
+<td style="text-align: right;">2.45</td>
+<td style="text-align: right;">2.74</td>
+<td style="text-align: left;">▁▁▃▆▇</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="modalität" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="modalität"><span class="header-section-number">3</span> Modalität</h2>
+<p>Sehr bedeutsam, aber schwierig in Standardstatistiken zu detektieren ist die Modalität von Verteilungen. Modalität beschreibt die Anzahl der Modi, also der Werte, die am häufigsten in einer Verteilung vorkommen. Eine unimodale Verteilung hat einen Modus, eine bimodale Verteilung hat zwei Modi und eine multimodale Verteilung hat mehr als zwei Modi. Modalität kann wichtige Informationen über die zugrunde liegenden Prozesse liefern, die die Daten generieren - etwa inwiefern Mischverteilungen vorliegen (z.B. aufgrund von State-Switching). Die Modalität kann wieder zwischen und innerhalb von Personen sehr unterschiedlich ausgeprägt sein. Außerdem ist sie durch statistische Prozeduren nur schwer zu detektieren. Als Goldstandard gilt die visuelle Inspektion von Dichteplots, diese ist für EMA-Daten aber oft nicht ökonomisch leistbar. Haslbeck et al. <span class="citation" data-cites="haslbeck2023">(<a href="#ref-haslbeck2023" role="doc-biblioref">2023</a>)</span> haben daher einen Algorithmus entwickelt, der die Modalität von Verteilungen anhand von statistischen Kriterien bestimmt. Dieser Algorithmus ist in dem R-Package <code>{multimode}</code> <span class="citation" data-cites="ameijeiras-alonso2021">(<a href="#ref-ameijeiras-alonso2021" role="doc-biblioref">Ameijeiras-Alonso, Crujeiras, &amp; Rodriguez-Casal, 2021</a>)</span> implementiert und kann auch für EMA-Daten angewendet werden.</p>
+</section>
+<section id="decken--und-bodeneffekte" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="decken--und-bodeneffekte"><span class="header-section-number">4</span> Decken- und Bodeneffekte</h2>
+<p>Zur Deskription von EMA-Daten wird oft auch die Beschreibung von Boden- und Deckeneffekten empfohlen. Damit ist jeweils eine vglw.hohe Dichte der Daten an den Enden von Skalen gemeint, die dann automatisch mit einer Schiefe der Verteilung einhergeht <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">Siepe u.&nbsp;a., 2025</a>)</span>. Meist werden Boden- und Deckeneffekte als problematisch angesehen, da man annimmt, dass sie die Varianz von Daten reduzieren oder dass Schiefe zur Nicht-Angemessenheit von Verteilungsannahmen führt. Das kann insbesondere für psychometrische Items tatsächlich der Fall sein. Sehr oft aber resultiert diese Ansicht aus einer Beschränkung der Modellierenden auf wenige Verteilungen (hauptsächlich ausschließlich Normalverteilung). Dann wird etwa der empirischen Verteilung des EMA-Items »<em>How many alcoholic beverages did you have last night</em>« ein Bodeneffekt attestiert, aufgrund des Wunsches, dass die Daten normalverteilt sein sollten. Tatsächlich wäre hier aber eine ordinal sequentielle Verteilung theoretisch wesentlich angemessener (und zeigt etwa bei Dora et al <span class="citation" data-cites="dora2024">(<a href="#ref-dora2024" role="doc-biblioref">2024</a>)</span> auch einen wesentlich besseren Fit).</p>
+</section>
+<section id="kontextkovarianz" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="kontextkovarianz"><span class="header-section-number">5</span> Kontextkovarianz</h2>
+<p>EMA-Studien wir die Möglichkeit zugesprochen » to captur[e] life as it is lived« <span class="citation" data-cites="bolger2003">(<a href="#ref-bolger2003" role="doc-biblioref">Bolger, Davis, &amp; Rafaeli, 2003</a>)</span>. Wenn dem so ist, sollten Kontexte Kovarianz mit entsprechenden Items zeigen. Ob dies in plausibler Art und Weise passiert, kann ebenfalls mit Plots sehr gut validiert werden.</p>
+<p><img src="img/fig4-siepe.png" class="img-fluid" alt="Abbildung 4 in Siepe u.&nbsp;a. (2025)"> Abbildung 4 in Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span> zeigt etwa Itemmittelwerte in Abhängigkeit von Arbeit-/Freizeit und Beep-Time.</p>
+</section>
+<section id="zeitliche-fluktuation" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="zeitliche-fluktuation"><span class="header-section-number">6</span> Zeitliche Fluktuation</h2>
+<p>Auch die zeitliche Fluktuation bzw. die Autokorrelatation ist in EMA-Daten eine entscheidende Itemcharakteristik und kann gut über Visualisierungen inspiziert werden. Etwa wie in Abbildung 5 in Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/fig5-siepe.png" class="img-fluid figure-img"></p>
+<figcaption>Abbildung 5 in Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section id="baselinekovariation" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="baselinekovariation"><span class="header-section-number">7</span> Baselinekovariation</h2>
+<p>Itemvarianz on EMA-Daten lässt sich wie gesehen auf Kontext- und Zeit- aber eben auch auf Personencharakteristika zurückführen. Zur Untersuchung dieser Itemperformanzen eignen sich u.a. Mosaicplots der Varianzdekomposition und Clustered Heatmaps der Baselinekorrelationen wie in Abbildung 9 &amp; 10 in Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span> dargelegt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="img/fig910-siepe.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Abbildungen 9 &amp; 10 in Siepe et al. [-@siepe2025]"><img src="img/fig910-siepe.png" class="img-fluid figure-img" alt="Abbildungen 9 &amp; 10 in Siepe et al. (2025)"></a></p>
+<figcaption>Abbildungen 9 &amp; 10 in Siepe et al. <span class="citation" data-cites="siepe2025">(<a href="#ref-siepe2025" role="doc-biblioref">2025</a>)</span></figcaption>
+</figure>
+</div>
 
 
 <script type="ojs-module-contents">
@@ -281,11 +1108,22 @@ W10=
 </script>
 
 </section>
-</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Literatur</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-ameijeiras-alonso2021" class="csl-entry" role="listitem">
+Ameijeiras-Alonso, J., Crujeiras, R. M., &amp; Rodriguez-Casal, A. (2021). <a href="https://doi.org/10.18637/jss.v097.i09">multimode: <span>An R Package</span> for <span>Mode Assessment</span></a>. <em>Journal of Statistical Software</em>, <em>97</em>, 1–32.
+</div>
+<div id="ref-bolger2003" class="csl-entry" role="listitem">
+Bolger, N., Davis, A., &amp; Rafaeli, E. (2003). <a href="https://doi.org/10.1146/annurev.psych.54.101601.145030">Diary <span>Methods</span>: <span>Capturing Life</span> as it is <span>Lived</span></a>. <em>Annual Review of Psychology</em>, <em>54</em>(Volume 54, 2003), 579–616.
+</div>
+<div id="ref-dora2024" class="csl-entry" role="listitem">
+Dora, J., McCabe, C. J., Van Lissa, C. J., Witkiewitz, K., &amp; King, K. M. (2024). <a href="https://doi.org/10.1177/25152459241235875">A <span>Tutorial</span> on <span>Analyzing Ecological Momentary Assessment Data</span> in <span>Psychological Research With Bayesian</span> (<span>Generalized</span>) <span>Mixed-Effects Models</span></a>. <em>Advances in Methods and Practices in Psychological Science</em>, <em>7</em>(1), 25152459241235875.
+</div>
 <div id="ref-doering2016" class="csl-entry" role="listitem">
 Döring, N., &amp; Bortz, J. (2016). <em><span>Forschungsmethoden und Evaluation in den Sozial- und Humanwissenschaften</span></em> (5. Aufl.). Berlin, Heidelberg: Springer.
+</div>
+<div id="ref-haslbeck2023" class="csl-entry" role="listitem">
+Haslbeck, J., Ryan, O., &amp; Dablander, F. (2023). <a href="https://doi.org/10.1037/emo0001218">Multimodality and skewness in emotion time series</a>. <em>Emotion</em>, <em>23</em>(8), 2117–2141.
 </div>
 <div id="ref-kruschke2018" class="csl-entry" role="listitem">
 Kruschke, J. K., &amp; Liddell, T. M. (2018). <a href="https://doi.org/10.3758/s13423-016-1221-4">The <span>Bayesian</span> new statistics: <span>Hypothesis</span> testing, estimation, meta-analysis, and power analysis from a <span>Bayesian</span> perspective</a>. <em>Psychonomic Bulletin &amp; Review</em>, <em>25</em>, 178–206.
@@ -1291,6 +2129,38 @@ window._ojs.runtime.interpretFromScriptTags();
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

@@ -2,7 +2,7 @@
 title: "Multiple lineare Regression"
 format:
   live-html:
-    css: 
+    css:
       - exams/webex.css
     include-after-body: exams/webex.js
 webr:
@@ -10,7 +10,7 @@ webr:
     - dplyr
     - haven
 #    - ggplot2
-toc: true    
+toc: true
 lang: de
 ---
 
@@ -135,13 +135,13 @@ plot_ly(data_star_subset) %>%
     showscale = FALSE,
     showlegend = FALSE,
     hoverinfo = "none",
-    
+
     contours = list(
       x = list(highlight = F),
       y = list(highlight = F),
       z = list(highlight = F)
     )
-  ) %>% 
+  ) %>%
   layout(
     scene = list(
       bgcolor = "#f2f2f2",
@@ -214,7 +214,7 @@ data_star_subset <- data_star %>%
 ```{webr}
 #| exercise: mult lin reg anteil mk2 mk3
 mlm_mod <- lm(
-  `Mathe Klassenmittelwert Kl. 3` ~ 
+  `Mathe Klassenmittelwert Kl. 3` ~
      `Mathe Klassenmittelwert Kl. 2` + `Anteil Free Lunch`,
   data = data_star_subset
 )
@@ -229,15 +229,15 @@ Der so generierte Output kann wie folgt interpretiert werden:
 
 ````
 Call:
-lm(formula = `Mathe Klassenmittelwert Kl. 3` ~ `Mathe Klassenmittelwert Kl. 2` + 
+lm(formula = `Mathe Klassenmittelwert Kl. 3` ~ `Mathe Klassenmittelwert Kl. 2` +
     `Anteil Free Lunch`, data = data_star_subset)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--54.126 -10.978  -1.061  11.423  58.431 
+    Min      1Q  Median      3Q     Max
+-54.126 -10.978  -1.061  11.423  58.431
 
 Coefficients:
-                                 Estimate Std. Error t value Pr(>|t|)    
+                                 Estimate Std. Error t value Pr(>|t|)
 (Intercept)                     365.33274   24.20436   15.09  < 2e-16 ***
 `Mathe Klassenmittelwert Kl. 2`   0.45200    0.04017   11.25  < 2e-16 ***
 `Anteil Free Lunch`             -21.46948    3.44614   -6.23 1.47e-09 ***
@@ -246,8 +246,8 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 Residual standard error: 16.53 on 319 degrees of freedom
   (15 observations deleted due to missingness)
-Multiple R-squared:  0.4623,    Adjusted R-squared:  0.4589 
-F-statistic: 137.1 on 2 and 319 DF,  p-value: < 2.2e-16      
+Multiple R-squared:  0.4623,    Adjusted R-squared:  0.4589
+F-statistic: 137.1 on 2 and 319 DF,  p-value: < 2.2e-16
 ````
 
 
@@ -259,7 +259,7 @@ F-statistic: 137.1 on 2 and 319 DF,  p-value: < 2.2e-16
 
 ## Stochastische Notation der multiplen Regression
 
-Auch die stochastische Notation der multiplen Regression kann leicht aus der stochastischen Notation für die einfach lineare Regression verallgemeinert werden. Dazu wird schlicht das Polynom, mit dem der Erwartungswert der normalverteilten abhängigen Variable beschrieben wird einen Summanden erweitert: 
+Auch die stochastische Notation der multiplen Regression kann leicht aus der stochastischen Notation für die einfach lineare Regression verallgemeinert werden. Dazu wird schlicht das Polynom, mit dem der Erwartungswert der normalverteilten abhängigen Variable beschrieben wird einen Summanden erweitert:
 $$
 y_i \sim \mathcal{N}\left(b_0 + b_1 \cdot x_{1i} + b_2 \cdot x_{2i}, \sigma^2\right)
 $$
@@ -355,7 +355,7 @@ plot_ly(data_star_subset) %>%
     name = "Einf. Regression: Matheleistung Kl. 3 ~ Anteil FL",
     line = list(color = "#dd7700", width = 4),
     hoverinfo = "none"
-  ) %>% 
+  ) %>%
   add_trace(
     x = c(
       max(`Anteil Free Lunch`, na.rm = T),
@@ -417,7 +417,7 @@ Ergebnisse wie das des dritten Modells in @tbl-multregression werden oft mit *»
 
 > Die Ergebnisse von (multiplen) Regressionsanalysen sind (wie alle statistischen Modelle) nicht dazu geeignet kausale Zusammenhänge »zu entdecken« oder »aufzudecken« \[*the causes are not in the data*\].
 
-Vorab postulierte, theoretisch fundierte Kausalzusammenhänge können jedoch im Einklang oder im Widerspruch zu den Ergebnissen (multipler Regressionsmodelle) stehen: So sind die ersten beiden in @fig-DAG-multiple-Reg in Form von Direct Acyclic Graphs [@rohrer2018] dargestellten Kausalannahmen mit den Regressionsergebnissen vereinbar, die dritte jedoch nicht. Sie impliziert keine Kovarianz zwischen SES (Anteil Free Lunch) und der Matheleistung in Kl. 2, der sich jedoch empirisch zeigt. 
+Vorab postulierte, theoretisch fundierte Kausalzusammenhänge können jedoch im Einklang oder im Widerspruch zu den Ergebnissen (multipler Regressionsmodelle) stehen: So sind die ersten beiden in @fig-DAG-multiple-Reg in Form von Direct Acyclic Graphs [@rohrer2018] dargestellten Kausalannahmen mit den Regressionsergebnissen vereinbar, die dritte jedoch nicht. Sie impliziert keine Kovarianz zwischen SES (Anteil Free Lunch) und der Matheleistung in Kl. 2, der sich jedoch empirisch zeigt.
 
 ![Hypothetische Kausalzusammenhänge in Form von Direct Acyclic Graphs.](img/DAG-multiple-Reg.svg){#fig-DAG-multiple-Reg fig-align="left" width="68%"}
 
@@ -459,4 +459,21 @@ sjPlot::tab_model(
   p.style = "stars",
   show.std = T
 )
+```
+
+## Prüfung Inferenzstatistischer Annahmen
+Die Prüfung der inferenzstatistischen Annahmen für multiple lineare Regressionen erfolgt analog zur Prüfung der Annahmen für einfache lineare Regressionen.
+Als Goldstandard gilt die visuelle Inspektion diagnostischer Plots, ergänzt um die Berechnung von statistischen Kennwerten, die die Einhaltung der Annahmen quantifizieren, wie etwa die Berechnung von Variance Inflation Factors (VIF) zur Quantifizierung von Multikollinearität oder die Berechnung der Leverage zur Identifikation von einflussreichen Datenpunkten.
+
+```{r}
+#| label: diag-mult-reg
+#| fig-height: 10
+#| fig-width: 8
+library(performance)
+
+model_to_check <- lm(
+  Schülerleistungen ~ TransmissiveÜberzeugungen + KognitiveAktivierung,
+  data = data_sim_collider
+)
+check_model(model_to_check)
 ```
