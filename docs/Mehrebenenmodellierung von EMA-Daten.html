@@ -8,7 +8,7 @@
 
 <meta name="author" content="Samuel Merk">
 
-<title>Mehrebenenmodellierung von EMA-Daten.qmd – Modelling EMA Data</title>
+<title>Mehrebenenmodellierung von EMA-Daten – Modelling EMA Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,7 +21,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -77,6 +132,35 @@ ul.task-list li input[type="checkbox"] {
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="exams/webex.css">
@@ -103,7 +187,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Mehrebenenmodellierung von EMA-Daten.html">Mehrebenenmodellierung von EMA-Daten.qmd</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Mehrebenenmodellierung von EMA-Daten.html">Mehrebenenmodellierung von EMA-Daten</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -148,7 +232,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Mehrebenenmodellierung von EMA-Daten.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Mehrebenenmodellierung von EMA-Daten.qmd</span></a>
+ <span class="menu-text">Mehrebenenmodellierung von EMA-Daten</span></a>
   </div>
 </li>
     </ul>
@@ -161,7 +245,23 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Auf dieser Seite</h2>
    
   <ul>
-  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"><span class="header-section-number">1</span> </a></li>
+  <li><a href="#multi-level-daten-als-nuisance-oder-interesting-phenomenom" id="toc-multi-level-daten-als-nuisance-oder-interesting-phenomenom" class="nav-link active" data-scroll-target="#multi-level-daten-als-nuisance-oder-interesting-phenomenom"><span class="header-section-number">1</span> Multi-Level Daten als »nuisance« oder »interesting phenomenom«</a></li>
+  <li><a href="#datenbeispiel" id="toc-datenbeispiel" class="nav-link" data-scroll-target="#datenbeispiel"><span class="header-section-number">2</span> Datenbeispiel</a>
+  <ul class="collapse">
+  <li><a href="#datenimport-und--wrangling" id="toc-datenimport-und--wrangling" class="nav-link" data-scroll-target="#datenimport-und--wrangling"><span class="header-section-number">2.1</span> Datenimport und -wrangling</a></li>
+  <li><a href="#correllogram-als-geordnete-heatmap" id="toc-correllogram-als-geordnete-heatmap" class="nav-link" data-scroll-target="#correllogram-als-geordnete-heatmap"><span class="header-section-number">2.2</span> Correllogram als geordnete Heatmap</a></li>
+  <li><a href="#typische-verteilungsstatistiken" id="toc-typische-verteilungsstatistiken" class="nav-link" data-scroll-target="#typische-verteilungsstatistiken"><span class="header-section-number">2.3</span> Typische Verteilungsstatistiken</a></li>
+  </ul></li>
+  <li><a href="#multi-level-daten-als-nuisance" id="toc-multi-level-daten-als-nuisance" class="nav-link" data-scroll-target="#multi-level-daten-als-nuisance"><span class="header-section-number">3</span> Multi-Level Daten als »nuisance«</a></li>
+  <li><a href="#mehrebenenmodelle-als-partial-pooling" id="toc-mehrebenenmodelle-als-partial-pooling" class="nav-link" data-scroll-target="#mehrebenenmodelle-als-partial-pooling"><span class="header-section-number">4</span> Mehrebenenmodelle als Partial Pooling</a></li>
+  <li><a href="#einfache-mehrebenenmodelle" id="toc-einfache-mehrebenenmodelle" class="nav-link" data-scroll-target="#einfache-mehrebenenmodelle"><span class="header-section-number">5</span> Einfache Mehrebenenmodelle</a>
+  <ul class="collapse">
+  <li><a href="#das-random-intercept-only-modell" id="toc-das-random-intercept-only-modell" class="nav-link" data-scroll-target="#das-random-intercept-only-modell"><span class="header-section-number">5.1</span> Das Random-Intercept-Only-Modell</a></li>
+  <li><a href="#das-random-intercept-modell-mit-einem-prädiktor" id="toc-das-random-intercept-modell-mit-einem-prädiktor" class="nav-link" data-scroll-target="#das-random-intercept-modell-mit-einem-prädiktor"><span class="header-section-number">5.2</span> Das Random-Intercept-Modell mit einem Prädiktor</a></li>
+  <li><a href="#das-random-intercept-random-slope-modell" id="toc-das-random-intercept-random-slope-modell" class="nav-link" data-scroll-target="#das-random-intercept-random-slope-modell"><span class="header-section-number">5.3</span> Das Random-Intercept-Random-Slope-Modell</a></li>
+  <li><a href="#modellvergleich" id="toc-modellvergleich" class="nav-link" data-scroll-target="#modellvergleich"><span class="header-section-number">5.4</span> Modellvergleich</a></li>
+  </ul></li>
+  <li><a href="#generalisierte-mehrebenenmodelle" id="toc-generalisierte-mehrebenenmodelle" class="nav-link" data-scroll-target="#generalisierte-mehrebenenmodelle"><span class="header-section-number">6</span> Generalisierte Mehrebenenmodelle</a></li>
   </ul>
 </nav>
     </div>
@@ -170,7 +270,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Mehrebenenmodellierung von EMA-Daten.qmd</h1>
+<h1 class="title">Mehrebenenmodellierung von EMA-Daten</h1>
 </div>
 
 
@@ -200,8 +300,938 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="section" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="section"><span class="header-section-number">1</span> </h2>
+<section id="multi-level-daten-als-nuisance-oder-interesting-phenomenom" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="multi-level-daten-als-nuisance-oder-interesting-phenomenom"><span class="header-section-number">1</span> Multi-Level Daten als »nuisance« oder »interesting phenomenom«</h2>
+<p>In ihrem Klassiker »<em>Multilevel analysis: An introduction to basic and advanced multilevel modeling</em>« unterscheiden Tom Snijders und Roel Bosker zwei Anlässe von Multi-Level-Modellierungen »<strong>multi-level as a nuisance</strong>« und »<strong>multi-level as an interesting phenomenon</strong>. Mit ersterem ist gemeint, dass man eigentlich an Single-Level Phänomenen interessiert ist aber halt Abhängigkeiten der Residuen hat. Mit zweiterem ist gemeint, dass man tatsächlich an der Varianz von Regressionskoeffizienten interessiert ist.</p>
+<p>Ist die Clusterstruktur der Daten nur ein »nuisance« sind hierarchische Modelle (a.k.a Mehrebenenmodelle, a.k.a. Mixed-Effects-Modelle, a.k.a. Mixed Effects Modelle, a.k.a. Random Effects Model) oft nur die zweite Wahl (für interessante Alternativen siehe <span class="citation" data-cites="mcneish2017">McNeish, Stapleton, &amp; Silverman (<a href="#ref-mcneish2017" role="doc-biblioref">2017</a>)</span>).</p>
+<p>In der EMA-Forschung ist es häufig so, dass man an der Varianz von Regressionskoeffizienten interessiert ist, daher werden wir im Folgenden verstärkt die zweite Kategorie betrachten.</p>
+</section>
+<section id="datenbeispiel" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="datenbeispiel"><span class="header-section-number">2</span> Datenbeispiel</h2>
+<p>Wir verwenden hier die Daten von Rausch &amp; Seifried <span class="citation" data-cites="rausch_seifried_2023">(<a href="#ref-rausch_seifried_2023" role="doc-biblioref">Rausch &amp; Seifried, 2023</a>)</span>, die u.a. Effekte von <code>Demand</code> und <code>Control</code> auf <code>perceived learning</code> untersuchen. Es handelt sich um eine EMA-Studie, bei der 49 Versicherungsagenten 405 Arbeitssituationen beschrieben haben.</p>
+<section id="datenimport-und--wrangling" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="datenimport-und--wrangling"><span class="header-section-number">2.1</span> Datenimport und -wrangling</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(equatiomatic)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Daten einlesen</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>DatenESM <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">"data/Daten-ESM-Situationen.csv"</span>, <span class="at">na =</span> <span class="st">"NA"</span>, <span class="at">dec =</span> <span class="st">","</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>DatenSurvey <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">"data/Daten-Survey-Personen.csv"</span>, <span class="at">na =</span> <span class="st">"NA"</span>, <span class="at">dec =</span> <span class="st">","</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># full join der Daten</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>DatenML <span class="ot">&lt;-</span> <span class="fu">full_join</span>(DatenESM, DatenSurvey, <span class="at">by =</span> <span class="st">"Interviewer"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Leere Zeilen und Spalten entfernen</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>DatenML <span class="ot">&lt;-</span> <span class="fu">remove_empty</span>(DatenML, <span class="at">which =</span> <span class="fu">c</span>(<span class="st">"rows"</span>, <span class="st">"cols"</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Skalenbildung</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>DatenML <span class="ot">&lt;-</span> DatenML <span class="sc">|&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BSW3r =</span> <span class="dv">6</span> <span class="sc">-</span> BSW3, <span class="at">BSW6r =</span> <span class="dv">6</span> <span class="sc">-</span> BSW6) <span class="sc">|&gt;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Demand =</span> <span class="fu">mean</span>(<span class="fu">c</span>(Demand1, Demand2), <span class="at">na.rm =</span> T),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Control =</span> <span class="fu">mean</span>(<span class="fu">c</span>(Control1, Control2), <span class="at">na.rm =</span> T),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Support =</span> <span class="fu">mean</span>(<span class="fu">c</span>(Support1, Support2), <span class="at">na.rm =</span> T),</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">DCS_interaction =</span> Demand <span class="sc">*</span> Control <span class="sc">*</span> Support,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">JobSelfEff =</span> <span class="fu">mean</span>(<span class="fu">c</span>(BSW1, BSW2, BSW3r, BSW4, BSW5, BSW6r), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">JobCrafting =</span> <span class="fu">mean</span>(</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        JCQ1,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        JCQ2,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        JCQ3,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        JCQ4,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        JCQ5,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        JCQ6,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        JCQ7,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        JCQ8,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        JCQ9,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        JCQ10,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        JCQ11,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        JCQ12,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        JCQ13,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        JCQ14,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        JCQ15</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="correllogram-als-geordnete-heatmap" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="correllogram-als-geordnete-heatmap"><span class="header-section-number">2.2</span> Correllogram als geordnete Heatmap</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DatenML <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    learning_extent,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    satisfied_with_work_outcome,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    Demand,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    Control,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    Support,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    JobSelfEff,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    JobCrafting,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    neuro,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    intro,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    open,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    agreeable,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    conscientious</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    corrgram<span class="sc">::</span><span class="fu">corrgram</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">order =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">lower.panel =</span> corrgram<span class="sc">::</span>panel.shade,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">upper.panel =</span> corrgram<span class="sc">::</span>panel.pie,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">diag.panel =</span> corrgram<span class="sc">::</span>panel.density,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Clustered Heatmap der wichtigsten Variablen"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-clustered-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustered-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Mehrebenenmodellierung-von-EMA-Daten_files/figure-html/fig-clustered-heatmap-1.png" class="img-fluid figure-img" width="3000">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustered-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;1: Clustered Heatmap der wichtigsten Variablen
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="typische-verteilungsstatistiken" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="typische-verteilungsstatistiken"><span class="header-section-number">2.3</span> Typische Verteilungsstatistiken</h3>
+<section id="within-person-statistiken" class="level4">
+<h4 class="anchored" data-anchor-id="within-person-statistiken">Within-Person-Statistiken</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DatenML <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    learning_extent,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    satisfied_with_work_outcome,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    Demand,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    Control,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    Support,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    JobSelfEff,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    JobCrafting,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    neuro,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    intro,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    open,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    agreeable,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    conscientious</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"values"</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(item) <span class="sc">%&gt;%</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">med =</span> <span class="fu">median</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">skew =</span> moments<span class="sc">::</span><span class="fu">skewness</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">rmssd =</span> psych<span class="sc">::</span><span class="fu">rmssd</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 6
+   item                         mean   med    sd    skew rmssd
+   &lt;chr&gt;                       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 Control                      3.54  3.5  0.973 -0.713  1.23 
+ 2 Demand                       3.22  3.5  0.817 -0.241  1.07 
+ 3 JobCrafting                  4.22  4.2  0.585 -0.249  0.347
+ 4 JobSelfEff                   4.09  4.33 0.651 -0.345  0.329
+ 5 Support                      3.45  3.5  1.14  -0.509  1.30 
+ 6 agreeable                    5.89  6    1.01  -1.20   0.637
+ 7 conscientious                5.34  6    1.40  -1.34   0.714
+ 8 intro                        2.48  2    1.31   0.382  0.658
+ 9 learning_extent              3.50  3    1.52  -0.0197 1.73 
+10 neuro                        2.92  3    1.40   0.0855 0.686
+11 open                         5.27  5    0.943 -0.109  0.589
+12 satisfied_with_work_outcome  4.45  5    1.28  -0.599  1.69 </code></pre>
+</div>
+</div>
+</section>
+<section id="betwen-person-statistiken" class="level4">
+<h4 class="anchored" data-anchor-id="betwen-person-statistiken">Betwen-Person-Statistiken</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>DatenML <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    learning_extent,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    satisfied_with_work_outcome,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    Demand,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    Control,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    Support,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    Interviewer</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      learning_extent,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      satisfied_with_work_outcome,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      Demand,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      Control,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      Support</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"values"</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Interviewer, item) <span class="sc">%&gt;%</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">imean =</span> <span class="fu">mean</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">imed =</span> <span class="fu">median</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">isd =</span> <span class="fu">sd</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">iskew =</span> moments<span class="sc">::</span><span class="fu">skewness</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">irmssd =</span> psych<span class="sc">::</span><span class="fu">rmssd</span>(values, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Interviewer) <span class="sc">%&gt;%</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(item) <span class="sc">%&gt;%</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  skimr<span class="sc">::</span><span class="fu">skim</span>()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by Interviewer and item.
+ℹ Output is grouped by Interviewer.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(Interviewer, item))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">Piped data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">240</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">item</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 25%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: left;">item</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.47</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">2.25</td>
+<td style="text-align: right;">3.20</td>
+<td style="text-align: right;">3.61</td>
+<td style="text-align: right;">3.83</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: left;">▃▂▆▇▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">Demand</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.25</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">2.25</td>
+<td style="text-align: right;">2.97</td>
+<td style="text-align: right;">3.22</td>
+<td style="text-align: right;">3.52</td>
+<td style="text-align: right;">4.40</td>
+<td style="text-align: left;">▂▇▇▃▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">Support</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.43</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">2.93</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">3.85</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: left;">▂▃▆▇▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">learning_extent</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.55</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">2.68</td>
+<td style="text-align: right;">3.30</td>
+<td style="text-align: right;">4.47</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▂▇▅▃▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imean</td>
+<td style="text-align: left;">satisfied_with_work_outcome</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.39</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.77</td>
+<td style="text-align: right;">4.61</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▁▂▆▇▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.54</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: left;">▂▃▇▇▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">Demand</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.28</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">2.25</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.12</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: left;">▂▇▆▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">Support</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.47</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: left;">▂▁▆▇▃</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">learning_extent</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.64</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▃▇▂▃▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imed</td>
+<td style="text-align: left;">satisfied_with_work_outcome</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.53</td>
+<td style="text-align: right;">1.07</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">4.75</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">▁▃▇▇▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">1.37</td>
+<td style="text-align: left;">▁▅▇▅▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">Demand</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">1.77</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">Support</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">2.08</td>
+<td style="text-align: left;">▇▇▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">learning_extent</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: right;">2.52</td>
+<td style="text-align: left;">▂▅▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isd</td>
+<td style="text-align: left;">satisfied_with_work_outcome</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">1.26</td>
+<td style="text-align: right;">2.24</td>
+<td style="text-align: left;">▂▅▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">-2.10</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: left;">▁▆▇▇▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">Demand</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">-1.00</td>
+<td style="text-align: right;">-0.31</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">1.34</td>
+<td style="text-align: left;">▂▇▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">Support</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">-0.35</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">-2.67</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: left;">▁▂▃▇▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">learning_extent</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">-1.59</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">1.27</td>
+<td style="text-align: left;">▃▅▇▇▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iskew</td>
+<td style="text-align: left;">satisfied_with_work_outcome</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">-0.44</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">-2.67</td>
+<td style="text-align: right;">-1.03</td>
+<td style="text-align: right;">-0.28</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: left;">▂▂▅▇▃</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.12</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: left;">▂▆▇▃▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">Demand</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">1.27</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">Support</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.58</td>
+<td style="text-align: right;">2.92</td>
+<td style="text-align: left;">▅▇▃▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">learning_extent</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">1.80</td>
+<td style="text-align: right;">4.12</td>
+<td style="text-align: left;">▅▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">irmssd</td>
+<td style="text-align: left;">satisfied_with_work_outcome</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.41</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">1.56</td>
+<td style="text-align: right;">1.94</td>
+<td style="text-align: right;">2.94</td>
+<td style="text-align: left;">▃▆▇▆▃</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="multi-level-daten-als-nuisance" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="multi-level-daten-als-nuisance"><span class="header-section-number">3</span> Multi-Level Daten als »nuisance«</h2>
+<p>Genestete Daten können auch wenn man sich nicht für die Varianz von Regressionskoeffizienten über Cluster hinweg interessiert, zu einem Problem werden, da die Residuen nicht mehr unabhängig sind wie für die Berechnung der Inferenzstatistk bei der multiple Regression angenommen wird. Wie robust bzw. unrobust die multiple Regression gegenüber Verletzungen der Unabhängigkeitsannahme ist, hängt von der Stärke der Clusterung (ICC) und der Größe der Cluster ab. In der Praxis kann es schon bei moderater Clusterung zu verzerrten Standardfehlern und damit zu falschen Schlussfolgerungen kommen wie folgende <a href="data:text/plain;base64,IyBMb2FkIHJlcXVpcmVkIGxpYnJhcmllcwpsaWJyYXJ5KHNoaW55KQpsaWJyYXJ5KGJzbGliKQpsaWJyYXJ5KGdncGxvdDIpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkobG1lclRlc3QpCmxpYnJhcnkobG1lNCkKbGlicmFyeShicm9vbS5taXhlZCkKbGlicmFyeShwdXJycikKCiMgRGVmaW5lIFVJCnVpIDwtIHBhZ2VfZmlsbGFibGUoCiAgdGhlbWUgPSBic190aGVtZSgKICAgIHByaW1hcnkgPSAiIzE3NDcxNyIsCiAgICBiZyA9ICIjRjJGMkYyIiwKICAgIGZnID0gIiMyNjczMjYiLAogICAgYmFzZV9mb250ID0gZm9udF9nb29nbGUoIkFsZWdyZXlhIFNhbnMiKSwKICAgIGhlYWRpbmdfZm9udCA9IGZvbnRfZ29vZ2xlKCJBbGVncmV5YSBTYW5zIikKICApLAoKICAjIEFkZCBjdXN0b20gQ1NTCiAgdGFncyRoZWFkKAogICAgdGFncyRzdHlsZShIVE1MKCIKICAgICAgLmNhcmQtaGVhZGVyIHsKICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjOGNkMDAwOwogICAgICAgIGNvbG9yOiAjMTc0NzE3OwogICAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICB9CiAgICAgIC5jYXJkIHsKICAgICAgICBtYXJnaW4tYm90dG9tOiAxNXB4OwogICAgICB9CiAgICAiKSkKICApLAoKCiAgIyBMYXlvdXQKICBsYXlvdXRfY29sdW1uX3dyYXAoCiAgICB3aWR0aCA9IDEvMywKCiAgICAjIFBhcmFtZXRlcnMgcGFuZWwKICAgIGNhcmQoCiAgICAgIGNhcmRfaGVhZGVyKCJTaW11bGF0aW9uIFBhcmFtZXRlcnMiKSwKICAgICAgY2FyZF9ib2R5KAogICAgICAgIHNsaWRlcklucHV0KCJpY2MiLCAiSW50cmFjbGFzcyBDb3JyZWxhdGlvbiAoSUNDKSIsCiAgICAgICAgICAgICAgICAgICAgbWluID0gMCwgbWF4ID0gMC41LCB2YWx1ZSA9IDAuMiwgc3RlcCA9IDAuMDUpLAogICAgICAgIHNsaWRlcklucHV0KCJzdHVkZW50c19wZXJfY2xhc3MiLCAiTWVhc3VyZW1lbnRzIHBlciBQZXJzb24iLAogICAgICAgICAgICAgICAgICAgIG1pbiA9IDUsIG1heCA9IDUwLCB2YWx1ZSA9IDIwLCBzdGVwID0gNSksCiAgICAgICAgc2xpZGVySW5wdXQoIm51bV9jbGFzc2VzIiwgIk51bWJlciBvZiBQZXJzb25zIChDbHVzdGVycykiLAogICAgICAgICAgICAgICAgICAgIG1pbiA9IDUsIG1heCA9IDUwLCB2YWx1ZSA9IDIwLCBzdGVwID0gNSksCiAgICAgICAgc2VsZWN0SW5wdXQoCiAgICAgICAgICAicmFuZG9taXphdGlvbiIsCiAgICAgICAgICAiUmFuZG9taXphdGlvbiIsCiAgICAgICAgICBsaXN0KCJCZXR3ZWVuIFBlcnNvbiIgPSAiYiIsICJXaXRoaW4gUGVyc29uIiA9ICJ3IikKICAgICAgICApLAogICAgICAgIHNsaWRlcklucHV0KCJudW1fc2ltdWxhdGlvbnMiLCAiTnVtYmVyIG9mIFNpbXVsYXRpb25zIiwKICAgICAgICAgICAgICAgICAgICBtaW4gPSAxMDAsIG1heCA9IDIwMDAsIHZhbHVlID0gMTAwLCBzdGVwID0gMjApLAogICAgICAgIGFjdGlvbkJ1dHRvbigicnVuX3NpbSIsICJSdW4gU2ltdWxhdGlvbiIsCiAgICAgICAgICAgICAgICAgICAgIGNsYXNzID0gImJ0bi1sZyBidG4tcHJpbWFyeSIsIHdpZHRoID0gIjEwMCUiLAogICAgICAgICAgICAgICAgICAgICBzdHlsZSA9ICJiYWNrZ3JvdW5kLWNvbG9yOiAjMTc0NzE3OyBib3JkZXItY29sb3I6ICMxNzQ3MTc7IikKICAgICAgKQogICAgKSwKCgogICAgIyBFeGFtcGxlIFBhbmVsCgogICAgY2FyZCgKICAgICAgZnVsbF9zY3JlZW4gPSBUUlVFLAogICAgICBjYXJkX2hlYWRlcigiRXhhbXBsZSBEYXRhc2V0IFZpc3VhbGl6YXRpb24iKSwKICAgICAgY2FyZF9ib2R5KAogICAgICAgIHBsb3RPdXRwdXQoImV4YW1wbGVfcGxvdCIsIGhlaWdodCA9ICIzMDBweCIpCiAgICAgICkKICAgICksCgogICAgIyBSZXN1bHRzIHBhbmVsCiAgICBsYXlvdXRfY29sdW1uX3dyYXAoCiAgICAgIHdpZHRoID0gMSwKICAgICAgY2FyZCgKICAgICAgICBmdWxsX3NjcmVlbiA9IFRSVUUsCiAgICAgICAgY2FyZF9oZWFkZXIoIlR5cGUgSSBFcnJvciBSYXRlIFJlc3VsdHMiKSwKICAgICAgICBjYXJkX2JvZHkoCiAgICAgICAgICBwbG90T3V0cHV0KCJhbHBoYV9wbG90IiwgaGVpZ2h0ID0gIjMwMHB4IikKICAgICAgICApCiAgICAgICksCgogICAgICBjYXJkKAogICAgICAgIGZ1bGxfc2NyZWVuID0gVFJVRSwKICAgICAgICBjYXJkX2hlYWRlcigiRGlzdHJpYnV0aW9uIG9mIHAtdmFsdWVzIiksCiAgICAgICAgY2FyZF9ib2R5KAogICAgICAgICAgcGxvdE91dHB1dCgicHZhbHVlX2Rpc3QiLCBoZWlnaHQgPSAiMzAwcHgiKQogICAgICAgICkKICAgICAgKQogICAgKQogICkKKQoKIyBEZWZpbmUgc2VydmVyCnNlcnZlciA8LSBmdW5jdGlvbihpbnB1dCwgb3V0cHV0LCBzZXNzaW9uKSB7CgogICMgR2VuZXJhdGUgZXhhbXBsZSBkYXRhc2V0IGZvciB2aXN1YWxpemF0aW9uCiAgZXhhbXBsZV9kYXRhIDwtIHJlYWN0aXZlKHsKCiAgICAjIEdldCBwYXJhbWV0ZXJzCiAgICBpY2MgPC0gaW5wdXQkaWNjCiAgICBzdHVkZW50c19wZXJfY2xhc3MgPC0gaW5wdXQkc3R1ZGVudHNfcGVyX2NsYXNzCiAgICBudW1fY2xhc3NlcyA8LSBpbnB1dCRudW1fY2xhc3NlcwoKICAgIHRvdGFsX3ZhciA8LSAxCiAgICBiZXR3ZWVuX3ZhciA8LSBpY2MgKiB0b3RhbF92YXIKICAgIHdpdGhpbl92YXIgPC0gKDEgLSBpY2MpICogdG90YWxfdmFyCiAgICBuX3RvdGFsIDwtIG51bV9jbGFzc2VzICogc3R1ZGVudHNfcGVyX2NsYXNzCiAgICBjbHVzdGVyX2lkcyA8LSByZXAoMTpudW1fY2xhc3NlcywgZWFjaCA9IHN0dWRlbnRzX3Blcl9jbGFzcykKICAgIGNsdXN0ZXJfZWZmZWN0cyA8LSByZXAocm5vcm0obnVtX2NsYXNzZXMsIDAsIHNxcnQoYmV0d2Vlbl92YXIpKSwgZWFjaCA9IHN0dWRlbnRzX3Blcl9jbGFzcykKCiAgICAjIEFzc2lnbiB0cmVhdG1lbnQgKGJhbGFuY2VkIGRlc2lnbikKICAgICMgSGFsZiBvZiB0aGUgY2x1c3RlcnMgZ2V0IHRyZWF0bWVudCwgaGFsZiBnZXQgY29udHJvbAoKICAgIGlmIChpbnB1dCRyYW5kb21pemF0aW9uID09ICJiIikgewogICAgICAjIFJhbmRvbWl6ZSB3aXRoaW4gY2xhc3NlcwogICAgICB0cmVhdG1lbnQgPC0gcmVwKGMoMCwgMSksIGVhY2ggPSBuX3RvdGFsLzIpCiAgICB9IGVsc2UgewogICAgICAjIFJhbmRvbWl6ZSBiZXR3ZWVuIGNsYXNzZXMKICAgICAgdHJlYXRtZW50IDwtIHNhbXBsZShjKDAsIDEpLCBzaXplID0gbl90b3RhbCwgcmVwbGFjZSA9IFRSVUUpCiAgICB9CgogICAgIyBHZW5lcmF0ZSBpbmRpdmlkdWFsIGVmZmVjdHMKICAgIGluZGl2aWR1YWxfZWZmZWN0cyA8LSBybm9ybShuX3RvdGFsLCAwLCBzcXJ0KHdpdGhpbl92YXIpKQoKICAgICMgR2VuZXJhdGUgb3V0Y29tZXMgKG51bGwgaHlwb3RoZXNpcyBpcyB0cnVlIC0gbm8gdHJlYXRtZW50IGVmZmVjdCkKICAgIG91dGNvbWUgPC0gY2x1c3Rlcl9lZmZlY3RzICsgaW5kaXZpZHVhbF9lZmZlY3RzCgogICAgIyBDcmVhdGUgZGF0YXNldAogICAgZGF0YS5mcmFtZSgKICAgICAgY2xhc3NfaWQgPSBjbHVzdGVyX2lkcywKICAgICAgVHJlYXRtZW50ID0gZmFjdG9yKHRyZWF0bWVudCksCiAgICAgIG91dGNvbWUgPSBvdXRjb21lCiAgICApCiAgfSkKCiAgIyBQbG90IGV4YW1wbGUgZGF0YXNldAogIG91dHB1dCRleGFtcGxlX3Bsb3QgPC0gcmVuZGVyUGxvdCh7CiAgICBkYXRhIDwtIGV4YW1wbGVfZGF0YSgpCgogICAgZ2dwbG90KGRhdGEsIGFlcyh5ID0gZmFjdG9yKGNsYXNzX2lkKSwgeCA9IG91dGNvbWUsCiAgICAgICAgICAgICAgICAgICAgIGZpbGwgPSBUcmVhdG1lbnQsCiAgICAgICAgICAgICAgICAgICAgIGNvbG9yID0gVHJlYXRtZW50KSkgKwogICAgICBnZW9tX2JveHBsb3QoKSArCiAgICAgIGxhYnMoCiAgICAgICAgdGl0bGUgPSAiRXhhbXBsZSBEYXRhIiwKICAgICAgICBzdWJ0aXRsZSA9IHBhc3RlKCJJQ0MgPSIsCiAgICAgICAgICAgICAgICAgICAgICAgICByb3VuZChwc3ljaG9tZXRyaWM6OklDQzEubG1lKG91dGNvbWUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNsYXNzX2lkLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBleGFtcGxlX2RhdGEoKSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyKSwKICAgICAgICAgICAgICAgICAgICAgICAgICI7IERFRlQgPSAiLAogICAgICAgICAgICAgICAgICAgICAgICAgcm91bmQoc3FydCgxICsgKGlucHV0JHN0dWRlbnRzX3Blcl9jbGFzcyAtMSkgKgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBzeWNob21ldHJpYzo6SUNDMS5sbWUob3V0Y29tZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNsYXNzX2lkLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhKSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyKSksCiAgICAgICAgeSA9ICJDbGFzcyBJRCIsCiAgICAgICAgeCA9ICJPdXRjb21lIgogICAgICApICsKICAgICAgdGhlbWVfbWluaW1hbCgpICsKICAgICAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gYygiMCIgPSAiIzhjZDAwMCIsICIxIiA9ICIjMjY3MzI2IikpICsKICAgICAgc2NhbGVfY29sb3JfbWFudWFsKHZhbHVlcyA9IGMoIjAiID0gIiM4Y2QwMDAiLCAiMSIgPSAiIzI2NzMyNiIpKSArCiAgICAgIHRoZW1lKAogICAgICAgIHRleHQgPSBlbGVtZW50X3RleHQoZmFtaWx5ID0gIkFsZWdyZXlhIFNhbnMiKSwKICAgICAgICBwbG90LnRpdGxlID0gZWxlbWVudF90ZXh0KGZhY2UgPSAiYm9sZCIsIGNvbG9yID0gIiMxNzQ3MTciKSwKICAgICAgICBwbG90LnN1YnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIiMyNjczMjYiKSwKICAgICAgICBsZWdlbmQucG9zaXRpb24gPSAiYm90dG9tIiwKICAgICAgKQogIH0pCgogICMgUnVuIHNpbXVsYXRpb24gd2hlbiBidXR0b24gaXMgY2xpY2tlZAogIHNpbV9yZXN1bHRzIDwtIGV2ZW50UmVhY3RpdmUoaW5wdXQkcnVuX3NpbSwgewogICAgIyBHZXQgcGFyYW1ldGVycwogICAgaWNjIDwtIGlucHV0JGljYwogICAgc3R1ZGVudHNfcGVyX2NsYXNzIDwtIGlucHV0JHN0dWRlbnRzX3Blcl9jbGFzcwogICAgbnVtX2NsYXNzZXMgPC0gaW5wdXQkbnVtX2NsYXNzZXMKICAgIG5fc2ltcyA8LSBpbnB1dCRudW1fc2ltdWxhdGlvbnMKCiAgICAjIEZ1bmN0aW9uIHRvIHJ1biBvbmUgc2ltdWxhdGlvbgogICAgcnVuX29uZV9zaW0gPC0gZnVuY3Rpb24oKSB7CiAgICAgICMgQ2FsY3VsYXRlIHZhcmlhbmNlIGNvbXBvbmVudHMgYmFzZWQgb24gSUNDCiAgICAgIHRvdGFsX3ZhciA8LSAxCiAgICAgIGJldHdlZW5fdmFyIDwtIGljYyAqIHRvdGFsX3ZhcgogICAgICB3aXRoaW5fdmFyIDwtICgxIC0gaWNjKSAqIHRvdGFsX3ZhcgogICAgICBuX3RvdGFsIDwtIG51bV9jbGFzc2VzICogc3R1ZGVudHNfcGVyX2NsYXNzCiAgICAgIGNsdXN0ZXJfaWRzIDwtIHJlcCgxOm51bV9jbGFzc2VzLCBlYWNoID0gc3R1ZGVudHNfcGVyX2NsYXNzKQogICAgICBjbHVzdGVyX2VmZmVjdHMgPC0gcmVwKHJub3JtKG51bV9jbGFzc2VzLCAwLCBzcXJ0KGJldHdlZW5fdmFyKSksIGVhY2ggPSBzdHVkZW50c19wZXJfY2xhc3MpCgogICAgICAjIEFzc2lnbiB0cmVhdG1lbnQgKGJhbGFuY2VkIGRlc2lnbikKICAgICAgaWYgKGlucHV0JHJhbmRvbWl6YXRpb24gPT0gImIiKSB7CiAgICAgICAgIyBSYW5kb21pemUgd2l0aGluIGNsYXNzZXMKICAgICAgICB0cmVhdG1lbnQgPC0gcmVwKGMoMCwgMSksIGVhY2ggPSBuX3RvdGFsLzIpCiAgICAgIH0gZWxzZSB7CiAgICAgICAgIyBSYW5kb21pemUgYmV0d2VlbiBjbGFzc2VzCiAgICAgICAgdHJlYXRtZW50IDwtIHNhbXBsZShjKDAsIDEpLCBzaXplID0gbl90b3RhbCwgcmVwbGFjZSA9IFRSVUUpCiAgICAgIH0KCiAgICAgICMgR2VuZXJhdGUgaW5kaXZpZHVhbCBlZmZlY3RzCiAgICAgIGluZGl2aWR1YWxfZWZmZWN0cyA8LSBybm9ybShuX3RvdGFsLCAwLCBzcXJ0KHdpdGhpbl92YXIpKQoKICAgICAgIyBHZW5lcmF0ZSBvdXRjb21lcyAobnVsbCBoeXBvdGhlc2lzIGlzIHRydWUgLSBubyB0cmVhdG1lbnQgZWZmZWN0KQogICAgICBvdXRjb21lIDwtIGNsdXN0ZXJfZWZmZWN0cyArIGluZGl2aWR1YWxfZWZmZWN0cwoKCiAgICAgICMgQ3JlYXRlIGRhdGFzZXQKICAgICAgZGF0YSA8LSBkYXRhLmZyYW1lKAogICAgICAgIGNsYXNzX2lkID0gY2x1c3Rlcl9pZHMsCiAgICAgICAgdHJlYXRtZW50ID0gdHJlYXRtZW50LAogICAgICAgIG91dGNvbWUgPSBvdXRjb21lCiAgICAgICkKCiAgICAgICMgUnVuIHQtdGVzdCAoaWdub3JpbmcgY2x1c3RlcmluZykKICAgICAgdF90ZXN0X3Jlc3VsdCA8LSB0LnRlc3Qob3V0Y29tZSB+IHRyZWF0bWVudCwgZGF0YSA9IGRhdGEpCiAgICAgIHRfdGVzdF9wIDwtIHRfdGVzdF9yZXN1bHQkcC52YWx1ZQoKICAgICAgIyBSdW4gbWl4ZWQgbW9kZWwgKGFjY291bnRpbmcgZm9yIGNsdXN0ZXJpbmcpCiAgICAgIG1peGVkX21vZGVsIDwtIGxtZXIob3V0Y29tZSB+IHRyZWF0bWVudCArICgxfGNsYXNzX2lkKSwgZGF0YSA9IGRhdGEpCiAgICAgIG1peGVkX3AgPC0gc3VtbWFyeShtaXhlZF9tb2RlbCkkY29lZmZpY2llbnRzWzIsICJQcig+fHR8KSJdCgogICAgICAjIFJldHVybiBwLXZhbHVlcwogICAgICByZXR1cm4oYyh0X3Rlc3RfcCA9IHRfdGVzdF9wLCBtaXhlZF9wID0gbWl4ZWRfcCwKICAgICAgICAgICAgICAgSUNDID0gcHN5Y2hvbWV0cmljOjpJQ0MxLmxtZShvdXRjb21lLCBjbGFzc19pZCwgZGF0YSksCiAgICAgICAgICAgICAgIERFRlQgPSBzcXJ0KDEgKyAoaW5wdXQkc3R1ZGVudHNfcGVyX2NsYXNzIC0xKSAqIHBzeWNob21ldHJpYzo6SUNDMS5sbWUob3V0Y29tZSwgY2xhc3NfaWQsIGRhdGEpKSkpCiAgICB9CgogICAgIyBSdW4gc2ltdWxhdGlvbnMgd2l0aCBwcm9ncmVzcyBpbmRpY2F0b3IKICAgIHdpdGhQcm9ncmVzcyhtZXNzYWdlID0gJ1J1bm5pbmcgc2ltdWxhdGlvbnMnLCB2YWx1ZSA9IDAsIHsKICAgICAgcF92YWx1ZXMgPC0gcmVwbGljYXRlKG5fc2ltcywgewogICAgICAgIGluY1Byb2dyZXNzKDEvbl9zaW1zKQogICAgICAgIHJ1bl9vbmVfc2ltKCkKICAgICAgfSkKICAgIH0pCgogICAgIyBDb252ZXJ0IHJlc3VsdHMgdG8gZGF0YSBmcmFtZQogICAgcF9kZiA8LSBkYXRhLmZyYW1lKAogICAgICB0X3Rlc3RfcCA9IHBfdmFsdWVzWyJ0X3Rlc3RfcCIsIF0sCiAgICAgIG1peGVkX3AgPSBwX3ZhbHVlc1sibWl4ZWRfcCIsIF0KICAgICkKCiAgICAjIENhbGN1bGF0ZSBUeXBlIEkgZXJyb3IgcmF0ZXMgKGFscGhhKQogICAgdF90ZXN0X3R5cGUxIDwtIG1lYW4ocF9kZiR0X3Rlc3RfcCA8IDAuMDUpCiAgICBtaXhlZF90eXBlMSA8LSBtZWFuKHBfZGYkbWl4ZWRfcCA8IDAuMDUpCgogICAgIyBSZXR1cm4gcmVzdWx0cwogICAgbGlzdCgKICAgICAgcF92YWx1ZXMgPSBwX2RmLAogICAgICB0X3Rlc3RfdHlwZTEgPSB0X3Rlc3RfdHlwZTEsCiAgICAgIG1peGVkX3R5cGUxID0gbWl4ZWRfdHlwZTEsCiAgICAgIGluZmxhdGlvbl9mYWN0b3IgPSB0X3Rlc3RfdHlwZTEgLyAwLjA1CiAgICApCiAgfSkKCgogICMgUGxvdCBUeXBlIEkgZXJyb3IgcmF0ZXMKICBvdXRwdXQkYWxwaGFfcGxvdCA8LSByZW5kZXJQbG90KHsKICAgIGlmKGlzLm51bGwoc2ltX3Jlc3VsdHMoKSkpIHsKICAgICAgcmV0dXJuKE5VTEwpCiAgICB9CgogICAgcmVzdWx0cyA8LSBzaW1fcmVzdWx0cygpCgogICAgIyBDcmVhdGUgZGF0YSBmcmFtZSBmb3IgcGxvdHRpbmcKICAgIHBsb3RfZGF0YSA8LSBkYXRhLmZyYW1lKAogICAgICBtZXRob2QgPSBjKCJTdGFuZGFyZCB0LXRlc3QiLCAiTWl4ZWQgbW9kZWwiKSwKICAgICAgYWxwaGEgPSBjKHJlc3VsdHMkdF90ZXN0X3R5cGUxLCByZXN1bHRzJG1peGVkX3R5cGUxKQogICAgKQoKICAgIGdncGxvdChwbG90X2RhdGEsIGFlcyh4ID0gbWV0aG9kLCB5ID0gYWxwaGEsIGZpbGwgPSBtZXRob2QpKSArCiAgICAgIGdlb21fY29sKCkgKwogICAgICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSAwLjA1LCBsaW5ldHlwZSA9ICJkYXNoZWQiLCBjb2xvciA9ICJibGFjayIpICsKICAgICAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gYygKICAgICAgICAiU3RhbmRhcmQgdC10ZXN0IiA9ICIjOGNkMDAwIiwKICAgICAgICAiTWl4ZWQgbW9kZWwiID0gIiMyNjczMjYiCiAgICAgICkpICsKICAgICAgbGFicygKICAgICAgICB0aXRsZSA9ICJUeXBlIEkgRXJyb3IgUmF0ZXMiLAogICAgICAgIHggPSBOVUxMLAogICAgICAgIHkgPSAiVHlwZSBJIEVycm9yIFJhdGUiCiAgICAgICkgKwogICAgICB0aGVtZV9taW5pbWFsKCkgKwogICAgICB0aGVtZSgKICAgICAgICB0ZXh0ID0gZWxlbWVudF90ZXh0KGZhbWlseSA9ICJBbGVncmV5YSBTYW5zIiksCiAgICAgICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChmYWNlID0gImJvbGQiLCBjb2xvciA9ICIjMTc0NzE3IiksCiAgICAgICAgcGxvdC5zdWJ0aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICIjMjY3MzI2IiksCiAgICAgICAgbGVnZW5kLnBvc2l0aW9uID0gIm5vbmUiCiAgICAgICkKICB9KQoKICAjIFBsb3QgcC12YWx1ZSBkaXN0cmlidXRpb24KICBvdXRwdXQkcHZhbHVlX2Rpc3QgPC0gcmVuZGVyUGxvdCh7CiAgICBpZihpcy5udWxsKHNpbV9yZXN1bHRzKCkpKSB7CiAgICAgIHJldHVybihOVUxMKQogICAgfQoKICAgIHJlc3VsdHMgPC0gc2ltX3Jlc3VsdHMoKQoKICAgICMgUHJlcGFyZSBkYXRhIGZvciBwbG90dGluZwogICAgcF92YWx1ZXNfbG9uZyA8LSByZXN1bHRzJHBfdmFsdWVzICU+JQogICAgICB0aWR5cjo6cGl2b3RfbG9uZ2VyKAogICAgICAgIGNvbHMgPSBldmVyeXRoaW5nKCksCiAgICAgICAgbmFtZXNfdG8gPSAibWV0aG9kIiwKICAgICAgICB2YWx1ZXNfdG8gPSAicF92YWx1ZSIKICAgICAgKSAlPiUKICAgICAgbXV0YXRlKG1ldGhvZCA9IGZhY3RvcihtZXRob2QsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygidF90ZXN0X3AiLCAibWl4ZWRfcCIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoIlN0YW5kYXJkIHQtdGVzdCIsICJNaXhlZCBtb2RlbCIpKSkKCiAgICBnZ3Bsb3QocF92YWx1ZXNfbG9uZywgYWVzKHggPSBwX3ZhbHVlLCBmaWxsID0gbWV0aG9kKSkgKwogICAgICBnZW9tX2hpc3RvZ3JhbShiaW5zID0gMjAsIGFscGhhID0gMC43LCBwb3NpdGlvbiA9ICJpZGVudGl0eSIpICsKICAgICAgZ2VvbV92bGluZSh4aW50ZXJjZXB0ID0gMC4wNSwgbGluZXR5cGUgPSAiZGFzaGVkIiwgY29sb3IgPSAiIzE3NDcxNyIpICsKICAgICAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gYygiU3RhbmRhcmQgdC10ZXN0IiA9ICIjOGNkMDAwIiwgIk1peGVkIG1vZGVsIiA9ICIjMjY3MzI2IikpICsKICAgICAgbGFicygKICAgICAgICB0aXRsZSA9ICJEaXN0cmlidXRpb24gb2YgcC12YWx1ZXMiLAogICAgICAgIHggPSAicC12YWx1ZSIsCiAgICAgICAgeSA9ICJGcmVxdWVuY3kiCiAgICAgICkgKwogICAgICB0aGVtZV9taW5pbWFsKCkgKwogICAgICB0aGVtZSgKICAgICAgICB0ZXh0ID0gZWxlbWVudF90ZXh0KGZhbWlseSA9ICJBbGVncmV5YSBTYW5zIiksCiAgICAgICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChmYWNlID0gImJvbGQiLCBjb2xvciA9ICIjMTc0NzE3IiksCiAgICAgICAgcGxvdC5zdWJ0aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICIjMjY3MzI2IiksCiAgICAgICAgbGVnZW5kLnBvc2l0aW9uID0gImJvdHRvbSIKICAgICAgKQogIH0pCn0KCgojIFJ1biB0aGUgYXBwbGljYXRpb24Kc2hpbnlBcHAodWkgPSB1aSwgc2VydmVyID0gc2VydmVyKQo=" download="app.R">Shiny-App</a> (File bitte in RStudio öffnen und ausführen).</p>
+</section>
+<section id="mehrebenenmodelle-als-partial-pooling" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="mehrebenenmodelle-als-partial-pooling"><span class="header-section-number">4</span> Mehrebenenmodelle als Partial Pooling</h2>
+<p>Interessiert man sich für die Varianz von Regressionskoeffizienten über Cluster hinweg, so sind hierarchische Modelle (a.k.a Mehrebenenmodelle, a.k.a. Mixed-Effects-Modelle, a.k.a. Mixed Effects Modelle, a.k.a. Random Effects Model) die erste Wahl. Diese werden oft als Kompromiss zwischen No-Pooling (separate Regression pro Cluster) und Complete-Pooling (ein Modell für alle) beschrieben. Dabei wird diese Kompromissbildung durch die Größe der Cluster und die Stärke der Clusterung (ICC) bestimmt:</p>
+<ul>
+<li>Je größer das Cluster (bei gleichem ICC), desto stärker wird die Random-Effekt-Schätzung für dieses Cluster von den Daten dieses Clusters bestimmt. Dadurch sind die Random Effekt-Schätzungen für große Cluster näher an den No-Pooling-Schätzungen und die Random Effekt-Schätzungen für kleine Cluster näher an den Complete-Pooling-Schätzungen.</li>
+<li>Je höher die Clusterung (ICC bei gleicher Clustergröße), desto stärker wird die Random-Effekt-Schätzung durch die Daten des Clusters bestimmt.</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_abline()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-pooling-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pooling-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Mehrebenenmodellierung-von-EMA-Daten_files/figure-html/fig-pooling-comparison-1.png" class="img-fluid figure-img" width="3600">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pooling-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;2: Vergleich von No-Pooling, Complete-Pooling und Random-Effects für 18 zufällig ausgewählte Cluster
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Wichtig ist, dass aus im Modell nur die Regressionskoeffizienten sowie eine Streuung dieser geschätzt wird. Die Steigungen der Random Effect Regressionsgeraden pro Cluster sind nicht Teil der Modellschätzung sondern werden post-hoc mit Empirical Bayes geschätzt.</p>
+</section>
+<section id="einfache-mehrebenenmodelle" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="einfache-mehrebenenmodelle"><span class="header-section-number">5</span> Einfache Mehrebenenmodelle</h2>
+<section id="das-random-intercept-only-modell" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="das-random-intercept-only-modell"><span class="header-section-number">5.1</span> Das Random-Intercept-Only-Modell</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  learning_extent <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">|</span> Interviewer),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> DatenML</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod0)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: learning_extent ~ 1 + (1 | Interviewer)
+   Data: DatenML
+
+REML criterion at convergence: 1382.1
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-2.65089 -0.68055  0.09196  0.55797  2.95979 
+
+Random effects:
+ Groups      Name        Variance Std.Dev.
+ Interviewer (Intercept) 0.9502   0.9748  
+ Residual                1.4563   1.2068  
+Number of obs: 405, groups:  Interviewer, 48
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   3.5431     0.1603   22.11</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_eq</span>(mod0, <span class="at">use_re =</span> <span class="cn">TRUE</span>, <span class="at">wrap =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<p><span class="math display">\[
+\begin{aligned}
+  \operatorname{learning\_extent}_{i}  &amp;\sim N \left(\alpha_{j[i]}, \sigma^2 \right) \\
+    \alpha_{j}  &amp;\sim N \left(\mu_{\alpha_{j}}, \sigma^2_{\alpha_{j}} \right)
+    \text{, for Interviewer j = 1,} \dots \text{,J}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="das-random-intercept-modell-mit-einem-prädiktor" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="das-random-intercept-modell-mit-einem-prädiktor"><span class="header-section-number">5.2</span> Das Random-Intercept-Modell mit einem Prädiktor</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  learning_extent <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> satisfied_with_work_outcome <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> Interviewer),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> DatenML</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: learning_extent ~ 1 + satisfied_with_work_outcome + (1 | Interviewer)
+   Data: DatenML
+
+REML criterion at convergence: 1350.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.5301 -0.5871  0.1019  0.5635  3.2104 
+
+Random effects:
+ Groups      Name        Variance Std.Dev.
+ Interviewer (Intercept) 0.7497   0.8659  
+ Residual                1.3546   1.1639  
+Number of obs: 405, groups:  Interviewer, 48
+
+Fixed effects:
+                            Estimate Std. Error t value
+(Intercept)                  2.16437    0.26615   8.132
+satisfied_with_work_outcome  0.31273    0.05071   6.167
+
+Correlation of Fixed Effects:
+            (Intr)
+stsfd_wth__ -0.839</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_eq</span>(mod1, <span class="at">use_re =</span> <span class="cn">TRUE</span>, <span class="at">wrap =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<p><span class="math display">\[
+\begin{aligned}
+  \operatorname{learning\_extent}_{i}  &amp;\sim N \left(\alpha_{j[i]} + \beta_{1}(\operatorname{satisfied\_with\_work\_outcome}), \sigma^2 \right) \\
+    \alpha_{j}  &amp;\sim N \left(\mu_{\alpha_{j}}, \sigma^2_{\alpha_{j}} \right)
+    \text{, for Interviewer j = 1,} \dots \text{,J}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="das-random-intercept-random-slope-modell" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="das-random-intercept-random-slope-modell"><span class="header-section-number">5.3</span> Das Random-Intercept-Random-Slope-Modell</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  learning_extent <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    satisfied_with_work_outcome <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> satisfied_with_work_outcome <span class="sc">|</span> Interviewer),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> DatenML</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: 
+learning_extent ~ 1 + satisfied_with_work_outcome + (1 + satisfied_with_work_outcome |  
+    Interviewer)
+   Data: DatenML
+
+REML criterion at convergence: 1337.2
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.4367 -0.5413  0.0973  0.4976  3.1863 
+
+Random effects:
+ Groups      Name                        Variance Std.Dev. Corr 
+ Interviewer (Intercept)                 0.46899  0.6848        
+             satisfied_with_work_outcome 0.06766  0.2601   -0.75
+ Residual                                1.29778  1.1392        
+Number of obs: 405, groups:  Interviewer, 48
+
+Fixed effects:
+                            Estimate Std. Error t value
+(Intercept)                  1.93385    0.25664   7.535
+satisfied_with_work_outcome  0.35276    0.06564   5.375
+
+Correlation of Fixed Effects:
+            (Intr)
+stsfd_wth__ -0.883</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_eq</span>(mod2, <span class="at">use_re =</span> <span class="cn">TRUE</span>, <span class="at">wrap =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<p><span class="math display">\[
+\begin{aligned}
+  \operatorname{learning\_extent}_{i}  &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{satisfied\_with\_work\_outcome}), \sigma^2 \right) \\    
+\left(
+  \begin{array}{c}
+    \begin{aligned}
+      &amp;\alpha_{j} \\
+      &amp;\beta_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &amp;\sim N \left(
+\left(
+  \begin{array}{c}
+    \begin{aligned}
+      &amp;\mu_{\alpha_{j}} \\
+      &amp;\mu_{\beta_{1j}}
+    \end{aligned}
+  \end{array}
+\right)
+,
+\left(
+  \begin{array}{cc}
+     \sigma^2_{\alpha_{j}} &amp; \rho_{\alpha_{j}\beta_{1j}} \\
+     \rho_{\beta_{1j}\alpha_{j}} &amp; \sigma^2_{\beta_{1j}}
+  \end{array}
+\right)
+\right)
+    \text{, for Interviewer j = 1,} \dots \text{,J}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="modellvergleich" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="modellvergleich"><span class="header-section-number">5.4</span> Modellvergleich</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(mod0, mod1, mod2)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table style="border-collapse:collapse; border:none;">
+<tbody><tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">&nbsp;</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">learning extent</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">learning extent</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">learning extent</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">Predictors</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">p</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">p</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">p</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.23&nbsp;–&nbsp;3.86</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>&lt;0.001</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.16</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.64&nbsp;–&nbsp;2.69</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>&lt;0.001</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">1.93</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">1.43&nbsp;–&nbsp;2.44</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"><strong>&lt;0.001</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">satisfied with work<br>outcome</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.31</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.21&nbsp;–&nbsp;0.41</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>&lt;0.001</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">0.35</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">0.22&nbsp;–&nbsp;0.48</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"><strong>&lt;0.001</strong></td>
+</tr>
+<tr>
+<td colspan="10" style="font-weight:bold; text-align:left; padding-top:.8em;">Random Effects</td>
+</tr>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">σ<sup>2</sup></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">1.46</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">1.35</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">1.30</td>
+</tr>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">τ<sub>00</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.95 <sub>Interviewer</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.75 <sub>Interviewer</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.47 <sub>Interviewer</sub></td>
+
+</tr><tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">τ<sub>11</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.07 <sub>Interviewer.satisfied_with_work_outcome</sub></td>
+
+</tr><tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">ρ<sub>01</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">-0.75 <sub>Interviewer</sub></td>
+
+</tr><tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">ICC</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.39</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.36</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.36</td>
+
+</tr><tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">N</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">48 <sub>Interviewer</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">48 <sub>Interviewer</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">48 <sub>Interviewer</sub></td>
+</tr><tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">Observations</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">405</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">405</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">405</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">Marginal R<sup>2</sup> / Conditional R<sup>2</sup></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.000 / 0.395</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.071 / 0.402</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.092 / 0.421</td>
+</tr>
+
+</tbody></table>
+</div>
+</div>
+</section>
+</section>
+<section id="generalisierte-mehrebenenmodelle" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="generalisierte-mehrebenenmodelle"><span class="header-section-number">6</span> Generalisierte Mehrebenenmodelle</h2>
+<p>In der stochastischen Schreibweise einfachen wie multiplen und Mehrebenenregressionen haben wir immer angenommen, dass die Residuen normalverteilt sind. Das ist aber nicht immer der Fall, z.B. wenn die abhängige Variable dichotom ist (z.B. Ja/Nein) oder wenn es sich um Zähldaten handelt (z.B. Anzahl der Klimmzüge). In diesen Fällen können generalisierte Mehrebenenmodelle (Generalized Linear Mixed Models, GLMMs) verwendet werden, die es ermöglichen, verschiedene Verteilungen für die abhängige Variable zu modellieren (z.B. Binomialverteilung für dichotome Daten, Poissonverteilung für Zähldaten) und gleichzeitig die hierarchische Struktur der Daten zu berücksichtigen. Welche Verteilungsannahme adäquat ist, kann zum einen schlicht empirisch entschieden werden, zum anderen können theoretische Überlegungen zur Datenentstehung herangezogen. So kann man etwa zeigen, dass eine Poissonverteilugn genau dann entsteht, wenn die Daten aus einem Poissonprozess stammen, d.h. wenn die Ereignisse zufällig und unabhängig voneinander in einem festen Zeitintervall auftreten.</p>
 
 
 <script type="ojs-module-contents">
@@ -218,9 +1248,17 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Literatur</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-mcneish2017" class="csl-entry" role="listitem">
+McNeish, D., Stapleton, L. M., &amp; Silverman, R. D. (2017). <a href="https://doi.org/10.1037/met0000078">On the unnecessary ubiquity of hierarchical linear modeling</a>. <em>Psychological Methods</em>, <em>22</em>(1), 114–140.
+</div>
+<div id="ref-rausch_seifried_2023" class="csl-entry" role="listitem">
+Rausch, A., &amp; Seifried, J. (2023). What Do We Really Know About Workplace Learning? An Experience Sampling Study on Common Conceptions. In <em>Annual Meeting of the American Educational Research Association (AERA 2023)</em>. Chicago, IL.
+</div>
+</div></section></div></main> <!-- /main -->
 <script>
 
 /* definition of content for the buttons */

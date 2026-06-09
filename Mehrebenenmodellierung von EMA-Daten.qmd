@@ -1,5 +1,5 @@
 ---
-title: "Mehrebenenmodellierung von EMA-Daten.qmd"
+title: "Mehrebenenmodellierung von EMA-Daten"
 format:
   live-html:
     css:
@@ -9,11 +9,378 @@ webr:
   packages:
     - dplyr
     - haven
-#    - ggplot2
+    - lme4
+    - equatiomatic
 toc: true
 lang: de
 ---
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
 
-##
+## Multi-Level Daten als »nuisance« oder »interesting phenomenom«
+In ihrem Klassiker »*Multilevel analysis: An introduction to basic and advanced multilevel modeling*« unterscheiden Tom Snijders und Roel Bosker zwei Anlässe von Multi-Level-Modellierungen »**multi-level as a nuisance**« und »**multi-level as an interesting phenomenon**.
+Mit ersterem ist gemeint, dass man eigentlich an Single-Level Phänomenen interessiert ist aber halt Abhängigkeiten der Residuen hat. Mit zweiterem ist gemeint, dass man tatsächlich an der Varianz von Regressionskoeffizienten interessiert ist.
+
+Ist die Clusterstruktur der Daten nur ein »nuisance« sind hierarchische Modelle (a.k.a Mehrebenenmodelle, a.k.a. Mixed-Effects-Modelle, a.k.a. Mixed Effects Modelle, a.k.a. Random Effects Model) oft nur die zweite Wahl (für interessante Alternativen siehe @mcneish2017).
+
+In der EMA-Forschung ist es häufig so, dass man an der Varianz von Regressionskoeffizienten interessiert ist, daher werden wir im Folgenden verstärkt die zweite Kategorie betrachten.
+
+## Datenbeispiel
+Wir verwenden hier die Daten von Rausch & Seifried [@rausch_seifried_2023], die u.a. Effekte von `Demand` und  `Control` auf `perceived learning` untersuchen. Es handelt sich um eine EMA-Studie, bei der 49 Versicherungsagenten 405 Arbeitssituationen beschrieben haben.
+
+### Datenimport und -wrangling
+```{r}
+library(tidyverse)
+library(janitor)
+library(lme4)
+library(equatiomatic)
+library(tidyr)
+
+# Daten einlesen
+DatenESM <- read.csv2("data/Daten-ESM-Situationen.csv", na = "NA", dec = ",")
+DatenSurvey <- read.csv2("data/Daten-Survey-Personen.csv", na = "NA", dec = ",")
+
+# full join der Daten
+DatenML <- full_join(DatenESM, DatenSurvey, by = "Interviewer")
+
+# Leere Zeilen und Spalten entfernen
+DatenML <- remove_empty(DatenML, which = c("rows", "cols"))
+
+# Skalenbildung
+DatenML <- DatenML |>
+  mutate(BSW3r = 6 - BSW3, BSW6r = 6 - BSW6) |>
+  rowwise() |>
+  mutate(
+    Demand = mean(c(Demand1, Demand2), na.rm = T),
+    Control = mean(c(Control1, Control2), na.rm = T),
+    Support = mean(c(Support1, Support2), na.rm = T),
+    DCS_interaction = Demand * Control * Support,
+    JobSelfEff = mean(c(BSW1, BSW2, BSW3r, BSW4, BSW5, BSW6r), na.rm = TRUE),
+    JobCrafting = mean(
+      c(
+        JCQ1,
+        JCQ2,
+        JCQ3,
+        JCQ4,
+        JCQ5,
+        JCQ6,
+        JCQ7,
+        JCQ8,
+        JCQ9,
+        JCQ10,
+        JCQ11,
+        JCQ12,
+        JCQ13,
+        JCQ14,
+        JCQ15
+      ),
+      na.rm = TRUE
+    )
+  ) |>
+  ungroup()
+```
+
+### Correllogram als geordnete Heatmap
+
+```{r}
+#| label: fig-clustered-heatmap
+#| fig-cap: "Clustered Heatmap der wichtigsten Variablen"
+#| fig-width: 10
+#| fig-height: 8
+
+DatenML |>
+  select(
+    learning_extent,
+    satisfied_with_work_outcome,
+    Demand,
+    Control,
+    Support,
+    JobSelfEff,
+    JobCrafting,
+    neuro,
+    intro,
+    open,
+    agreeable,
+    conscientious
+  ) %>%
+    corrgram::corrgram(
+      order = TRUE,
+      lower.panel = corrgram::panel.shade,
+      upper.panel = corrgram::panel.pie,
+      diag.panel = corrgram::panel.density,
+      main = "Clustered Heatmap der wichtigsten Variablen"
+    )
+
+```
+
+### Typische Verteilungsstatistiken
+#### Within-Person-Statistiken
+```{r}
+DatenML |>
+  select(
+    learning_extent,
+    satisfied_with_work_outcome,
+    Demand,
+    Control,
+    Support,
+    JobSelfEff,
+    JobCrafting,
+    neuro,
+    intro,
+    open,
+    agreeable,
+    conscientious
+  ) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "item",
+    values_to = "values"
+  ) |>
+  group_by(item) %>%
+  summarize(
+    mean = mean(values, na.rm = TRUE),
+    med = median(values, na.rm = TRUE),
+    sd = sd(values, na.rm = TRUE),
+    skew = moments::skewness(values, na.rm = TRUE),
+    rmssd = psych::rmssd(values, na.rm = TRUE)
+  )
+```
+
+#### Betwen-Person-Statistiken
+
+```{r}
+DatenML |>
+  select(
+    learning_extent,
+    satisfied_with_work_outcome,
+    Demand,
+    Control,
+    Support,
+    Interviewer
+  ) %>%
+  pivot_longer(
+    cols = c(
+      learning_extent,
+      satisfied_with_work_outcome,
+      Demand,
+      Control,
+      Support
+    ),
+    names_to = "item",
+    values_to = "values"
+  ) |>
+  group_by(Interviewer, item) %>%
+  summarize(
+    imean = mean(values, na.rm = TRUE),
+    imed = median(values, na.rm = TRUE),
+    isd = sd(values, na.rm = TRUE),
+    iskew = moments::skewness(values, na.rm = TRUE),
+    irmssd = psych::rmssd(values, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  select(-Interviewer) %>%
+  group_by(item) %>%
+  skimr::skim()
+```
+
+## Multi-Level Daten als »nuisance«
+Genestete Daten können auch wenn man sich nicht für die Varianz von Regressionskoeffizienten über Cluster hinweg interessiert, zu einem Problem werden, da die Residuen nicht mehr unabhängig sind wie für die Berechnung der Inferenzstatistk bei der multiple Regression angenommen wird.
+Wie robust bzw. unrobust die multiple Regression gegenüber Verletzungen der Unabhängigkeitsannahme ist, hängt von der Stärke der Clusterung (ICC) und der Größe der Cluster ab. In der Praxis kann es schon bei moderater Clusterung zu verzerrten Standardfehlern und damit zu falschen Schlussfolgerungen kommen wie folgende `r xfun::embed_file("app.R", "app.R", "Shiny-App")` (File bitte in RStudio öffnen und ausführen).
+
+## Mehrebenenmodelle als Partial Pooling
+Interessiert man sich für die Varianz von Regressionskoeffizienten über Cluster hinweg, so sind hierarchische Modelle (a.k.a Mehrebenenmodelle, a.k.a. Mixed-Effects-Modelle, a.k.a. Mixed Effects Modelle, a.k.a. Random Effects Model) die erste Wahl.
+Diese werden oft als Kompromiss zwischen No-Pooling (separate Regression pro Cluster) und Complete-Pooling (ein Modell für alle) beschrieben. Dabei wird diese Kompromissbildung durch die Größe der Cluster und die Stärke der Clusterung (ICC) bestimmt:
+
+* Je größer das Cluster (bei gleichem ICC), desto stärker wird die Random-Effekt-Schätzung für dieses Cluster von den Daten dieses Clusters bestimmt. Dadurch sind die Random Effekt-Schätzungen für große Cluster näher an den No-Pooling-Schätzungen und die Random Effekt-Schätzungen für kleine Cluster näher an den Complete-Pooling-Schätzungen.
+* Je höher die Clusterung (ICC bei gleicher Clustergröße), desto stärker wird die Random-Effekt-Schätzung durch die Daten des Clusters bestimmt.
+
+```{r}
+#| label: fig-pooling-comparison
+#| fig-cap: "Vergleich von No-Pooling, Complete-Pooling und Random-Effects für 18 zufällig ausgewählte Cluster"
+#| fig-width: 12
+#| fig-height: 12
+#| echo: false
+mod2 <- lmer(
+  learning_extent ~ 1 +
+    satisfied_with_work_outcome +
+    (1 + satisfied_with_work_outcome | Interviewer),
+  data = DatenML
+)
+
+# Random Effects extrahieren
+re <- ranef(mod2)$Interviewer |>
+  as.data.frame() |>
+  tibble::rownames_to_column("Interviewer") |>
+  rename(intercept_re = `(Intercept)`, slope_re = satisfied_with_work_outcome)
+
+# Fixe Effekte
+fixef_mod2 <- fixef(mod2)
+
+# 18 Cluster zufällig auswählen
+set.seed(42)  # Für Reproduzierbarkeit
+selected_clusters <- re |>
+  slice_sample(n = 18) |>
+  pull(Interviewer)
+
+# Daten für ausgewählte Cluster filtern
+plot_data <- DatenML |>
+  filter(Interviewer %in% selected_clusters) |>
+  select(Interviewer, learning_extent, satisfied_with_work_outcome) |>
+  drop_na()
+
+# No-Pooling Modelle (separate Regression pro Cluster)
+no_pooling <- plot_data |>
+  group_by(Interviewer) |>
+  summarise(
+    intercept = coef(lm(learning_extent ~ satisfied_with_work_outcome))[1],
+    slope = coef(lm(learning_extent ~ satisfied_with_work_outcome))[2],
+    .groups = "drop"
+  ) |>
+  mutate(model = "No Pooling")
+
+# Complete Pooling (ein Modell für alle)
+complete_pooling <- tibble(
+  Interviewer = selected_clusters,
+  intercept = fixef_mod2[1],
+  slope = fixef_mod2[2],
+  model = "Complete Pooling"
+)
+
+# Random Effects (Multilevel-Modell)
+random_effects <- re |>
+  filter(Interviewer %in% selected_clusters) |>
+  mutate(
+    intercept = fixef_mod2[1] + intercept_re,
+    slope = fixef_mod2[2] + slope_re,
+    model = "Random Effects"
+  ) |>
+  select(Interviewer, intercept, slope, model)
+
+# Alle Modelle kombinieren
+all_models <- bind_rows(no_pooling, complete_pooling, random_effects)
+
+# Plot mit gejitterten Punkten
+ggplot(plot_data, aes(x = satisfied_with_work_outcome, y = learning_extent)) +
+  geom_jitter(alpha = 0.5, size = 2, width = 0.1, height = 0.1) +
+  geom_abline(
+    data = all_models,
+    aes(intercept = intercept, slope = slope, color = model, linetype = model),
+    linewidth = 0.8
+  ) +
+  facet_wrap(~Interviewer, ncol = 6) +
+  scale_color_manual(
+    values = c(
+      "No Pooling" = "#E41A1C",
+      "Complete Pooling" = "#377EB8",
+      "Random Effects" = "#4DAF4A"
+    )
+  ) +
+  scale_linetype_manual(
+    values = c(
+      "No Pooling" = "dashed",
+      "Complete Pooling" = "dotted",
+      "Random Effects" = "solid"
+    )
+  ) +
+  labs(
+    title = "Vergleich von Pooling-Strategien für 18 zufällig ausgewählte Cluster",
+    subtitle = "Prediction: learning_extent ~ satisfied_with_work_outcome",
+    x = "Zufriedenheit mit Arbeitsergebnis",
+    y = "Lernumfang",
+    color = "Modell",
+    linetype = "Modell"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(face = "bold")
+  )
+```
+
+Wichtig ist, dass aus im Modell nur die Regressionskoeffizienten sowie eine Streuung dieser geschätzt wird. Die Steigungen der Random Effect Regressionsgeraden pro Cluster sind nicht Teil der Modellschätzung sondern werden post-hoc mit Empirical Bayes geschätzt.
+
+
+## Einfache Mehrebenenmodelle
+### Das Random-Intercept-Only-Modell
+```{r}
+mod0 <- lmer(
+  learning_extent ~ 1 +
+    (1 | Interviewer),
+  data = DatenML
+)
+
+summary(mod0)
+extract_eq(mod0, use_re = TRUE, wrap = TRUE)
+```
+
+### Das Random-Intercept-Modell mit einem Prädiktor
+```{r}
+mod1 <- lmer(
+  learning_extent ~ 1 + satisfied_with_work_outcome + (1 | Interviewer),
+  data = DatenML
+)
+
+summary(mod1)
+extract_eq(mod1, use_re = TRUE, wrap = TRUE)
+```
+
+### Das Random-Intercept-Random-Slope-Modell
+```{r}
+mod2 <- lmer(
+  learning_extent ~ 1 +
+    satisfied_with_work_outcome +
+    (1 + satisfied_with_work_outcome | Interviewer),
+  data = DatenML
+)
+
+summary(mod2)
+extract_eq(mod2, use_re = TRUE, wrap = TRUE)
+```
+
+### Modellvergleich
+```{r}
+sjPlot::tab_model(mod0, mod1, mod2)
+```
+
+## Generalisierte Mehrebenenmodelle
+In der stochastischen Schreibweise einfachen wie multiplen und Mehrebenenregressionen haben wir immer angenommen, dass die Residuen normalverteilt sind. Das ist aber nicht immer der Fall, z.B. wenn die abhängige Variable dichotom ist (z.B. Ja/Nein) oder wenn es sich um Zähldaten handelt (z.B. Anzahl der Klimmzüge). In diesen Fällen können generalisierte Mehrebenenmodelle (Generalized Linear Mixed Models, GLMMs) verwendet werden, die es ermöglichen, verschiedene Verteilungen für die abhängige Variable zu modellieren (z.B. Binomialverteilung für dichotome Daten, Poissonverteilung für Zähldaten) und gleichzeitig die hierarchische Struktur der Daten zu berücksichtigen.
+Welche Verteilungsannahme adäquat ist, kann zum einen schlicht empirisch entschieden werden, zum anderen können theoretische Überlegungen zur Datenentstehung herangezogen. So kann man etwa zeigen, dass eine Poissonverteilugn genau dann entsteht, wenn die Daten aus einem Poissonprozess stammen, d.h. wenn die Ereignisse zufällig und unabhängig voneinander in einem festen Zeitintervall auftreten.
+
+### Modellierung der Schiefe in `Control`
+
+```{r}
+mod4_gauss <- lmer(
+  Control ~ Demand + Support + (1 | Interviewer),
+  data = DatenML
+)
+check_predictions(mod4_gauss)
+
+# Control als geordneten Faktor definieren
+DatenML <- DatenML |>
+  mutate(Control_ord = factor(Control, ordered = TRUE))
+
+mod4_probit <- clmm(
+  Control_ord ~ Demand + Support + (1 | Interviewer),
+  data = DatenML ,
+  link = "probit"
+)
+
+
+compare_performance(mod4_gauss, mod4_probit)
+check_predictions(mod4_probit)
+```
+
+
+### Modellierung der Bimodalität in `learning_extent`
+
+```{r}
+mod2_mixture <- glmmTMB(
+  learning_extent ~ Demand + Support + (1 | Interviewer),
+  data = DatenML,
+  family = gaussian(),
+  dispformula = ~1,
+  # Zwei latente Klassen
+  zi = ~ Demand + Support
+)
+check_predictions(mod2)
+```

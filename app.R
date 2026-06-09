@@ -1,4 +1,3 @@
-## App designed by Samuels-🧠 & Claude 3.7
 # Load required libraries
 library(shiny)
 library(bslib)
